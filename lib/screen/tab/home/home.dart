@@ -98,16 +98,20 @@ class _SongItemSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: FadeInImage.assetNetwork(placeholder: '',
+      contentPadding: const EdgeInsets.only(left: 24, right: 24),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: FadeInImage.assetNetwork(placeholder: 'asset/itunes_256.png',
           image: song.image,
           width: 50,
           height: 50,
           imageErrorBuilder: (context, error, stackTrace) {
-            return Image.asset('assets/itunes_256.png',
+            return Image.asset('asset/itunes_256.png',
               width: 50,
               height: 50,
             );
           },
+        ),
       ),
       title: Text(song.title),
       subtitle: Text(song.artist),
