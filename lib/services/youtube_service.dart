@@ -17,7 +17,7 @@ class YouTubeDataSource implements DataSource {
     try {
       // Tìm kiếm video music
       final searchUrl = Uri.parse(
-          '$baseUrl/search?part=snippet&q=vpop&type=video&maxResults=20&videoCategoryId=10&key=$apiKey'
+          '$baseUrl/search?part=snippet&q=vpop&type=video&maxResults=20&videoCategoryId=10&order=viewCount&key=$apiKey'
       );
 
       final searchResponse = await http.get(searchUrl);
@@ -28,7 +28,7 @@ class YouTubeDataSource implements DataSource {
 
       final searchData = jsonDecode(searchResponse.body);
       final items = searchData['items'] as List;
-
+      print('Số video tìm được: ${items.length}');
       // Lấy video IDs
       final videoIds = items
           .map((item) => item['id']['videoId'] as String)
@@ -55,22 +55,16 @@ class YouTubeDataSource implements DataSource {
         final contentDetails = video['contentDetails'];
         final videoId = video['id'];
 
-        // Lấy audio URL
-        final audioUrl = await _getAudioUrl(videoId);
-
-        if (audioUrl != null) {
-          songs.add(Song(
-            id: videoId,
-            title: snippet['title'],
-            album: 'YouTube Vietnam',
-            artist: snippet['channelTitle'],
-            source: audioUrl,
-            // Direct audio URL
-            image: snippet['thumbnails']['high']['url'] ??
-                snippet['thumbnails']['default']['url'],
-            duration: _parseDuration(contentDetails['duration']),
-          ));
-        }
+        songs.add(Song(
+          id: videoId,
+          title: snippet['title'],
+          album: 'YouTube Vietnam',
+          artist: snippet['channelTitle'],
+          source: null,
+          image: snippet['thumbnails']['high']['url'] ??
+              snippet['thumbnails']['default']['url'],
+          duration: _parseDuration(contentDetails['duration']),
+        ));
       }
 
       return songs;

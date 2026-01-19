@@ -11,20 +11,12 @@ class DefaultRepository implements Repository {
 
   @override
   Future<List<Song>?> getData() async {
-    List<Song> songs = [];
+    final youtubeSongs = await _youtubeDataSource.getData();
 
-    await _youtubeDataSource.getData().then((youtubeSongs) {
-      if (youtubeSongs == null) {
-        _localDataSource.getData().then((localSongs) {
-          if (localSongs != null) {
-            songs.addAll(localSongs);
-          }
-        });
-      } else {
-        songs.addAll(youtubeSongs);
-      }
-    });
+    if (youtubeSongs != null) {
+      return youtubeSongs;
+    }
 
-    return songs;
+    return await _localDataSource.getData();
   }
 }

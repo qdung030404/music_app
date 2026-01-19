@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/screen/tab/home/home.dart';
 import 'package:music_app/screen/tab/setting/setting.dart';
 import 'package:music_app/screen/tab/user/user.dart';
 import 'package:music_app/screen/tab/discovery/discovery.dart';
@@ -58,12 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class HomeTabs extends StatelessWidget {
-  const HomeTabs({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
+
 

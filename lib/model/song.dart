@@ -3,7 +3,7 @@ class Song{
   String title;
   String album;
   String artist;
-  String source;
+  String? source;
   String image;
   int duration;
   Song(
@@ -11,7 +11,7 @@ class Song{
         required this.title,
         required this.album,
         required this.artist,
-        required this.source,
+        this.source,
         required this.image,
         required this.duration});
   factory Song.fromJson(Map<String, dynamic> json) {
