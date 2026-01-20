@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/screen/tab/home/viewmodel.dart';
 
 import '../../../model/song.dart';
+import '../../songdetailpage/songdetailpage.dart';
 
 class HomeTabs extends StatelessWidget {
   const HomeTabs({super.key});
@@ -44,8 +46,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
     super.dispose();
   }
   Widget getBody() {
-    bool ShowLoading = songs.isEmpty;
-    if(ShowLoading) {
+    bool showLoading = songs.isEmpty;
+    if(showLoading) {
       return getProgressBar();
     }
     else {
@@ -85,6 +87,47 @@ class _HomeTabPageState extends State<HomeTabPage> {
       });
     });
   }
+  void bottomSheet(){
+    showModalBottomSheet(context: context, builder: (context) {
+      return  ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+        child: Container(
+          width: double.infinity,
+          height: 400,
+          color: Colors.grey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const Text('Bottom Sheet'),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Close Bottom Sheet'),
+              ),
+
+            ],
+          )
+
+        ),
+      );
+    });
+  }
+  void navigate(Song song){
+    Navigator.push(context,
+      CupertinoPageRoute(builder: (context){
+        return SongDetail(
+            songs: songs,
+            playingSong: song,
+        );
+      })
+    );
+  }
+
 }
 class _SongItemSelection extends StatelessWidget {
   const _SongItemSelection({
@@ -116,8 +159,12 @@ class _SongItemSelection extends StatelessWidget {
       title: Text(song.title),
       subtitle: Text(song.artist),
       trailing: IconButton(
-          onPressed: (){},
-          icon: Icon(Icons.more_horiz)),
+          onPressed: (){parent.bottomSheet();},
+          icon: Icon(Icons.more_horiz)
+      ),
+      onTap: (){
+        parent.navigate(song);
+      },
     );
 
   }
