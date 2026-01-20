@@ -60,7 +60,8 @@ class YouTubeDataSource implements DataSource {
           title: snippet['title'],
           album: 'YouTube Vietnam',
           artist: snippet['channelTitle'],
-          source: null,
+          source: snippet['thumbnails']['high']['url'] ??
+              snippet['thumbnails']['default']['url'],
           image: snippet['thumbnails']['high']['url'] ??
               snippet['thumbnails']['default']['url'],
           duration: _parseDuration(contentDetails['duration']),

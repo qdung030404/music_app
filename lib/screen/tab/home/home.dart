@@ -148,6 +148,7 @@ class _SongItemSelection extends StatelessWidget {
           image: song.image,
           width: 50,
           height: 50,
+          fit: BoxFit.cover,
           imageErrorBuilder: (context, error, stackTrace) {
             return Image.asset('asset/itunes_256.png',
               width: 50,
