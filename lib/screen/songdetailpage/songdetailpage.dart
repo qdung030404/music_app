@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:just_audio/just_audio.dart';
 import '../../model/song.dart';
 import 'audio_player_manager.dart';
 
@@ -130,6 +131,13 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       )
     );
   }
+
+  @override
+  void dispose() {
+    _audioPlayerManager.dispose();
+    super.dispose();
+  }
+
   StreamBuilder<DurationState> _progressBar(){
     return StreamBuilder<DurationState>(
       stream:_audioPlayerManager.durationState,
@@ -146,6 +154,36 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       });
 
   }
+  StreamBuilder<PlayerState> _playerState(){
+    return StreamBuilder(
+        stream: _audioPlayerManager.player.playerStateStream,
+        builder: (context, snapshot) {
+          final playerState = snapshot.data;
+          final processingState = playerState?.processingState;
+          final playing = playerState?.playing;
+          if (processingState == ProcessingState.loading ||
+              processingState == ProcessingState.buffering) {
+            return Container(
+              margin: const EdgeInsets.all(8.0),
+              width: 48,
+              height: 48,
+              child: const CircularProgressIndicator(),
+            );
+          }else if (playing != true) {
+            return MediaButtonControl(funtion: () {_audioPlayerManager.player.play();},
+              icon: Icons.play_arrow, color: null, size: 48,);
+          }else if(processingState != ProcessingState.completed) {
+            return MediaButtonControl(funtion: () {
+              _audioPlayerManager.player.pause();},
+              icon: Icons.pause, color: null, size: 48,);
+          }else{
+            return MediaButtonControl(funtion: (){_audioPlayerManager.player.seek(Duration.zero);},
+              icon: Icons.replay, color: null, size: 48,);
+          }
+        },
+    );
+  }
+
   Widget _mediaButton(){
     return SizedBox(
       height: 48,
@@ -153,9 +191,9 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           MediaButtonControl(funtion: () {  }, icon: Icons.shuffle, color: Colors.grey, size: 30,),
-          MediaButtonControl(funtion: () {  }, icon: Icons.skip_previous, color: Colors.black, size: 40,),
-          MediaButtonControl(funtion: () {  }, icon: Icons.play_arrow, color: Colors.black, size: 40,),
-          MediaButtonControl(funtion: () {  }, icon: Icons.skip_next, color: Colors.black, size: 40,),
+          MediaButtonControl(funtion: () {  }, icon: Icons.skip_previous, color: Colors.black, size: 48,),
+          _playerState(),
+          MediaButtonControl(funtion: () {  }, icon: Icons.skip_next, color: Colors.black, size: 48,),
           MediaButtonControl(funtion: () {  }, icon: Icons.repeat, color: Colors.grey, size: 30,),
         ]
       )
