@@ -10,7 +10,7 @@ class MusicAppViewModel{
   StreamController<List<Song>> songsController = StreamController<List<Song>>();
   void loadSongs() async {
     final repository = DefaultRepository();
-    final songs = await repository.getData();
+    final songs = await repository.loadData();
     if (songs != null) {
       songsController.add(songs);
     }

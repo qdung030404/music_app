@@ -1,22 +1,29 @@
 import '../model/song.dart';
-import '../services/youtube_service.dart';
+import '../services/source_service.dart';
 
 abstract interface class Repository {
-  Future<List<Song>?> getData();
+  Future<List<Song>?> loadData();
 }
 
 class DefaultRepository implements Repository {
   final _localDataSource = LocalDataSource();
-  final _youtubeDataSource = YouTubeDataSource();
+  final _remoteDataSource = RemoteDataSource();
 
   @override
-  Future<List<Song>?> getData() async {
-    final youtubeSongs = await _youtubeDataSource.getData();
+  Future<List<Song>?> loadData() async {
+    List<Song> songs = [];
+    await _remoteDataSource.getData().then((remoteSongs) {
+      if (remoteSongs == null) {
+        _localDataSource.getData().then((localSongs) {
+          if (localSongs != null) {
+            songs.addAll(localSongs);
+          }
+        });
+      }else{
+        songs.addAll(remoteSongs);
+      }
+    });
+    return songs;
 
-    if (youtubeSongs != null) {
-      return youtubeSongs;
-    }
-
-    return await _localDataSource.getData();
   }
 }
