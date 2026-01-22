@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -9,8 +11,6 @@ class SongDetail extends StatelessWidget {
   const SongDetail({super.key, required this.songs, required this.playingSong});
   final List<Song> songs;
   final Song playingSong;
-
-
   @override
   Widget build(BuildContext context) {
     return SongDetailPage(
@@ -31,17 +31,24 @@ class SongDetailPage extends StatefulWidget {
 class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProviderStateMixin{
   late AnimationController _animationController;
   late AudioPlayerManager _audioPlayerManager;
-
+  late int _selectedItemIndex;
+  late Song _song;
+  late double _animationPosition;
+  bool _isShuffle = false;
+  late LoopMode _loopMode;
   @override
   void initState() {
     super.initState();
+    _song = widget.playingSong;
+    _animationPosition = 0.0;
+    _loopMode = LoopMode.off;
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 12000),
     );
-    _audioPlayerManager = AudioPlayerManager(songUrl: widget.playingSong.source);
+    _audioPlayerManager = AudioPlayerManager(songUrl: _song.source);
     _audioPlayerManager.init();
-
+    _selectedItemIndex = widget.songs.indexOf(widget.playingSong);
     }
   @override
   Widget build(BuildContext context) {
@@ -64,7 +71,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.playingSong.artist,
+                Text(_song.artist,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -80,7 +87,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                     borderRadius: BorderRadius.circular(raduis),
                     child: FadeInImage.assetNetwork(
                       placeholder: 'asset/itunes_256.png',
-                      image: widget.playingSong.image,
+                      image: _song.image,
                       width: screenWidth  - delta,
                       height: screenWidth  - delta,
                       fit: BoxFit.cover,
@@ -103,7 +110,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                         color: Theme.of(context).colorScheme.primary,),
                         Expanded(
                             child: Text(
-                              widget.playingSong.title,
+                              _song.title,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -134,6 +141,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
 
   @override
   void dispose() {
+    _animationController.dispose();
     _audioPlayerManager.dispose();
     super.dispose();
   }
@@ -149,6 +157,13 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
         return ProgressBar(
           progress: progress,
           buffered: buffered,
+          onSeek: _audioPlayerManager.player.seek,
+          barHeight: 5,
+          barCapShape: BarCapShape.round,
+          baseBarColor: Colors.deepPurple[200],
+          progressBarColor: Colors.deepPurple,
+          thumbColor: Colors.deepPurple,
+          thumbRadius: 10,
           total: total,);
 
       });
@@ -163,6 +178,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
           final playing = playerState?.playing;
           if (processingState == ProcessingState.loading ||
               processingState == ProcessingState.buffering) {
+            _pauseAnimation();
             return Container(
               margin: const EdgeInsets.all(8.0),
               width: 48,
@@ -170,31 +186,124 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               child: const CircularProgressIndicator(),
             );
           }else if (playing != true) {
-            return MediaButtonControl(funtion: () {_audioPlayerManager.player.play();},
+            return MediaButtonControl(funtion: () {
+              _audioPlayerManager.player.play();},
               icon: Icons.play_arrow, color: null, size: 48,);
           }else if(processingState != ProcessingState.completed) {
+            _playAnimation();
             return MediaButtonControl(funtion: () {
+              _pauseAnimation();
               _audioPlayerManager.player.pause();},
               icon: Icons.pause, color: null, size: 48,);
           }else{
-            return MediaButtonControl(funtion: (){_audioPlayerManager.player.seek(Duration.zero);},
+            if(processingState == ProcessingState.completed){
+              _stopAnimation();
+              _resetAnimation();
+            }
+            return MediaButtonControl(funtion: (){
+              _audioPlayerManager.player.seek(Duration.zero);
+              _resetAnimation();
+              _playAnimation();},
               icon: Icons.replay, color: null, size: 48,);
           }
         },
     );
   }
+  void setNextSong(){
+    if(_isShuffle){
+      var random = Random().nextInt(widget.songs.length);
+      _selectedItemIndex = random;
+    }else if(_selectedItemIndex < widget.songs.length - 1){
+      ++_selectedItemIndex;
+    }else if(_loopMode == LoopMode.all && _selectedItemIndex == widget.songs.length - 1){
+      _selectedItemIndex = 0;
+    }
+    if (_selectedItemIndex >= widget.songs.length) {
+      _selectedItemIndex = _selectedItemIndex % widget.songs.length;
+    }
+    final nextItem = widget.songs[_selectedItemIndex];
+    _audioPlayerManager.updateSong(nextItem.source);
+    _resetAnimation();
+    setState(() {
+      _song = nextItem;
+    });
+  }
+  void setPreviousSong(){
+    if(_isShuffle){
+      var random = Random().nextInt(widget.songs.length);
+      _selectedItemIndex = random;
+    }else if(_selectedItemIndex > 0){
+      --_selectedItemIndex;
+    }else if(_loopMode == LoopMode.all && _selectedItemIndex == 0){
+      _selectedItemIndex = widget.songs.length - 1;
+    }
+    if (_selectedItemIndex < 0) {
+      _selectedItemIndex = (-1 * _selectedItemIndex) % widget.songs.length;
+    }
+    final nextItem = widget.songs[_selectedItemIndex];
+    _audioPlayerManager.updateSong(nextItem.source);
+    _resetAnimation();
+    setState(() {
+      _song = nextItem;
+    });
+  }
+  void _setRepeatOption(){
+    if(_loopMode == LoopMode.off){
+      _loopMode = LoopMode.one;
+    }else if(_loopMode == LoopMode.one){
+      _loopMode = LoopMode.all;
+    }else{
+      _loopMode = LoopMode.off;
+    }
+    setState(() {
+      _audioPlayerManager.player.setLoopMode(_loopMode);
+    });
+  }
+  IconData _repeatingIcon(){
+    return switch(_loopMode){
+      LoopMode.all => Icons.repeat_on,
+      LoopMode.one => Icons.repeat_one,
+      _ => Icons.repeat,
+    };
+  }
+  Color? _getLoopColor(){
+    return _loopMode == LoopMode.off ? Colors.grey : Colors.deepPurple;
 
+  }
+  void _playAnimation(){
+    _animationController.forward(from: _animationPosition);
+    _animationController.repeat();
+  }
+  void _pauseAnimation(){
+    _animationController.stop();
+    _animationPosition = _animationController.value;
+  }
+  void _stopAnimation(){
+    _animationController.stop();
+
+  }
+  void _resetAnimation(){
+    _animationController.reset();
+  }
+  void _setShuffle(){
+    setState(() {
+      _isShuffle = !_isShuffle;
+    });
+  }
+  Color? _getShuffleColor(){
+    return _isShuffle ? Colors.deepPurple : Colors.grey;
+  }
   Widget _mediaButton(){
     return SizedBox(
       height: 48,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          MediaButtonControl(funtion: () {  }, icon: Icons.shuffle, color: Colors.grey, size: 30,),
-          MediaButtonControl(funtion: () {  }, icon: Icons.skip_previous, color: Colors.black, size: 48,),
+          MediaButtonControl(funtion:_setShuffle, icon: Icons.shuffle, color: _getShuffleColor(), size: 30,),
+          MediaButtonControl(funtion: setPreviousSong, icon: Icons.skip_previous, color: Colors.black, size: 48,),
           _playerState(),
-          MediaButtonControl(funtion: () {  }, icon: Icons.skip_next, color: Colors.black, size: 48,),
-          MediaButtonControl(funtion: () {  }, icon: Icons.repeat, color: Colors.grey, size: 30,),
+          MediaButtonControl(funtion: setNextSong, icon: Icons.skip_next, color: Colors.black, size: 48,),
+          MediaButtonControl(funtion: _setRepeatOption, icon: _repeatingIcon(), color: _getLoopColor(), size: 30,),
         ]
       )
     );
