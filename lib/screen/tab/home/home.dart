@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/screen/songdetailpage/audio_player_manager.dart';
 import 'package:music_app/screen/tab/home/viewmodel.dart';
 
 import '../../../model/song.dart';
@@ -43,6 +44,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
   @override
   void dispose() {
     _viewModel.songsController.close();
+    AudioPlayerManager().dispose();
     super.dispose();
   }
   Widget getBody() {

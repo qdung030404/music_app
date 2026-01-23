@@ -46,8 +46,13 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       vsync: this,
       duration: const Duration(milliseconds: 12000),
     );
-    _audioPlayerManager = AudioPlayerManager(songUrl: _song.source);
-    _audioPlayerManager.init();
+    _audioPlayerManager = AudioPlayerManager();
+    if(_audioPlayerManager.songUrl.compareTo(_song.source) != 0){
+      _audioPlayerManager.updateSong(_song.source);
+      _audioPlayerManager.prepare(isNewSong: true);
+    }else{
+      _audioPlayerManager.prepare();
+    }
     _selectedItemIndex = widget.songs.indexOf(widget.playingSong);
     }
   @override
@@ -142,7 +147,6 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
   @override
   void dispose() {
     _animationController.dispose();
-    _audioPlayerManager.dispose();
     super.dispose();
   }
 
