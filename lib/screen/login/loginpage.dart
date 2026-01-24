@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:imagebutton/imagebutton.dart';
 
@@ -13,6 +14,12 @@ class _LoginpageState extends State<Loginpage> {
   bool _obscurePassword = true;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  signIn() async{
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim());
+  }
 
   @override
   void dispose() {
@@ -31,12 +38,6 @@ class _LoginpageState extends State<Loginpage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 20),
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                alignment: Alignment.centerLeft,
-                onPressed: () => Navigator.pop(context),
-              ),
               const SizedBox(height: 40),
               Container(
                 height: 200,
@@ -136,9 +137,7 @@ class _LoginpageState extends State<Loginpage> {
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () {
-                  // Handle login
-                },
+                onPressed: () => signIn(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF00D9D9),
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -192,6 +191,13 @@ class _LoginpageState extends State<Loginpage> {
                     unpressedImage: Image.asset('asset/google.png'),
                     pressedImage: Image.asset('asset/google.png'),
                         
+                  ),
+                  SizedBox(width: 48),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.mobile_screen_share),
+                      iconSize: 45,
+                      color: Colors.white
                   )
 
                 ],

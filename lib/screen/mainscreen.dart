@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/screen/tab/home/home.dart';
 import 'package:music_app/screen/tab/setting/setting.dart';
 import 'package:music_app/screen/tab/user/user.dart';
 import 'package:music_app/screen/tab/discovery/discovery.dart';
+import 'login/wrapper.dart';
 
 class MusicApp extends StatelessWidget {
   const MusicApp({super.key});
@@ -16,7 +18,7 @@ class MusicApp extends StatelessWidget {
       useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const HomeScreen(),
+      home: Wrapper(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -36,11 +38,18 @@ class _HomeScreenState extends State<HomeScreen> {
     const SettingTab(),
 
   ];
+  signOut() async{
+    await FirebaseAuth.instance.signOut();
+  }
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Music App'),
+      navigationBar: CupertinoNavigationBar(
+        middle: const Text('Music App'),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () => signOut(),
+          child: const Icon(CupertinoIcons.square_arrow_right),)
       ),
         child: CupertinoTabScaffold(
           tabBar: CupertinoTabBar(
