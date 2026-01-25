@@ -15,7 +15,7 @@ class _LoginpageState extends State<Loginpage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  signIn() async{
+  Future<void> signIn() async{
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim());
@@ -228,22 +228,6 @@ class _LoginpageState extends State<Loginpage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _socialButton(IconData icon, VoidCallback onPressed) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFF2A2A2A)),
-        ),
-        child: Icon(icon, color: Colors.white, size: 28),
       ),
     );
   }
