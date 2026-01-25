@@ -1,18 +1,19 @@
-
-
 import 'dart:async';
-
-import 'package:music_app/repository/repository.dart';
-
+import 'package:music_app/repository/song_repository.dart';
 import '../../../model/song.dart';
 
-class MusicAppViewModel{
+class MusicAppViewModel {
   StreamController<List<Song>> songsController = StreamController<List<Song>>();
+
   void loadSongs() async {
     final repository = DefaultRepository();
     final songs = await repository.loadData();
-    if (songs != null) {
+    if (songs != null && songs.isNotEmpty) {
       songsController.add(songs);
     }
+  }
+
+  void dispose() {
+    songsController.close();
   }
 }
