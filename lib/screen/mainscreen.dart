@@ -1,18 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:music_app/screen/tab/home/home.dart';
 import 'package:music_app/screen/tab/setting/setting.dart';
 import 'package:music_app/screen/tab/user/user.dart';
 import 'package:music_app/screen/tab/discovery/discovery.dart';
-import 'login/wrapper.dart';
+import 'wrapper.dart';
 
 class MusicApp extends StatelessWidget {
   const MusicApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Music App',
       theme: ThemeData(
       useMaterial3: true,
