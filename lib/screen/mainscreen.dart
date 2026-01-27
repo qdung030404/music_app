@@ -6,6 +6,7 @@ import 'package:music_app/screen/tab/home/home.dart';
 import 'package:music_app/screen/tab/setting/setting.dart';
 import 'package:music_app/screen/tab/user/user.dart';
 import 'package:music_app/screen/tab/discovery/discovery.dart';
+import 'package:music_app/services/google_auth.dart';
 import 'wrapper.dart';
 
 class MusicApp extends StatelessWidget {
@@ -39,9 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const SettingTab(),
 
   ];
-  signOut() async{
-    await FirebaseAuth.instance.signOut();
-  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -49,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         middle: const Text('Music App'),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () => signOut(),
+          onPressed: () => FirebaseService().googleSignOut(),
           child: const Icon(CupertinoIcons.square_arrow_right),)
       ),
         child: CupertinoTabScaffold(
