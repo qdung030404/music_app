@@ -1,71 +1,67 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:imagebutton/imagebutton.dart';
-import 'package:music_app/screen/authentication/register.dart';
+import '../../services/google_auth.dart';
+import '../wrapper.dart';
 
-import 'forgot_password.dart';
-
-class Loginpage extends StatefulWidget {
-  const Loginpage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<Loginpage> createState() => _LoginpageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginpageState extends State<Loginpage> {
-  bool _rememberMe = false;
+class _RegisterPageState extends State<RegisterPage> {
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool isLoading = false;
 
-  signIn() async{
+  signUp() async {
     setState(() {
       isLoading = true;
     });
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      String message;
-      if (e.code == 'user-not-found') {
-        message = 'Người dùng không tồn tại';
-      } else if (e.code == 'wrong-password') {
-        message = 'Sai mật khẩu';
-      } else if (e.code == 'invalid-email') {
-        message = 'Email không hợp lệ';
-      } else if (e.code == 'invalid-credential') {
-        message = 'Email hoặc mật khẩu không đúng';
-      } else {
-        message = 'Đăng nhập thất bại';
-      }
+    final error = await FirebaseService().signUp(
+      _emailController.text,
+      _passwordController.text,
+      _confirmPasswordController.text,
+    );
+
+    if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message),
+          content: Text(error),
           backgroundColor: Colors.red,
         ),
       );
-    } catch (e) {
-      Get.snackbar('Lỗi', 'Đã xảy ra lỗi');
+    } else {
+      await FirebaseService().sendEmailVerification();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Vui lòng kiểm tra email để xác thực tài khoản'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Get.offAll(Wrapper());
     }
     setState(() {
       isLoading = false;
     });
   }
-
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -73,6 +69,12 @@ class _LoginpageState extends State<Loginpage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: 20),
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                alignment: Alignment.centerLeft,
+                onPressed: () => Navigator.pop(context),
+              ),
               const SizedBox(height: 40),
               Container(
                 height: 200,
@@ -80,11 +82,11 @@ class _LoginpageState extends State<Loginpage> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Image(image: AssetImage('asset/logo.png'))
+                child: const Image(image: AssetImage('asset/logo.png')),
               ),
               const SizedBox(height: 40),
               const Text(
-                'Login to your account',
+                'Create your account',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 28,
@@ -142,37 +144,39 @@ class _LoginpageState extends State<Loginpage> {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-
-                children: [
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: Checkbox(
-                      value: _rememberMe,
-                      onChanged: (value) {
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A1A1A),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFF2A2A2A)),
+                ),
+                child: TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: _obscureConfirmPassword,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Confirm Password',
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
                         setState(() {
-                          _rememberMe = value ?? false;
+                          _obscureConfirmPassword = !_obscureConfirmPassword;
                         });
                       },
-                      activeColor: const Color(0xFF00D9D9),
-                      side: const BorderSide(color: Color(0xFF00D9D9)),
                     ),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.all(16),
                   ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Remember me',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () => signIn(),
+                onPressed: () => signUp(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF00D9D9),
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -181,20 +185,12 @@ class _LoginpageState extends State<Loginpage> {
                   ),
                 ),
                 child: const Text(
-                  'Log in',
+                  'Sign Up',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => Get.to(const ForgotPasswordPage()),
-                child: const Text(
-                  'Forgot the password?',
-                  style: TextStyle(color: Color(0xFF00D9D9)),
                 ),
               ),
               const SizedBox(height: 24),
@@ -216,23 +212,13 @@ class _LoginpageState extends State<Loginpage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ImageButton(
-                    onTap: () {
-                      // Handle Facebook login
-                    },
+                    onTap: () => FirebaseService().signInWithGoogle(),
                     width: 45,
                     height: 50,
                     unpressedImage: Image.asset('asset/google.png'),
                     pressedImage: Image.asset('asset/google.png'),
-                        
-                  ),
-                  SizedBox(width: 48),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.mobile_screen_share),
-                      iconSize: 45,
-                      color: Colors.white
-                  )
 
+                  ),
                 ],
               ),
               const SizedBox(height: 32),
@@ -240,13 +226,15 @@ class _LoginpageState extends State<Loginpage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Don't have an account? ",
+                    "Already have an account? ",
                     style: TextStyle(color: Colors.grey),
                   ),
                   GestureDetector(
-                    onTap: () => Get.to(const RegisterPage()),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text(
-                      'Sign Up',
+                      'Log In',
                       style: TextStyle(
                         color: Color(0xFF00D9D9),
                         fontWeight: FontWeight.bold,

@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:imagebutton/imagebutton.dart';
+import '../../services/google_auth.dart';
 import '../wrapper.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -14,8 +13,35 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _emailController = TextEditingController();
-  Future<void> signUp() async {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
+  bool isLoading = false;
+   resetPassword() async {
+     setState(() {
+       isLoading = true;
+     });
+     final error = await FirebaseService().resetPassword(
+       _emailController.text,
+     );
+     if (error != null) {
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+           content: Text(error),
+           backgroundColor: Colors.red,
+         ),
+       );
+     } else {
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+           content: Text('Email đã được gửi. Vui lòng kiểm tra hộp thư'),
+           backgroundColor: Colors.green,
+           duration: Duration(seconds: 3),
+         ),
+       );
+       await Future.delayed(Duration(seconds: 3));
+       Get.offAll(Wrapper());
+     }
+     setState(() {
+       isLoading = false;
+     });
   }
   @override
   void dispose() {
@@ -78,7 +104,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () => signUp(),
+                onPressed: () => resetPassword(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF00D9D9),
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -98,22 +124,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _socialButton(IconData icon, VoidCallback onPressed) {
-    return InkWell(
-      onTap: onPressed,
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFF2A2A2A)),
-        ),
-        child: Icon(icon, color: Colors.white, size: 28),
       ),
     );
   }
