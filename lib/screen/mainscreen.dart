@@ -17,14 +17,15 @@ class MusicApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Music App',
       theme: ThemeData(
-      useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       ),
-      home: Wrapper(),
+      home: const Wrapper(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -33,42 +34,38 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> _tabs = [
-    const HomeTabs(),
-    const DiscoveryTab(),
-    const UserTab(),
-    const SettingTab(),
-
+  final List<Widget> _tabs = const [
+    HomeTabs(),
+    DiscoveryTab(),
+    UserTab(),
+    SettingTab(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: const Text('Music App'),
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          onPressed: () => FirebaseService().googleSignOut(),
-          child: const Icon(CupertinoIcons.square_arrow_right),)
+
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Discovery'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+        ],
       ),
-        child: CupertinoTabScaffold(
-          tabBar: CupertinoTabBar(
-            backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Discovery'),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
-              BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+      tabBuilder: (context, index) {
+        return CupertinoPageScaffold(
+          backgroundColor: const Color(0xFF1A1A2E),
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                child: _tabs[index],
+              ),
             ],
           ),
-          tabBuilder: (BuildContext context, int index) {
-            return _tabs[index];
-          },
-        ),
+        );
+      },
     );
   }
 }
-
-
-
-
