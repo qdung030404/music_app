@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class FirebaseService{
   final auth = FirebaseAuth.instance;
   final googleSignIn = GoogleSignIn();
+  final firestore = FirebaseFirestore.instance;
   bool _isValidEmail(String email) {
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);
@@ -35,7 +36,20 @@ class FirebaseService{
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      await auth.signInWithCredential(credential);
+      UserCredential userCredential = await auth.signInWithCredential(credential);
+
+      String uid = userCredential.user!.uid;
+      DocumentSnapshot userDoc = await firestore.collection('users').doc(uid).get();
+
+      if (!userDoc.exists) {
+        await firestore.collection('users').doc(uid).set({
+          'uid': uid,
+          'username': userCredential.user!.displayName ?? googleUser.email.split('@')[0],
+          'email': googleUser.email,
+          'avatar': userCredential.user!.photoURL ?? '',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
       return true;
     } catch(e){
       return false;
@@ -75,10 +89,23 @@ class FirebaseService{
       return error;
     }
     try {
-      await auth.createUserWithEmailAndPassword(
+
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
+      String uid = userCredential.user!.uid;
+      String username = email.trim().split('@')[0];
+
+      await firestore.collection('users').doc(uid).set({
+        'uid': uid,
+        'username': username,
+        'email': email.trim(),
+        'avatar': '',
+        'password': password.trim(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
