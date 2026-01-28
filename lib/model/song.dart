@@ -1,10 +1,9 @@
 class Song {
   String id;
   String title;
-  String album;
-  /// FK -> artists collection/table
+  String albumId;
   String artistId;
-  /// Denormalized/display value (filled by join or embedded data)
+  String? albumName;
   String? artistName;
   String source;
   String image;
@@ -13,15 +12,18 @@ class Song {
   Song({
     required this.id,
     required this.title,
-    required this.album,
+    required this.albumId,
     required this.artistId,
+    this.albumName,
     this.artistName,
     required this.source,
     required this.image,
     required this.duration,
   });
 
-  /// Prefer to show name; fallback to id (or empty).
+  String get albumDisplay => (albumName?.trim().isNotEmpty ?? false)
+      ? albumName!.trim()
+      : albumId;
   String get artistDisplay => (artistName?.trim().isNotEmpty ?? false)
       ? artistName!.trim()
       : artistId;
@@ -30,12 +32,10 @@ class Song {
     return Song(
       id: json['id']?.toString() ?? '',
       title: json['title'] ?? json['name'] ?? '',
-      album: json['album'] ?? '',
-      // Firestore new schema: artistId
-      // Remote JSON old schema: artist (name)
+      albumId: json['albumId']?.toString() ?? json['album']?.toString() ?? '',
       artistId: json['artistId']?.toString() ?? json['artist']?.toString() ?? '',
-      // Optional denormalized name if provided
-      artistName: (json['name'] ?? json['artist_name'])?.toString(),
+      albumName: (json['albumName'] ?? json['album_title'])?.toString(),
+      artistName: (json['artistName'] ?? json['artist_name'])?.toString(),
       source: json['source'] ?? '',
       image: json['image'] ?? '',
       duration: json['duration'] is int
@@ -47,13 +47,13 @@ class Song {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Song && runtimeType == other.runtimeType && album == other.album;
+          other is Song && runtimeType == other.runtimeType && id == other.id;
 
   @override
-  int get hashCode => album.hashCode;
+  int get hashCode => id.hashCode;
 
   @override
   String toString() {
-    return 'Song{id: $id, title: $title, album: $album, artistId: $artistId, artistName: $artistName, source: $source, image: $image, duration: $duration}';
+    return 'Song{id: $id, title: $title, album: $albumId, artistId: $artistId, artistName: $artistName, source: $source, image: $image, duration: $duration}';
   }
 }

@@ -114,16 +114,31 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                         IconButton(onPressed: (){}, icon: const Icon(Icons.share),
                         color: Theme.of(context).colorScheme.primary,),
                         Expanded(
-                            child: Text(
-                              _song.title,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children:[
+                                Text(
+                                  _song.title,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  _song.albumDisplay,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ],
+                            )
                         ),
                         IconButton(onPressed: (){}, icon: const Icon(Icons.favorite_outline),
                         color: Theme.of(context).colorScheme.primary,),

@@ -30,7 +30,11 @@ class FirestoreDataSource implements DataSource {
           .where((id) => id.trim().isNotEmpty)
           .toSet()
           .toList();
-
+      final albumIds = songs
+          .map((s) => s.albumId)
+          .where((id) => id.trim().isNotEmpty)
+          .toSet()
+          .toList();
       if (artistIds.isNotEmpty) {
         final artistSnap = await _firestore.collection('artist').get();
         final Map<String, String> artistNameById = {
@@ -49,7 +53,33 @@ class FirestoreDataSource implements DataSource {
           }
         }
       }
+      if (albumIds.isNotEmpty) {
 
+        final albumSnap = await _firestore.collection('album').get();
+
+        final Map<String, String> albumNameById = {};
+        for (final doc in albumSnap.docs) {
+          final data = doc.data();
+          final docId = doc.id;
+          final fieldId = (data['id'] ?? '').toString();
+          final title = (data['title'] ?? '').toString();
+
+          if (title.isEmpty) continue;
+
+          if (docId.isNotEmpty) {
+            albumNameById[docId] = title;
+          }
+          if (fieldId.isNotEmpty) {
+            albumNameById[fieldId] = title;
+          }
+        }
+        for (final s in songs) {
+          final name = albumNameById[s.albumId];
+          if (name != null && name.trim().isNotEmpty) {
+            s.albumName = name;
+          }
+        }
+      }
       return songs;
     } catch (e) {
       print('Error: $e');
