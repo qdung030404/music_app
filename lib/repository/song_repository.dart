@@ -6,7 +6,6 @@ abstract interface class Repository {
 }
 
 class DefaultRepository implements Repository {
-  final _localDataSource = LocalDataSource();
   final _remoteDataSource = RemoteDataSource();
   final _firestoreDataSource = FirestoreDataSource();
 
