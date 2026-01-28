@@ -197,32 +197,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
       ],
     );
   }
-  // Widget getProgressBar() {
-  //   return const Center(
-  //     child: CircularProgressIndicator(),
-  //   );
-  //
-  // }
-  // ListView getListView() {
-  //   return ListView.separated(
-  //     itemBuilder: (context, position){
-  //       return getRow(position);
-  //     },
-  //     separatorBuilder: (context, index) {
-  //       return const Divider(
-  //         color: Colors.grey,
-  //         thickness: 1,
-  //         indent: 24,
-  //         endIndent: 24,
-  //       );
-  //     },
-  //     itemCount: songs.length,
-  //     shrinkWrap: true,
-  //   );
-  // }
-  // Widget getRow(int position) {
-  //   return _SongItemSelection(parent: this, song: songs[position]);
-  // }
   void observeData() {
     _viewModel.songsController.stream.listen((songList) {
       setState(() {
@@ -230,36 +204,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
       });
     });
   }
-  // void bottomSheet(){
-  //   showModalBottomSheet(context: context, builder: (context) {
-  //     return  ClipRRect(
-  //       borderRadius: const BorderRadius.only(
-  //         topLeft: Radius.circular(16),
-  //         topRight: Radius.circular(16),
-  //       ),
-  //       child: Container(
-  //           width: double.infinity,
-  //           height: 400,
-  //           color: Colors.grey,
-  //           child: Column(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               const Text('Bottom Sheet'),
-  //               ElevatedButton(
-  //                 onPressed: () {
-  //                   Navigator.pop(context);
-  //                 },
-  //                 child: const Text('Close Bottom Sheet'),
-  //               ),
-  //
-  //             ],
-  //           )
-  //
-  //       ),
-  //     );
-  //   });
-  // }
   void navigate(Song song){
     Navigator.push(context,
         CupertinoPageRoute(builder: (context){
