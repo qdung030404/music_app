@@ -8,22 +8,27 @@ abstract interface class Repository {
 class DefaultRepository implements Repository {
   final _localDataSource = LocalDataSource();
   final _remoteDataSource = RemoteDataSource();
+  final _firestoreDataSource = FirestoreDataSource();
 
   @override
   Future<List<Song>?> loadData() async {
-    List<Song> songs = [];
-    await _remoteDataSource.getData().then((remoteSongs) {
-      if (remoteSongs == null) {
-        _localDataSource.getData().then((localSongs) {
-          if (localSongs != null) {
-            songs.addAll(localSongs);
-          }
-        });
-      }else{
-        songs.addAll(remoteSongs);
+    try {
+      final firestoreSongs = await _firestoreDataSource.getData();
+      if (firestoreSongs != null && firestoreSongs.isNotEmpty) {
+        return firestoreSongs;
       }
-    });
-    return songs;
 
+      // Fallback remote JSON
+      final remoteSongs = await _remoteDataSource.getData();
+      if (remoteSongs != null && remoteSongs.isNotEmpty) {
+        return remoteSongs;
+      }
+
+      // Fallback local JSON
+      return await _localDataSource.getData();
+    } catch (e) {
+      print('Error loading data: $e');
+      return await _localDataSource.getData();
+    }
   }
 }

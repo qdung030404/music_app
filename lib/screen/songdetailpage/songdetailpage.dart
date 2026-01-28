@@ -76,7 +76,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(_song.artist,
+                Text(_song.artistDisplay,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
