@@ -9,6 +9,9 @@ import 'package:music_app/features/home/widget/recommend.dart';
 import 'package:music_app/features/home/widget/artist.dart';
 import 'package:music_app/features/home/widget/header.dart';
 
+import '../../../domain/entities/album_entity.dart';
+import '../widget/album.dart';
+
 class HomeTabs extends StatelessWidget {
   const HomeTabs({super.key});
 
@@ -28,12 +31,14 @@ class HomeTabPage extends StatefulWidget {
 class _HomeTabPageState extends State<HomeTabPage> {
   List<Song> songs = [];
   List<Artist> artists = [];
+  List<Album> albums = [];
   late HomeViewModel _homeViewModel;
 
   @override
   void initState() {
     super.initState();
     _homeViewModel = HomeViewModel();
+    _homeViewModel.loadAlbum();
 
     // Load artists
     _homeViewModel.loadArtists();
@@ -76,6 +81,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
             const SizedBox(height: 24),
             BuildArtist(artists: artists,),
             const SizedBox(height: 24),
+            BuildAlbum(albums: albums,),
+            const SizedBox(height: 24),
             _buildRecentListening(),
           ],
         ),
@@ -111,6 +118,11 @@ class _HomeTabPageState extends State<HomeTabPage> {
     _homeViewModel.songsController.stream.listen((songList) {
       setState(() {
         songs.addAll(songList);
+      });
+    });
+    _homeViewModel.albumController.stream.listen((albumList) {
+      setState(() {
+        albums = albumList;
       });
     });
   }

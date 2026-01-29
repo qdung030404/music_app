@@ -1,5 +1,5 @@
-import '../../domain/entities/artist_entity.dart';
-export '../../domain/entities/artist_entity.dart';
+import 'package:music_app/domain/entities/artist_entity.dart';
+export 'package:music_app/domain/entities/artist_entity.dart';
 
 class ArtistModel extends Artist {
   ArtistModel({

@@ -1,0 +1,27 @@
+import 'package:music_app/domain/entities/album_entity.dart';
+export 'package:music_app/domain/entities/album_entity.dart';
+
+class AlbumModel extends Album{
+  AlbumModel({
+    required super.id,
+    required super.artistId,
+    required super.image,
+    required super.albumtitle
+  });
+  factory AlbumModel.fromJson(Map<String, dynamic> json){
+    return AlbumModel(
+      id: json['id']?.toString() ?? '',
+      artistId: json['artistId']?.toString() ?? '',
+      image: json['image'] ?? '',
+      albumtitle: json['title'] ?? '',
+    );
+  }
+  Map<String, dynamic> toJson(){
+    return {
+      'id': id,
+      'artistId': artistId,
+      'image': image,
+      'title': albumtitle,
+    };
+  }
+}

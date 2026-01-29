@@ -1,5 +1,5 @@
-import '../../domain/entities/user_entity.dart';
-export '../../domain/entities/user_entity.dart';
+import 'package:music_app/domain/entities/user_entity.dart';
+export 'package:music_app/domain/entities/user_entity.dart';
 
 
 class UserModel extends User {

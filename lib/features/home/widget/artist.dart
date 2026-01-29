@@ -21,7 +21,7 @@ class BuildArtist extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 200,
+          height: 230,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: artistList.length,

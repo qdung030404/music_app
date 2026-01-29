@@ -1,5 +1,5 @@
-import '../../domain/entities/song_entity.dart';
-export '../../domain/entities/song_entity.dart';
+import 'package:music_app/domain/entities/song_entity.dart';
+export 'package:music_app/domain/entities/song_entity.dart';
 
 class SongModel extends Song {
   SongModel({
