@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -30,15 +29,13 @@ class SongDetailPage extends StatefulWidget {
 class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProviderStateMixin{
   late AnimationController _animationController;
   late AudioPlayerManager _audioPlayerManager;
-  late int _selectedItemIndex;
-  late Song _song;
   late double _animationPosition;
   bool _isShuffle = false;
   late LoopMode _loopMode;
+
   @override
   void initState() {
     super.initState();
-    _song = widget.playingSong;
     _animationPosition = 0.0;
     _loopMode = LoopMode.off;
     _animationController = AnimationController(
@@ -46,26 +43,37 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       duration: const Duration(milliseconds: 12000),
     );
     _audioPlayerManager = AudioPlayerManager();
-    if(_audioPlayerManager.songUrl.compareTo(_song.source) != 0){
-      _audioPlayerManager.updateSong(_song.source);
-      _audioPlayerManager.prepare(isNewSong: true);
-    }else{
-      _audioPlayerManager.prepare();
+
+    // Check if we need to set the playlist
+    // If the manager's current song is different from what we want to play (or null),
+    // OR if we strongly imply this is a new navigation event starting a song.
+    // Generally checking ID is enough.
+    if (_audioPlayerManager.currentSong?.id != widget.playingSong.id) {
+       int index = widget.songs.indexOf(widget.playingSong);
+       if (index == -1) index = 0;
+       _audioPlayerManager.setPlaylist(widget.songs, index);
     }
-    _selectedItemIndex = widget.songs.indexOf(widget.playingSong);
-    }
+    // If IDs match, we assume it's already playing effectively (e.g. opened from MiniPlayer)
+
+    // Sync local shuffle state
+    _isShuffle = _audioPlayerManager.isShuffle;
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     const delta = 64;
     final raduis = (screenWidth - delta) / 2 ;
 
-    // return Scaffold(
-    //   body: Center(
-    //     child: Text('PlayingSong'),
-    //   ),
-    // );
-    return CupertinoPageScaffold(
+    return StreamBuilder<Song?>(
+      stream: _audioPlayerManager.currentSongStream,
+      builder: (context, snapshot) {
+        final _song = snapshot.data ?? widget.playingSong;
+
+        // Reset animation on new song if needed?
+        // Maybe better to listen to stream in initState. But this works for rebuild.
+
+        return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle:const Text('Playing Song'),
         trailing: IconButton(onPressed: (){}, icon: const Icon(Icons.more_horiz)),
@@ -156,6 +164,8 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
         ),
       )
     );
+      }
+    );
   }
 
   @override
@@ -227,44 +237,18 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
         },
     );
   }
+  
+  // Use Manager for Next/Prev
   void setNextSong(){
-    if(_isShuffle){
-      var random = Random().nextInt(widget.songs.length);
-      _selectedItemIndex = random;
-    }else if(_selectedItemIndex < widget.songs.length - 1){
-      ++_selectedItemIndex;
-    }else if(_loopMode == LoopMode.all && _selectedItemIndex == widget.songs.length - 1){
-      _selectedItemIndex = 0;
-    }
-    if (_selectedItemIndex >= widget.songs.length) {
-      _selectedItemIndex = _selectedItemIndex % widget.songs.length;
-    }
-    final nextItem = widget.songs[_selectedItemIndex];
-    _audioPlayerManager.updateSong(nextItem.source);
-    _resetAnimation();
-    setState(() {
-      _song = nextItem;
-    });
+     _audioPlayerManager.skipToNext();
+     _resetAnimation();
   }
+  
   void setPreviousSong(){
-    if(_isShuffle){
-      var random = Random().nextInt(widget.songs.length);
-      _selectedItemIndex = random;
-    }else if(_selectedItemIndex > 0){
-      --_selectedItemIndex;
-    }else if(_loopMode == LoopMode.all && _selectedItemIndex == 0){
-      _selectedItemIndex = widget.songs.length - 1;
-    }
-    if (_selectedItemIndex < 0) {
-      _selectedItemIndex = (-1 * _selectedItemIndex) % widget.songs.length;
-    }
-    final nextItem = widget.songs[_selectedItemIndex];
-    _audioPlayerManager.updateSong(nextItem.source);
-    _resetAnimation();
-    setState(() {
-      _song = nextItem;
-    });
+     _audioPlayerManager.skipToPrevious();
+     _resetAnimation();
   }
+  
   void _setRepeatOption(){
     if(_loopMode == LoopMode.off){
       _loopMode = LoopMode.one;
@@ -274,7 +258,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       _loopMode = LoopMode.off;
     }
     setState(() {
-      _audioPlayerManager.player.setLoopMode(_loopMode);
+      _audioPlayerManager.setLoopMode(_loopMode);
     });
   }
   IconData _repeatingIcon(){
@@ -306,6 +290,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
   void _setShuffle(){
     setState(() {
       _isShuffle = !_isShuffle;
+      _audioPlayerManager.setShuffle(_isShuffle);
     });
   }
   Color? _getShuffleColor(){
@@ -355,4 +340,3 @@ class _MediaButtonControlState extends State<MediaButtonControl> {
     );
   }
 }
-

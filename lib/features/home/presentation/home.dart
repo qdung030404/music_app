@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/features/song_detail/managers/audio_player_manager.dart';
 import 'package:music_app/data/model/artist.dart';
 import 'package:music_app/data/model/song.dart';
 import 'package:music_app/features/home/viewmodels/home_view_model.dart';
 import 'package:music_app/features/home/widget/recommend.dart';
 import 'package:music_app/features/home/widget/artist.dart';
 import 'package:music_app/features/home/widget/header.dart';
+import 'package:music_app/features/home/widget/mini_player.dart';
 
 import '../../../domain/entities/album_entity.dart';
 import '../widget/album.dart';
@@ -38,15 +38,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
     super.initState();
     _homeViewModel = HomeViewModel();
     _homeViewModel.loadAlbum();
-
     // Load artists
     _homeViewModel.loadArtists();
-    _homeViewModel.artistsController.stream.listen((list) {
-      setState(() {
-        artists = list;
-      });
-    });
-
     // Load songs
     _homeViewModel.loadSongs();
     observeData();
@@ -57,20 +50,29 @@ class _HomeTabPageState extends State<HomeTabPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: getBody(),
+      body: Stack(
+        children: [
+          getBody(),
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: MiniPlayer(),
+          ),
+        ],
+      ),
     );
   }
   @override
   void dispose() {
     _homeViewModel.dispose();
-    AudioPlayerManager().dispose();
+    // Do not dispose AudioPlayerManager here as it is a singleton used globally
+    // AudioPlayerManager().dispose(); 
 
     super.dispose();
   }
   Widget getBody() {
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 80), // Added bottom padding to avoid overlap
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -97,6 +99,11 @@ class _HomeTabPageState extends State<HomeTabPage> {
   }
 
   void observeData() {
+    _homeViewModel.artistsController.stream.listen((list) {
+      setState(() {
+        artists = list;
+      });
+    });
     _homeViewModel.songsController.stream.listen((songList) {
       setState(() {
         songs.addAll(songList);
@@ -109,4 +116,3 @@ class _HomeTabPageState extends State<HomeTabPage> {
     });
   }
 }
-
