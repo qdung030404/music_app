@@ -1,23 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/domain/entities/song_entity.dart';
+import 'package:music_app/features/artist_detail/widget/song_list.dart';
+import 'package:music_app/features/widget/song_card.dart';
 
-import '../widget/infomation.dart';
+import '../widget/header.dart';
 
-class AlbumDetail extends StatelessWidget {
-  const AlbumDetail({super.key});
+class Detail extends StatelessWidget {
+  final List<Song> songs;
+  final String title;
+  const Detail({
+    super.key,
+    required this.songs,
+    required this.title
+  });
 
   @override
   Widget build(BuildContext context) {
-    return AlbumDetailState();
+    return DetailPage(
+      songs: songs,
+      title: title,);
   }
 }
-class AlbumDetailState extends StatefulWidget {
-  const AlbumDetailState({super.key});
+class DetailPage extends StatefulWidget {
+  final List<Song> songs;
+  final String title;
+  const DetailPage({
+    super.key,
+    required this.songs,
+    required this.title
+  });
 
   @override
-  State<AlbumDetailState> createState() => _AlbumDetailStateState();
+  State<DetailPage> createState() => _DetailPageState();
 }
 
-class _AlbumDetailStateState extends State<AlbumDetailState> {
+class _DetailPageState extends State<DetailPage> {
+  bool _showAllSongs = false;
+
+  void _toggleShowAll() {
+    setState(() {
+      _showAllSongs = !_showAllSongs;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,17 +58,56 @@ class _AlbumDetailStateState extends State<AlbumDetailState> {
       ),
       body: SafeArea(
           child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
               child: Center(
                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Album_Infomation(),
+                      Header(),
+                      SizedBox(height: 16),
+                      _showAllSongs
+                          ? _buildFullSongList()
+                          : SongList(
+                        songs: widget.songs,
+                        title: widget.title,
+                        onViewAll: _toggleShowAll,
+                      ),
                     ],
                   )
               )
           )
       ),
+    );
+  }
+  Widget _buildFullSongList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              widget.title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            OutlinedButton(
+              onPressed: _toggleShowAll,
+              child: const Text('Thu gọn'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.songs.length,
+          itemBuilder: (context, index) {
+            return SongCard(
+              song: widget.songs[index],
+              songs: widget.songs,
+            );
+          },
+        ),
+      ],
     );
   }
 }

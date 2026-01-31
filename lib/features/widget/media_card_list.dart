@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/album_entity.dart';
+import '../../domain/entities/album_entity.dart';
 
-class BuildAlbum extends StatelessWidget {
+class BuildMediaCardList extends StatelessWidget {
   final List<Album> albums;
-  const BuildAlbum({super.key, required this.albums});
+  const BuildMediaCardList({super.key, required this.albums});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,11 @@ class BuildAlbum extends StatelessWidget {
       children: [
         const Text(
           'Album',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 12),
         SizedBox(
@@ -26,14 +30,14 @@ class BuildAlbum extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: albumList.length,
               itemBuilder: (context, index) {
-                return _albumCard(albumList[index]);
+                return _mediaCardList(albumList[index]);
               }
           ),
         ),
       ],
     );
   }
-  Widget _albumCard(Album album) {
+  Widget _mediaCardList(Album album) {
     return Container(
         width: 200,
         margin: const EdgeInsets.only(right: 12),
@@ -55,7 +59,10 @@ class BuildAlbum extends StatelessWidget {
               Text(
                 album.albumtitle,
                 style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ]
         )

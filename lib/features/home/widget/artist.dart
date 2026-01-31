@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:music_app/domain/entities/artist_entity.dart';
+import 'package:music_app/features/artist_detail/presentation/artist_detail.dart';
 
 class BuildArtist extends StatelessWidget {
   final List<Artist> artists;
@@ -26,39 +27,48 @@ class BuildArtist extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: artistList.length,
               itemBuilder: (context, index) {
-                return _artistCard(artistList[index]);
+                return _artistCard(context, artistList[index]);
               }
           ),
         ),
       ],
     );
   }
-  Widget _artistCard(Artist artist) {
-    return Container(
+  Widget _artistCard(BuildContext context, Artist artist) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ArtistDetail(artist: artist),
+          ),
+        );
+      },
+      child: Container(
         width: 150,
         margin: const EdgeInsets.only(right: 12),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    image: DecorationImage(
-                      image: NetworkImage(artist.avatar),
-                      fit: BoxFit.cover,
-                    ),
-                  )
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                image: DecorationImage(
+                  image: NetworkImage(artist.avatar),
+                  fit: BoxFit.cover,
+                ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                artist.name,
-                style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ]
-        )
+            ),
+            const SizedBox(height: 8),
+            Text(
+              artist.name,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

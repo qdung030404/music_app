@@ -8,7 +8,7 @@ import 'package:music_app/features/home/widget/header.dart';
 import 'package:music_app/features/home/widget/mini_player.dart';
 
 import '../../../domain/entities/album_entity.dart';
-import '../widget/album.dart';
+import '../../widget/media_card_list.dart';
 import '../widget/song_suggestions.dart';
 
 class HomeTabs extends StatelessWidget {
@@ -90,7 +90,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                 onPlayAll: (){},
               ),
             const SizedBox(height: 24),
-            BuildAlbum(albums: albums,),
+            BuildMediaCardList(albums: albums,),
 
           ],
         ),

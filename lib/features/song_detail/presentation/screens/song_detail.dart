@@ -44,18 +44,12 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
     );
     _audioPlayerManager = AudioPlayerManager();
 
-    // Check if we need to set the playlist
-    // If the manager's current song is different from what we want to play (or null),
-    // OR if we strongly imply this is a new navigation event starting a song.
-    // Generally checking ID is enough.
     if (_audioPlayerManager.currentSong?.id != widget.playingSong.id) {
        int index = widget.songs.indexOf(widget.playingSong);
        if (index == -1) index = 0;
        _audioPlayerManager.setPlaylist(widget.songs, index);
     }
-    // If IDs match, we assume it's already playing effectively (e.g. opened from MiniPlayer)
 
-    // Sync local shuffle state
     _isShuffle = _audioPlayerManager.isShuffle;
   }
 
@@ -69,15 +63,11 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       stream: _audioPlayerManager.currentSongStream,
       builder: (context, snapshot) {
         final _song = snapshot.data ?? widget.playingSong;
-
-        // Reset animation on new song if needed?
-        // Maybe better to listen to stream in initState. But this works for rebuild.
-
         return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle:const Text('Playing Song'),
-        trailing: IconButton(onPressed: (){}, icon: const Icon(Icons.more_horiz)),
-      ),
+          navigationBar: CupertinoNavigationBar(
+            middle:const Text('Playing Song'),
+            trailing: IconButton(onPressed: (){}, icon: const Icon(Icons.more_horiz)),
+          ),
       child: Scaffold(
         body: Center(
           child: Column(

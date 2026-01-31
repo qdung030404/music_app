@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Album_Infomation extends StatelessWidget {
-  const Album_Infomation({super.key});
+class Header extends StatelessWidget {
+  const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
