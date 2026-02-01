@@ -6,14 +6,16 @@ class AlbumModel extends Album{
     required super.id,
     required super.artistId,
     required super.image,
-    required super.albumtitle
+    required super.albumTitle,
+    super.artistName,
   });
   factory AlbumModel.fromJson(Map<String, dynamic> json){
     return AlbumModel(
       id: json['id']?.toString() ?? '',
       artistId: json['artistId']?.toString() ?? '',
       image: json['image'] ?? '',
-      albumtitle: json['title'] ?? '',
+      albumTitle: json['title'] ?? '',
+      artistName: (json['artistName'] ?? json['artist_name'])?.toString(),
     );
   }
   Map<String, dynamic> toJson(){
@@ -21,7 +23,8 @@ class AlbumModel extends Album{
       'id': id,
       'artistId': artistId,
       'image': image,
-      'title': albumtitle,
+      'title': albumTitle,
+      'artistName': artistName,
     };
   }
 }

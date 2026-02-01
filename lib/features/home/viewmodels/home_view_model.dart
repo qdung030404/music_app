@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:music_app/domain/entities/artist_entity.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/domain/usecases/get_artists.dart';

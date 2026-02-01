@@ -17,7 +17,7 @@ class SongList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(songs.isEmpty) return const SizedBox.shrink();
-    final displaySongs = songs.take(5).toList();
+    final displaySongs = songs.toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -35,14 +35,6 @@ class SongList extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              if (songs.length > 5)
-                TextButton(
-                  onPressed: onViewAll,
-                  child: const Text(
-                    'Xem tất cả',
-                    style: TextStyle(color: Color(0xFF7C4DFF)),
-                  ),
-                ),
             ],
           ),
         ),

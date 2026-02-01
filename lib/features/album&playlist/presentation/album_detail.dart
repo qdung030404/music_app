@@ -1,113 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/domain/entities/album_entity.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/features/artist_detail/widget/song_list.dart';
 import 'package:music_app/features/widget/song_card.dart';
 
+import '../viewmodels/song_view_model.dart';
 import '../widget/header.dart';
 
-class Detail extends StatelessWidget {
-  final List<Song> songs;
-  final String title;
-  const Detail({
+class AlbumDetail extends StatelessWidget {
+  final Album album;
+  const AlbumDetail({
     super.key,
-    required this.songs,
-    required this.title
+    required this.album,
   });
 
   @override
   Widget build(BuildContext context) {
-    return DetailPage(
-      songs: songs,
-      title: title,);
+    return AlbumDetailPage(
+      album: album,);
   }
 }
-class DetailPage extends StatefulWidget {
-  final List<Song> songs;
-  final String title;
-  const DetailPage({
+class AlbumDetailPage extends StatefulWidget {
+  final Album album;
+  const AlbumDetailPage({
     super.key,
-    required this.songs,
-    required this.title
+    required this.album
   });
 
   @override
-  State<DetailPage> createState() => _DetailPageState();
+  State<AlbumDetailPage> createState() => _DetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
-  bool _showAllSongs = false;
+class _DetailPageState extends State<AlbumDetailPage> {
+  late SongViewModel _viewModel;
+  List<Song> albumSongs = [];
 
-  void _toggleShowAll() {
-    setState(() {
-      _showAllSongs = !_showAllSongs;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = SongViewModel(albumId: widget.album.id);
+    _observeData();
+    _viewModel.loadAlbumSongs();
+    
+  }
+
+  void _observeData() {
+    _viewModel.songsStream.listen((songs) {
+      if (mounted) {
+        setState(() {
+          albumSongs = songs;
+        });
+      }
     });
   }
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        backgroundColor: Colors.black,
-        actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.more_horiz, color: Colors.white))
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 520,
+            pinned: true,
+            backgroundColor: Colors.black,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              background: Header(
+                album: widget.album,
+                onPlayShuffle: () {
+                  // Logic to play shuffle if needed
+                },
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: StreamBuilder<bool>(
+              stream: _viewModel.isLoadingStream,
+              builder: (context, snapshot) {
+                if (snapshot.data == true) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: CircularProgressIndicator(color: Colors.deepPurple),
+                    ),
+                  );
+                }
+                return SongList(
+                  songs: albumSongs,
+                  title: 'Bài hát',
+                );
+              },
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 100), // Space for mini player
+          ),
         ],
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-              child: Center(
-                 child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Header(),
-                      SizedBox(height: 16),
-                      _showAllSongs
-                          ? _buildFullSongList()
-                          : SongList(
-                        songs: widget.songs,
-                        title: widget.title,
-                        onViewAll: _toggleShowAll,
-                      ),
-                    ],
-                  )
-              )
-          )
-      ),
-    );
-  }
-  Widget _buildFullSongList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              widget.title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            OutlinedButton(
-              onPressed: _toggleShowAll,
-              child: const Text('Thu gọn'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.songs.length,
-          itemBuilder: (context, index) {
-            return SongCard(
-              song: widget.songs[index],
-              songs: widget.songs,
-            );
-          },
-        ),
-      ],
     );
   }
 }

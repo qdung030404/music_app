@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:music_app/features/album&playlist/presentation/album_detail.dart';
 
 import '../../domain/entities/album_entity.dart';
 
@@ -30,42 +32,52 @@ class BuildMediaCardList extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: albumList.length,
               itemBuilder: (context, index) {
-                return _mediaCardList(albumList[index]);
+                return _mediaCardList(context,albumList[index]);
               }
           ),
         ),
       ],
     );
   }
-  Widget _mediaCardList(Album album) {
-    return Container(
-        width: 200,
-        margin: const EdgeInsets.only(right: 12),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                      image: NetworkImage(album.image),
-                      fit: BoxFit.cover,
-                    ),
-                  )
-              ),
-              const SizedBox(height: 8),
-              Text(
-                album.albumtitle,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+  Widget _mediaCardList(BuildContext context,Album album) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AlbumDetailPage(album: album),
+          ),
+        );
+      },
+      child: Container(
+          width: 200,
+          margin: const EdgeInsets.only(right: 12),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      image: DecorationImage(
+                        image: NetworkImage(album.image),
+                        fit: BoxFit.cover,
+                      ),
+                    )
                 ),
-              ),
-            ]
-        )
+                const SizedBox(height: 8),
+                Text(
+                  album.albumTitle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ]
+          )
+      )
     );
   }
 }
