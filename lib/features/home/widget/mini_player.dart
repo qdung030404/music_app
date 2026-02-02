@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:get/get.dart';
 import 'package:music_app/features/song_detail/managers/audio_player_manager.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
+import 'package:music_app/domain/entities/song_entity.dart'; // Use Entity or Model
+import 'package:music_app/features/song_detail/presentation/screens/song_detail.dart';
 
 class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key});
@@ -11,7 +13,7 @@ class MiniPlayer extends StatefulWidget {
 }
 
 class _MiniPlayerState extends State<MiniPlayer> {
-   AudioPlayerManager get _audioPlayerManager => AudioPlayerManager();
+  final AudioPlayerManager _audioPlayerManager = AudioPlayerManager();
 
   @override
   Widget build(BuildContext context) {
@@ -19,18 +21,30 @@ class _MiniPlayerState extends State<MiniPlayer> {
       stream: _audioPlayerManager.currentSongStream,
       builder: (context, snapshot) {
         final song = snapshot.data;
+        // Logic: "khi khởi động app thì dialog này bị ẩn đi" -> if song is null, hidden.
+        // "khi click play trong song detail ... dialog hiển thị" -> song will be non-null.
         if (song == null) {
           return const SizedBox.shrink();
         }
 
         return GestureDetector(
           onTap: () {
+            // Navigate to Song Detail using GetX for better compatibility
+            Get.to(
+              () => SongDetail(
+                playingSong: song,
+                songs: _audioPlayerManager.playlist.isNotEmpty
+                    ? _audioPlayerManager.playlist
+                    : [song],
+              ),
+              transition: Transition.downToUp,
+            );
           },
           child: Container(
             height: 64,
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFF2E2E40),
+              color: const Color(0xFF2E2E40), // Dark color matching theme
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                  BoxShadow(

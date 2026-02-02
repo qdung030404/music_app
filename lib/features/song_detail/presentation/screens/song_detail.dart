@@ -44,11 +44,13 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
     );
     _audioPlayerManager = AudioPlayerManager();
 
-    if (_audioPlayerManager.currentSong?.id != widget.playingSong.id) {
-       int index = widget.songs.indexOf(widget.playingSong);
-       if (index == -1) index = 0;
-       _audioPlayerManager.setPlaylist(widget.songs, index);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_audioPlayerManager.currentSong?.id != widget.playingSong.id) {
+        int index = widget.songs.indexOf(widget.playingSong);
+        if (index == -1) index = 0;
+        _audioPlayerManager.setPlaylist(widget.songs, index);
+      }
+    });
 
     _isShuffle = _audioPlayerManager.isShuffle;
   }
@@ -63,100 +65,105 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       stream: _audioPlayerManager.currentSongStream,
       builder: (context, snapshot) {
         final _song = snapshot.data ?? widget.playingSong;
-        return CupertinoPageScaffold(
-          navigationBar: CupertinoNavigationBar(
-            middle:const Text('Playing Song'),
-            trailing: IconButton(onPressed: (){}, icon: const Icon(Icons.more_horiz)),
+        return Material(
+          child: Scaffold(
+            appBar: AppBar(
+            title: const Text('Playing Song'),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            actions: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
+            ],
           ),
-      child: Scaffold(
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(_song.artistDisplay,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                ),
-                const SizedBox(height: 16,),
-                const Text('_ ___ _'),
-                const SizedBox(height: 48,),
-                RotationTransition(turns: Tween(begin: 0.0, end: 1.0).animate(
-                _animationController
-                ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(raduis),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'asset/itunes_256.png',
-                      image: _song.image,
-                      width: screenWidth  - delta,
-                      height: screenWidth  - delta,
-                      fit: BoxFit.cover,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset('asset/itunes_256.png',
-                          width: screenWidth  - delta,
-                          height: screenWidth  - delta,
-                        );
-                      }
+          body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(_song.artistDisplay,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ),
+                  const SizedBox(height: 16,),
+                  const Text('_ ___ _'),
+                  const SizedBox(height: 48,),
+                  RotationTransition(turns: Tween(begin: 0.0, end: 1.0).animate(
+                  _animationController
+                  ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(raduis),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'asset/itunes_256.png',
+                        image: _song.image,
+                        width: screenWidth  - delta,
+                        height: screenWidth  - delta,
+                        fit: BoxFit.cover,
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return Image.asset('asset/itunes_256.png',
+                            width: screenWidth  - delta,
+                            height: screenWidth  - delta,
+                          );
+                        }
+                      )
+                    ),
+                  ),
+                  Padding(padding: const EdgeInsets.only(top: 64, bottom: 16),
+                    child: SizedBox(
+                      width: 450,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(onPressed: (){}, icon: const Icon(Icons.share),
+                          color: Theme.of(context).colorScheme.primary,),
+                          Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children:[
+                                  Text(
+                                    _song.title,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    _song.albumDisplay,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Theme.of(context).colorScheme.secondary,
+                                    ),
+                                  ),
+                                ],
+                              )
+                          ),
+                          IconButton(onPressed: (){}, icon: const Icon(Icons.favorite_outline),
+                          color: Theme.of(context).colorScheme.primary,),
+                        ]
+                      ),
                     )
                   ),
-                ),
-                Padding(padding: const EdgeInsets.only(top: 64, bottom: 16),
-                  child: SizedBox(
-                    width: 450,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(onPressed: (){}, icon: const Icon(Icons.share),
-                        color: Theme.of(context).colorScheme.primary,),
-                        Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children:[
-                                Text(
-                                  _song.title,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  _song.albumDisplay,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context).colorScheme.secondary,
-                                  ),
-                                ),
-                              ],
-                            )
-                        ),
-                        IconButton(onPressed: (){}, icon: const Icon(Icons.favorite_outline),
-                        color: Theme.of(context).colorScheme.primary,),
-                      ]
-                    ),
-                  )
-                ),
-                Padding(padding: const EdgeInsets.only(top: 32, left: 24, right: 24, bottom: 16),
-                child: _progressBar(),
-                ),
-                Padding(padding: const EdgeInsets.only(top: 16, bottom: 16),
-                  child: _mediaButton()
-                ),
-              ],
+                  Padding(padding: const EdgeInsets.only(top: 32, left: 24, right: 24, bottom: 16),
+                  child: _progressBar(),
+                  ),
+                  Padding(padding: const EdgeInsets.only(top: 16, bottom: 16),
+                    child: _mediaButton()
+                  ),
+                ],
+            ),
           ),
-        ),
-      )
-    );
-      }
-    );
-  }
+        )
+      );
+    },
+  );
+}
 
   @override
   void dispose() {

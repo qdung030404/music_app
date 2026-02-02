@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../home/presentation/home.dart';
 import '../../settings/presentation/screen/setting.dart';
 import '../../discovery/presentation/screens/discovery.dart';
+import '../../home/widget/mini_player.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,28 +21,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Discovery'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
-        ],
-      ),
-      tabBuilder: (context, index) {
-        return CupertinoPageScaffold(
-          backgroundColor: const Color(0xFF1A1A2E),
-          child: CustomScrollView(
-            slivers: [
-              SliverFillRemaining(
-                child: _tabs[index],
-              ),
+    return Stack(
+      children: [
+        CupertinoTabScaffold(
+          tabBar: CupertinoTabBar(
+            backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Discovery'),
+              BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
             ],
           ),
-        );
-      },
+          tabBuilder: (context, index) {
+            return CupertinoPageScaffold(
+              backgroundColor: const Color(0xFF1A1A2E),
+              child: SafeArea(
+                bottom: false,
+                child: _tabs[index],
+              ),
+            );
+          },
+        ),
+        const Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 60), // Above the tab bar
+            child: MiniPlayer(),
+          ),
+        ),
+      ],
     );
   }
 }

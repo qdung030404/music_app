@@ -17,12 +17,22 @@ class DurationState{
 }
 
 class AudioPlayerManager {
-  AudioPlayerManager._internal();
+  AudioPlayerManager._internal() {
+    durationState = Rx.combineLatest2<Duration, PlaybackEvent, DurationState>(
+      player.positionStream,
+      player.playbackEventStream,
+      (position, playbackEvent) => DurationState(
+        progress: position,
+        buffered: playbackEvent.bufferedPosition,
+        total: playbackEvent.duration,
+      ),
+    ).asBroadcastStream();
+  }
   static final AudioPlayerManager _instance = AudioPlayerManager._internal();
   factory AudioPlayerManager() => _instance;
 
   final player = AudioPlayer();
-  Stream<DurationState>? durationState;
+  late final Stream<DurationState> durationState;
   final _historyService = HistoryService();
   
   // Playlist Management
@@ -47,15 +57,6 @@ class AudioPlayerManager {
   List<Song> get history => _history;
 
   void prepare({bool isNewSong = false}){
-    durationState = Rx.combineLatest2<Duration, PlaybackEvent, DurationState>(
-      player.positionStream,
-      player.playbackEventStream,
-      (position, playbackEvent) => DurationState(
-        progress: position,
-        buffered: playbackEvent.bufferedPosition,
-        total: playbackEvent.duration,
-      ),
-    );
     if(isNewSong && songUrl.isNotEmpty){
       print('DEBUG: Preparing new song: $songUrl');
       player.setUrl(songUrl);

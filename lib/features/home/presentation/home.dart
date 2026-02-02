@@ -51,15 +51,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF1A1A2E),
-      body: Stack(
-        children: [
-          getBody(),
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: MiniPlayer(),
-          ),
-        ],
-      ),
+      body: getBody(),
     );
   }
   @override
