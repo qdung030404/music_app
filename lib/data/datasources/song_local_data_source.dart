@@ -8,9 +8,13 @@ import '../../../data/model/song.dart';
 class SongLocalDataSource {
   Future<List<Song>?> getData() async {
     final String response = await rootBundle.loadString('asset/songs.json');
-    final wrapper = jsonDecode(response) as Map;
-    final songList = wrapper['songs'] as List;
-    final songs = songList.map((e) => SongModel.fromJson(e)).toList();
+    final Map<String, dynamic> wrapper = jsonDecode(response);
+    final Map<String, dynamic> songMap = wrapper['songs'];
+    final List<Song> songs = songMap.entries.map((entry) {
+      final data = Map<String, dynamic>.from(entry.value);
+      data['id'] = entry.key;
+      return SongModel.fromJson(data);
+    }).toList();
     return songs;
   }
 }

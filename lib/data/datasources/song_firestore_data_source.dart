@@ -12,6 +12,8 @@ class SongFirestoreDataSource {
 
       final songs = snapshot.docs.map((doc) {
         final data = doc.data();
+        // Ensure the document ID is included in the data
+        data['id'] = doc.id;
         return SongModel.fromJson(data);
       }).toList();
 

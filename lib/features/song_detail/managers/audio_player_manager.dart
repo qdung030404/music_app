@@ -3,6 +3,7 @@ import 'package:just_audio/just_audio.dart';
 import 'dart:math';
 import '../../../../data/model/song.dart';
 import '../../../../domain/entities/song_entity.dart';
+import '../../../data/datasources/history_service.dart';
 
 class DurationState{
   const DurationState({
@@ -22,6 +23,7 @@ class AudioPlayerManager {
 
   final player = AudioPlayer();
   Stream<DurationState>? durationState;
+  final _historyService = HistoryService();
   
   // Playlist Management
   List<Song> _playlist = [];
@@ -55,12 +57,16 @@ class AudioPlayerManager {
       ),
     );
     if(isNewSong && songUrl.isNotEmpty){
+      print('DEBUG: Preparing new song: $songUrl');
       player.setUrl(songUrl);
       player.play();
 
       // Add to history
       if (currentSong != null) {
+        print('DEBUG: Adding ${currentSong!.title} to history');
         _addToHistory(currentSong!);
+      } else {
+        print('DEBUG: currentSong is null, cannot add to history');
       }
     }
   }
@@ -75,6 +81,9 @@ class AudioPlayerManager {
       _history.removeLast();
     }
     _historySubject.add(List.from(_history));
+
+    // Save to Firestore
+    _historyService.addToHistory(song);
   }
 
   void updateSong(String url){

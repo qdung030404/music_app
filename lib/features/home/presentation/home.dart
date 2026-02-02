@@ -88,7 +88,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
             else
               SongSuggestions(
                 songs: songs,
-                onPlayAll: (){},
               ),
             const SizedBox(height: 24),
             BuildMediaCardList(albums: albums,),
