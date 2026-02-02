@@ -38,11 +38,19 @@ class SongCard extends StatelessWidget {
               },
             ),
           ),
-          title: Text(song.title),
-          subtitle: Text(song.artistDisplay),
+          title: Text(song.title,
+            style: TextStyle(
+              color: Colors.white
+            ),
+          ),
+          subtitle: Text(song.artistDisplay,
+            style: TextStyle(
+                color: Colors.white
+            ),
+          ),
           trailing: IconButton(
               onPressed: () {},
-              icon: Icon(Icons.more_horiz)
+              icon: Icon(Icons.more_horiz, color: Colors.white,)
           ),
           onTap: () {
             Navigator.push(

@@ -38,6 +38,12 @@ class AudioPlayerManager {
   // Legacy URL support (internal use mostly now)
   String songUrl = ''; 
 
+  // History Management
+  final List<Song> _history = [];
+  final BehaviorSubject<List<Song>> _historySubject = BehaviorSubject<List<Song>>.seeded([]);
+  Stream<List<Song>> get historyStream => _historySubject.stream;
+  List<Song> get history => _history;
+
   void prepare({bool isNewSong = false}){
     durationState = Rx.combineLatest2<Duration, PlaybackEvent, DurationState>(
       player.positionStream,
@@ -51,7 +57,24 @@ class AudioPlayerManager {
     if(isNewSong && songUrl.isNotEmpty){
       player.setUrl(songUrl);
       player.play();
+
+      // Add to history
+      if (currentSong != null) {
+        _addToHistory(currentSong!);
+      }
     }
+  }
+
+  void _addToHistory(Song song) {
+    // Avoid duplicates in history, move latest to front
+    _history.removeWhere((item) => item.id == song.id);
+    _history.insert(0, song);
+
+    // Keep only last 5
+    if (_history.length > 5) {
+      _history.removeLast();
+    }
+    _historySubject.add(List.from(_history));
   }
 
   void updateSong(String url){

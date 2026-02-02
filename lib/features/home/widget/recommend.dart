@@ -68,11 +68,15 @@ class BuildRecommend extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               song.title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+              ),
             ),
             Text(
               song.artistDisplay,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
             ),
           ],
         ),

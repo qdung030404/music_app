@@ -64,7 +64,11 @@ class BuildArtist extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               artist.name,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white
+              ),
             ),
           ],
         ),

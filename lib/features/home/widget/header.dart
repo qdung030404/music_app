@@ -33,7 +33,7 @@ class BuildHeader extends StatelessWidget {
                       user?.email?.split('@')[0] ??
                       'User',
                   style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,)
               ),

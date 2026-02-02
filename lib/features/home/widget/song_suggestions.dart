@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../data/model/song.dart';
 import '../../widget/song_card.dart';
+import '../../song_detail/managers/audio_player_manager.dart';
 
 class SongSuggestions extends StatefulWidget {
   final List<Song> songs;
-  final VoidCallback? onPlayAll;
   const SongSuggestions({
     super.key,
     required this.songs,
-    this.onPlayAll,
   });
 
   @override
@@ -29,6 +27,13 @@ class _SongSuggestionsState extends State<SongSuggestions> {
       displayedSongs = List.from(widget.songs)..shuffle();
     });
   }
+
+  void _playAll() {
+    if (displayedSongs.isNotEmpty) {
+      AudioPlayerManager().setPlaylist(displayedSongs, 0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double itemWidth = MediaQuery.of(context).size.width;
@@ -43,7 +48,11 @@ class _SongSuggestionsState extends State<SongSuggestions> {
           children: [
             Text(
               'Gợi ý bài hát',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+              ),
             ),
             Row(
                 children: [
@@ -51,8 +60,12 @@ class _SongSuggestionsState extends State<SongSuggestions> {
                     style: OutlinedButton.styleFrom(
                         minimumSize: Size(100, 40)
                     ),
-                    onPressed: widget.onPlayAll,
-                    child: Text('Phát tất cả'),
+                    onPressed: _playAll,
+                    child: const Text('Phát tất cả',
+                      style: TextStyle(
+                        color: Colors.white
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 16),
                   IconButton(
@@ -63,7 +76,7 @@ class _SongSuggestionsState extends State<SongSuggestions> {
                       ),
                     ),
                     onPressed: _shuffleSongs,
-                    icon: Icon(Icons.refresh_sharp),
+                    icon: Icon(Icons.refresh_sharp, color: Colors.white,),
                   ),
                 ]
             )

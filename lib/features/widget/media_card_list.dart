@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:music_app/features/album&playlist/presentation/album_detail.dart';
+import 'package:music_app/features/album/presentation/album_detail.dart';
 
 import '../../domain/entities/album_entity.dart';
 
