@@ -5,6 +5,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_app/data/model/song.dart';
 import 'package:music_app/features/song_detail/managers/audio_player_manager.dart';
 
+import '../../../../data/datasources/user_activity_service.dart';
+
 class SongDetail extends StatelessWidget {
   const SongDetail({super.key, required this.songs, required this.playingSong});
   final List<Song> songs;
@@ -31,8 +33,9 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
   late AudioPlayerManager _audioPlayerManager;
   late double _animationPosition;
   bool _isShuffle = false;
+  bool _isFavorite = false;
   late LoopMode _loopMode;
-
+  final _userActivityService = UserActivityService();
   @override
   void initState() {
     super.initState();
@@ -43,7 +46,11 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       duration: const Duration(milliseconds: 12000),
     );
     _audioPlayerManager = AudioPlayerManager();
-
+    _audioPlayerManager.currentSongStream.listen((song) {
+      if (song != null) {
+        _checkIsFavorite(song.id);
+      }
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_audioPlayerManager.currentSong?.id != widget.playingSong.id) {
         int index = widget.songs.indexOf(widget.playingSong);
@@ -51,10 +58,33 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
         _audioPlayerManager.setPlaylist(widget.songs, index);
       }
     });
-
+    _checkIsFavorite(widget.playingSong.id);
     _isShuffle = _audioPlayerManager.isShuffle;
   }
 
+  Future<void> _toggleFavorite(Song song) async {
+    if (_isFavorite) {
+      await _userActivityService.removeItem(song.id, 'favorites');
+    } else {
+      await _userActivityService.addToFavorite(song);
+    }
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+  }
+
+  Future<void> _checkIsFavorite(String songId) async {
+    final isFav = await _userActivityService.isFavorite(songId);
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _isFavorite = isFav;
+          });
+        }
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -144,8 +174,11 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                                 ],
                               )
                           ),
-                          IconButton(onPressed: (){}, icon: const Icon(Icons.favorite_outline),
-                          color: Theme.of(context).colorScheme.primary,),
+                          IconButton(
+                            onPressed: () => _toggleFavorite(_song),
+                            icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_outline),
+                            color: _isFavorite ? Colors.red : Theme.of(context).colorScheme.primary,
+                          ),
                         ]
                       ),
                     )
@@ -270,19 +303,34 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
 
   }
   void _playAnimation(){
-    _animationController.forward(from: _animationPosition);
-    _animationController.repeat();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !_animationController.isAnimating) {
+        _animationController.forward(from: _animationPosition);
+        _animationController.repeat();
+      }
+    });
   }
   void _pauseAnimation(){
-    _animationController.stop();
-    _animationPosition = _animationController.value;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _animationController.isAnimating) {
+        _animationController.stop();
+        _animationPosition = _animationController.value;
+      }
+    });
   }
   void _stopAnimation(){
-    _animationController.stop();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _animationController.stop();
+      }
+    });
   }
   void _resetAnimation(){
-    _animationController.reset();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _animationController.reset();
+      }
+    });
   }
   void _setShuffle(){
     setState(() {

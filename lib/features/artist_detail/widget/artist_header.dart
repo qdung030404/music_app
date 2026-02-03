@@ -1,11 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import '../../../data/datasources/user_activity_service.dart';
 import '../../../domain/entities/artist_entity.dart';
 
-class ArtistHeader extends StatelessWidget {
+class ArtistHeader extends StatefulWidget {
   final Artist artist;
   const ArtistHeader({super.key, required this.artist});
+
+  @override
+  State<ArtistHeader> createState() => _ArtistHeaderState();
+}
+
+class _ArtistHeaderState extends State<ArtistHeader> {
+  final _userActivityService = UserActivityService();
+  bool _isFollowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFollowStatus();
+  }
+
+  Future<void> _checkFollowStatus() async {
+    final following = await _userActivityService.isFollowing(widget.artist.id);
+    if (mounted) {
+      setState(() {
+        _isFollowing = following;
+      });
+    }
+  }
+
+  Future<void> _toggleFollow() async {
+    if (_isFollowing) {
+      await _userActivityService.removeItem(widget.artist.id, 'follow');
+    } else {
+      await _userActivityService.addtoFollow(widget.artist);
+    }
+    if (mounted) {
+      setState(() {
+        _isFollowing = !_isFollowing;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +55,7 @@ class ArtistHeader extends StatelessWidget {
           height: imageHeight,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(artist.avatar),
+              image: NetworkImage(widget.artist.avatar),
               fit: BoxFit.cover,
             ),
           ),
@@ -49,15 +85,14 @@ class ArtistHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                artist.name,
-                style: TextStyle(
+                widget.artist.name,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
-
+              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -70,17 +105,21 @@ class ArtistHeader extends StatelessWidget {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: (){},
+                  onPressed: _toggleFollow,
                   style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 14),
-                    side: BorderSide(color: Colors.white70, width: 1.5),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    side: BorderSide(
+                      color: _isFollowing ? Colors.transparent : Colors.white70, 
+                      width: 1.5
+                    ),
+                    backgroundColor: _isFollowing ? Colors.white24 : Colors.transparent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
                   ),
                   child: Text(
-                    'QUAN TÂM',
-                    style: TextStyle(
+                    _isFollowing ? 'ĐANG QUAN TÂM' : 'QUAN TÂM',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -89,19 +128,19 @@ class ArtistHeader extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 12),
+              const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton(
                   onPressed: (){},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF7C4DFF),
-                    padding: EdgeInsets.symmetric(vertical: 14),
+                    backgroundColor: const Color(0xFF7C4DFF),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
                     elevation: 0,
                   ),
-                  child: Text(
+                  child: const Text(
                     'PHÁT NHẠC',
                     style: TextStyle(
                       color: Colors.white,

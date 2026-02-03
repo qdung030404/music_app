@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/data/datasources/history_service.dart';
+import 'package:music_app/data/datasources/user_activity_service.dart';
 
 import '../../widget/song_card.dart';
 
@@ -9,10 +9,10 @@ class History extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final historyService = HistoryService();
+    final userActivityService = UserActivityService();
     double itemWidth = MediaQuery.of(context).size.width;
     return StreamBuilder<List<Song>>(
-      stream: historyService.getHistoryStream(),
+      stream: userActivityService.getHistoryStream(),
       builder: (context, snapshot) {
         final historySongs = snapshot.data ?? [];
 

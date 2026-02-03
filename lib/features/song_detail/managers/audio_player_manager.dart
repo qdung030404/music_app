@@ -3,7 +3,7 @@ import 'package:just_audio/just_audio.dart';
 import 'dart:math';
 import '../../../../data/model/song.dart';
 import '../../../../domain/entities/song_entity.dart';
-import '../../../data/datasources/history_service.dart';
+import '../../../data/datasources/user_activity_service.dart';
 
 class DurationState{
   const DurationState({
@@ -31,16 +31,18 @@ class AudioPlayerManager {
   static final AudioPlayerManager _instance = AudioPlayerManager._internal();
   factory AudioPlayerManager() => _instance;
 
-  final player = AudioPlayer();
+  final AudioPlayer player = AudioPlayer();
   late final Stream<DurationState> durationState;
-  final _historyService = HistoryService();
+  final _userActivityService = UserActivityService();
   
   // Playlist Management
   List<Song> _playlist = [];
   int _currentIndex = -1;
-  final BehaviorSubject<Song?> _currentSongSubject = BehaviorSubject<Song?>.seeded(null);
-  Stream<Song?> get currentSongStream => _currentSongSubject.stream;
-  Song? get currentSong => _currentSongSubject.value;
+  final _currentSongController = BehaviorSubject<Song?>();
+  Stream<Song?> get currentSongStream => _currentSongController.stream;
+  Song? get currentSong => _currentIndex >= 0 && _currentIndex < _playlist.length
+      ? _playlist[_currentIndex]
+      : null;
   List<Song> get playlist => _playlist;
 
   // Shuffle Support
@@ -84,7 +86,7 @@ class AudioPlayerManager {
     _historySubject.add(List.from(_history));
 
     // Save to Firestore
-    _historyService.addToHistory(song);
+    _userActivityService.addToHistory(song);
   }
 
   void updateSong(String url){
@@ -105,7 +107,7 @@ class AudioPlayerManager {
     if (_playlist.isEmpty || _currentIndex < 0 || _currentIndex >= _playlist.length) return;
     
     final song = _playlist[_currentIndex];
-    _currentSongSubject.add(song);
+    _currentSongController.add(song);
     songUrl = song.source;
     
     // Auto-play when song changes
@@ -154,6 +156,6 @@ class AudioPlayerManager {
   
   void dispose(){
     player.dispose();
-    _currentSongSubject.close();
+    _currentSongController.close();
   }
 }
