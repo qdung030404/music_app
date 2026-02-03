@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
+import 'package:music_app/features/discovery/presentation/favorite_song.dart';
 
 List<Map<String, dynamic>> items = [
 
@@ -53,7 +53,12 @@ class LibraryCardList extends StatelessWidget {
     double itemWidth = screenWidth / 3 - 16;
     return GestureDetector(
       onTap: () {
-
+        if (item['text'] == 'Yêu thích') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const FavoriteSong()),
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.only(top: 32, bottom: 20),
