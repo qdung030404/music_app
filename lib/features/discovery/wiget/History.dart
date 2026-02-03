@@ -34,11 +34,10 @@ class History extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 200,
               child: ListView.builder(
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: historySongs.length,
+                itemCount: 5,
                 itemBuilder: (context, index) {
                   return SongCard(
                     song: historySongs[index],
