@@ -45,8 +45,9 @@ class _AlbumPlaylistViewState extends State<AlbumPlaylistView> with SingleTicker
             labelStyle: const TextStyle(inherit: false, color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             unselectedLabelStyle: const TextStyle(inherit: false, color: Colors.white70, fontSize: 16),
             tabs: const [
+              Tab(text: 'Playlist'),
               Tab(text: 'Album'),
-              Tab(text: 'Playlist')
+
             ],
           ),
           Expanded(
