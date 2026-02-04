@@ -5,7 +5,6 @@ import 'package:music_app/features/home/viewmodels/home_view_model.dart';
 import 'package:music_app/features/home/widget/recommend.dart';
 import 'package:music_app/features/home/widget/artist.dart';
 import 'package:music_app/features/home/widget/header.dart';
-import 'package:music_app/features/home/widget/mini_player.dart';
 
 import '../../../domain/entities/album_entity.dart';
 import '../../widget/media_card_list.dart';

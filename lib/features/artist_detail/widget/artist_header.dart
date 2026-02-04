@@ -32,7 +32,7 @@ class _ArtistHeaderState extends State<ArtistHeader> {
 
   Future<void> _toggleFollow() async {
     if (_isFollowing) {
-      await _userActivityService.removeItem(widget.artist.id, 'follow');
+      await _userActivityService.removeItem(widget.artist.id, 'followed');
     } else {
       await _userActivityService.addtoFollow(widget.artist);
     }

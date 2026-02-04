@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           tabBuilder: (context, index) {
             return CupertinoPageScaffold(
-              backgroundColor: const Color(0xFF1A1A2E),
+              backgroundColor: Colors.black,
               child: SafeArea(
                 bottom: false,
                 child: _tabs[index],

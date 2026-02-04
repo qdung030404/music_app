@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music_app/features/discovery/presentation/favorite_song.dart';
+import 'package:music_app/features/discovery/presentation/follow_artist.dart';
 
 List<Map<String, dynamic>> items = [
 
@@ -57,6 +58,11 @@ class LibraryCardList extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const FavoriteSong()),
+          );
+        } else if (item['text'] == 'Nghệ sĩ') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const FollowArtist()),
           );
         }
       },

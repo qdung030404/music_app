@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../wiget/albumplaylist.dart';
 import '../wiget/library_card_list.dart';
 import '../wiget/History.dart';
 
@@ -52,6 +53,10 @@ class DiscoveryTab extends StatelessWidget {
             ),
             const LibraryCardList(),
             const History(),
+            const SizedBox(
+              height: 400, // Adjust height as needed
+              child: Albumplaylist(),
+            ),
           ],
         )
     );

@@ -16,7 +16,7 @@ class UserActivityService {
     }
     try{
       final userRef = _firestore.collection('users').doc(uid);
-      final followRef = userRef.collection('follow');
+      final followRef = userRef.collection('followed');
       final artistData = {
         'id': artist.id,
         'name': artist.name,
@@ -40,7 +40,7 @@ class UserActivityService {
       final doc = await _firestore
           .collection('users')
           .doc(uid)
-          .collection('follow')
+          .collection('followed')
           .doc(artistId)
           .get();
       return doc.exists;
@@ -77,8 +77,7 @@ class UserActivityService {
         transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
         transaction.set(historyRef.doc(song.id), songData);
       });
-      
-      print('UserActivityService: Successfully saved ${song.title} to history for user $uid');
+
     } catch (e) {
       print('UserActivityService Error: $e');
     }
@@ -112,8 +111,7 @@ class UserActivityService {
         transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
         transaction.set(favoriteRef.doc(song.id), songData);
       });
-      
-      print('UserActivityService: Successfully saved ${song.title} to favorites for user $uid');
+
     } catch (e) {
       print('UserActivityService Error: $e');
     }
@@ -170,7 +168,22 @@ class UserActivityService {
       }).toList();
     });
   }
+  Stream<List<Artist>> getFollowedArtist(){
+    final uid = _userId;
+    if (uid == null) return Stream.value([]);
 
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('followed')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return ArtistModel.fromJson(doc.data());
+      }).toList();
+    });
+  }
   Future<bool> isFavorite(String songId) async {
     final uid = _userId;
     if (uid == null) return false;

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/data/datasources/user_activity_service.dart';
-import '../../../domain/entities/song_entity.dart';
-
-import '../wiget/favorite_song_list.dart';
-
-class FavoriteSong extends StatefulWidget {
-  const FavoriteSong({super.key});
+import 'package:music_app/data/model/artist.dart';
+import 'package:music_app/features/discovery/wiget/albumplaylist.dart';
+import '../../../data/datasources/user_activity_service.dart';
+import '../wiget/followed_list.dart';
+class FollowArtist extends StatefulWidget {
+  const FollowArtist({super.key});
 
   @override
-  State<FavoriteSong> createState() => _FavoriteSongState();
+  State<FollowArtist> createState() => _FollowArtistState();
 }
 
-class _FavoriteSongState extends State<FavoriteSong> {
+class _FollowArtistState extends State<FollowArtist> {
   late ScrollController _scrollController;
   bool _showTitle = false;
 
@@ -37,16 +36,15 @@ class _FavoriteSongState extends State<FavoriteSong> {
     _scrollController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF06A0B5), Colors.black],
-          stops: [0.01, 0.15]
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF06A0B5), Colors.black],
+            stops: [0.01, 0.15]
         ),
       ),
       child: Scaffold(
@@ -59,7 +57,7 @@ class _FavoriteSongState extends State<FavoriteSong> {
             opacity: _showTitle ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 200),
             child: const Text(
-              'Yêu thích',
+              'Nghệ sĩ',
               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -84,7 +82,7 @@ class _FavoriteSongState extends State<FavoriteSong> {
                 children: [
                   const SizedBox(height: 32,),
                   const Center(
-                    child: Text('Yêu thích',
+                    child: Text('Nghệ sĩ',
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
@@ -92,24 +90,28 @@ class _FavoriteSongState extends State<FavoriteSong> {
                       ),
                     ),
                   ),
-                  StreamBuilder<List<Song>>(
-                    stream: UserActivityService().getFavoritesStream(),
-                    builder: (context, snapshot) {
-                      final count = snapshot.data?.length ?? 0;
-                      return Center(
-                        child: Text('$count bài hát • đã lưu vào thư viện',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.white,
-                          ),
-                        ),
-                      );
-                    }
+                  StreamBuilder<List<Artist>>(
+                      stream: UserActivityService().getFollowedArtist(),
+                      builder: (context, snapshot) {
+                        final count = snapshot.data?.length ?? 0;
+                        if(count > 0){
+                          return Center(
+                            child: Text('$count nghệ sĩ • đã quan tâm',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        }
+                        return SizedBox(height: 8);
+                      }
                   ),
                   const SizedBox(height: 32),
-                  const FavoriteSongList(),
-                  const SizedBox(height: 100), // Khoảng trống ở dưới để test cuộn
+                  const FollowedList(),
+                  const SizedBox(height: 100),
+                  // Khoảng trống ở dưới để test cuộn
                 ],
               ),
             ),
