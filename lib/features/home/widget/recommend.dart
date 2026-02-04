@@ -18,7 +18,7 @@ class BuildRecommend extends StatelessWidget {
       children: [
         const Text(
           'Recommended',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(height: 12),
         SizedBox(

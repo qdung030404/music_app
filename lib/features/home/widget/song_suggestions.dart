@@ -56,14 +56,19 @@ class _SongSuggestionsState extends State<SongSuggestions> {
             ),
             Row(
                 children: [
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        minimumSize: Size(100, 40)
+                  TextButton.icon(
+                    style: TextButton.styleFrom(
+                      side: BorderSide(color: Colors.grey, width: 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
                     ),
                     onPressed: _playAll,
-                    child: const Text('Phát tất cả',
+                    icon: Icon(Icons.play_arrow, color: Colors.white,),
+                    label: Text('Phát tất cả',
                       style: TextStyle(
-                        color: Colors.white
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ),

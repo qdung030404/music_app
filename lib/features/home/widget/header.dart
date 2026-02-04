@@ -40,9 +40,9 @@ class BuildHeader extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.bar_chart)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.bar_chart, color: Colors.white)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none, color: Colors.white)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.settings, color: Colors.white)),
       ],
     );
   }

@@ -7,7 +7,7 @@ import 'package:music_app/features/home/widget/artist.dart';
 import 'package:music_app/features/home/widget/header.dart';
 
 import '../../../domain/entities/album_entity.dart';
-import '../../widget/media_card_list.dart';
+import '../widget/album.dart';
 import '../widget/song_suggestions.dart';
 
 class HomeTabs extends StatelessWidget {

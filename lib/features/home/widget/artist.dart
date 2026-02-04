@@ -17,8 +17,8 @@ class BuildArtist extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Artist',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          'Nghệ sĩ tiêu biểu',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         const SizedBox(height: 12),
         SizedBox(

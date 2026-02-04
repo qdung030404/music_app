@@ -73,7 +73,39 @@ class ScrollList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: (){ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Tính năng thêm nghệ sĩ đang được phát triển')),
+          );},
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 12,),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.circular(8)
+                ),
+                padding: const EdgeInsets.all(8),
+                child: Icon(Icons.add, color: Colors.white, size: 48),
+              ),
+              SizedBox(width: 16,),
+              Text('Thêm playlist',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
 

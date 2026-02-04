@@ -5,7 +5,7 @@ import '../widget/song_list.dart';
 import '../viewmodels/artist_detail_view_model.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/domain/entities/album_entity.dart';
-import '../../widget/media_card_list.dart';
+import '../../home/widget/album.dart';
 
 class ArtistDetail extends StatelessWidget {
   final Artist artist;

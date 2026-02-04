@@ -111,7 +111,6 @@ class _FollowArtistState extends State<FollowArtist> {
                   const SizedBox(height: 32),
                   const FollowedList(),
                   const SizedBox(height: 100),
-                  // Khoảng trống ở dưới để test cuộn
                 ],
               ),
             ),
