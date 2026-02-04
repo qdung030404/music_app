@@ -55,8 +55,8 @@ class _AlbumPlaylistViewState extends State<AlbumPlaylistView> with SingleTicker
                 child: TabBarView(
                   controller: _tabController,
                   children: const[
+                    ScrollList(title: 'PlayList', key: PageStorageKey('Playlist')),
                     ScrollList(title: 'Album', key: PageStorageKey('Album')),
-                    ScrollList(title: 'PlayList', key: PageStorageKey('Playlist'))
                   ]
                 )
             ),
