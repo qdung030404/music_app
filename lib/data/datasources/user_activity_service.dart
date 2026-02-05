@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:music_app/data/model/album.dart';
 import 'package:music_app/data/model/artist.dart';
+import 'package:music_app/domain/entities/playlist_entity.dart';
+
+import '../model/playlist.dart';
 import '../model/song.dart';
 
 class UserActivityService {
@@ -8,6 +12,44 @@ class UserActivityService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String? get _userId => _auth.currentUser?.uid;
+  Future<void> addFavoriteAlbum(Album album)async {
+    final uid = _userId;
+    if(uid == null) {
+      return;
+    }
+    try {
+      final userRef = _firestore.collection('users').doc(uid);
+      final albumRef = userRef.collection('albums');
+      final albumData = {
+        'id': album.id,
+        'image': album.image,
+        'title': album.albumTitle,
+        'artistName': album.artistName,
+        'timestamp': FieldValue.serverTimestamp(),
+      };
+      await _firestore.runTransaction((transaction) async {
+        transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+        transaction.set(albumRef.doc(album.id), albumData);
+      });
+    }catch(e){}
+  }
+
+  Stream<List<Album>> getAlbumStream() {
+    final uid = _userId;
+    if (uid == null) return Stream.value([]);
+
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('albums')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return AlbumModel.fromJson(doc.data());
+      }).toList();
+    });
+  }
 
   Future<void> addtoFollow(Artist artist) async{
     final uid = _userId;
@@ -117,7 +159,7 @@ class UserActivityService {
     }
   }
 
-  Future<void> removeItem(String Id, String collection) async {
+  Future<void> removeItem(String id, String collection) async {
     final uid = _userId;
     if (uid == null) return;
 
@@ -126,9 +168,9 @@ class UserActivityService {
           .collection('users')
           .doc(uid)
           .collection(collection)
-          .doc(Id)
+          .doc(id)
           .delete();
-      print('UserActivityService: Successfully removed item $Id from $collection');
+      print('UserActivityService: Successfully removed item $id from $collection');
     } catch (e) {
       print('UserActivityService Error removing item: $e');
     }
@@ -168,6 +210,7 @@ class UserActivityService {
       }).toList();
     });
   }
+
   Stream<List<Artist>> getFollowedArtist(){
     final uid = _userId;
     if (uid == null) return Stream.value([]);
@@ -184,7 +227,8 @@ class UserActivityService {
       }).toList();
     });
   }
-  Future<bool> isFavorite(String songId) async {
+
+  Future<bool> isFavorite(String Id, String collection) async {
     final uid = _userId;
     if (uid == null) return false;
 
@@ -192,13 +236,58 @@ class UserActivityService {
       final doc = await _firestore
           .collection('users')
           .doc(uid)
-          .collection('favorites')
-          .doc(songId)
+          .collection(collection)
+          .doc(Id)
           .get();
       return doc.exists;
     } catch (e) {
       print('UserActivityService Error checking favorite: $e');
       return false;
     }
+  }
+  Future<void> createPlaylist(Playlist playlist) async{
+    final uid = _userId;
+    if (uid == null) {
+      print('UserActivityService: Cannot add to favorites, user not logged in.');
+      return;
+    }
+
+    try {
+      final userRef = _firestore.collection('users').doc(uid);
+      final playlistRef = userRef.collection('playlists'); // Changed favoriteRef to playlistRef
+
+      final playlistData = { // Changed songData to playlistData
+        'id': playlist.id,
+        'name': playlist.playlistName,
+        'timestamp': FieldValue.serverTimestamp(),
+      };
+
+      await _firestore.runTransaction((transaction) async {
+        transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+        transaction.set(playlistRef.doc(playlist.id), playlistData);
+      });
+
+    } catch (e) {
+      print('UserActivityService Error: $e');
+    }
+  }
+
+  Stream<List<Playlist>> getPlaylistStream() {
+    final uid = _userId;
+    if (uid == null) return Stream.value([]);
+
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('playlists')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id;
+        return PlaylistModel.fromJson(data);
+      }).toList();
+    });
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../wiget/albumplaylist.dart';
+import '../wiget/page_storage/albumplaylist.dart';
 import '../wiget/library_card_list.dart';
 import '../wiget/History.dart';
 

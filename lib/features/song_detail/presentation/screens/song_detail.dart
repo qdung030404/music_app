@@ -74,7 +74,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
   }
 
   Future<void> _checkIsFavorite(String songId) async {
-    final isFav = await _userActivityService.isFavorite(songId);
+    final isFav = await _userActivityService.isFavorite(songId,'favorites');
     if (mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
