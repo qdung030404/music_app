@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/features/widget/bottom_sheet.dart';
 
 import '../../domain/entities/song_entity.dart';
-import '../song_detail/presentation/screens/song_detail.dart';
+import '../song_detail/presentation/song_detail.dart';
 
 class SongCard extends StatelessWidget {
   const SongCard({
@@ -49,7 +50,14 @@ class SongCard extends StatelessWidget {
             ),
           ),
           trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context){
+                    return SongBottomSheet(song: song, songs: songs);
+                  }
+                );
+              },
               icon: Icon(Icons.more_horiz, color: Colors.white,)
           ),
           onTap: () {

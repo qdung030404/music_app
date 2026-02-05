@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/features/song_detail/presentation/screens/song_detail.dart';
+import 'package:music_app/features/song_detail/presentation/song_detail.dart';
 
 class BuildRecommend extends StatelessWidget {
   final List<Song> songs;

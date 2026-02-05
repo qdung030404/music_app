@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get/get.dart';
-import 'package:music_app/features/song_detail/managers/audio_player_manager.dart';
+import 'package:music_app/features/managers/audio_player_manager.dart';
 import 'package:music_app/domain/entities/song_entity.dart'; // Use Entity or Model
-import 'package:music_app/features/song_detail/presentation/screens/song_detail.dart';
+import 'package:music_app/features/song_detail/presentation/song_detail.dart';
 
 class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key});
