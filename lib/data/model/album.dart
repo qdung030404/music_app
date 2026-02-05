@@ -15,7 +15,7 @@ class AlbumModel extends Album{
       artistId: json['artistId']?.toString() ?? '',
       image: json['image'] ?? '',
       albumTitle: json['title'] ?? '',
-      artistName: (json['artistName'] ?? json['artist_name'])?.toString(),
+      artistName: (json['artistName'] ?? json['artist_name']?? json['artistname'])?.toString(),
     );
   }
   Map<String, dynamic> toJson(){
