@@ -98,7 +98,7 @@ class _SongSuggestionsState extends State<SongSuggestions> {
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
               ),
-              itemCount: 12,
+              itemCount: displayedSongs.length > 12 ? 12 : displayedSongs.length,
               itemBuilder: (context, index) {
                 return SongCard(
                   song: displayedSongs[index],

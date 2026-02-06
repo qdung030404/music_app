@@ -27,6 +27,13 @@ class AudioPlayerManager {
         total: playbackEvent.duration,
       ),
     ).asBroadcastStream();
+
+    // Auto-skip to next song when current one finishes
+    player.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        skipToNext();
+      }
+    });
   }
   static final AudioPlayerManager _instance = AudioPlayerManager._internal();
   factory AudioPlayerManager() => _instance;
@@ -153,7 +160,7 @@ class AudioPlayerManager {
   void setLoopMode(LoopMode mode) {
     player.setLoopMode(mode);
   }
-  
+
   void dispose(){
     player.dispose();
     _currentSongController.close();

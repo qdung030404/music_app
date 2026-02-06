@@ -54,7 +54,10 @@ class SongCard extends StatelessWidget {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context){
-                    return SongBottomSheet(song: song, songs: songs);
+                    return SongBottomSheet(
+                      song: song,
+                      songs: songs,
+                    );
                   }
                 );
               },
