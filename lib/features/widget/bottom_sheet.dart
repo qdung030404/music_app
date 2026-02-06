@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/album_entity.dart';
 import '../../domain/entities/song_entity.dart';
-import '../managers/audio_player_manager.dart';
 import '../managers/favorite_manager.dart';
 
 class SongBottomSheet extends StatefulWidget {
