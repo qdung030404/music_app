@@ -42,7 +42,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Image(image: AssetImage('asset/logo.png')),
+                child: const Image(image: AssetImage('assets/logo.png')),
               ),
               const SizedBox(height: 40),
               const Text(

@@ -82,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Image(image: AssetImage('asset/logo.png')),
+                child: const Image(image: AssetImage('assets/logo.png')),
               ),
               const SizedBox(height: 40),
               const Text(
@@ -215,8 +215,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     onTap: () => FirebaseAuthService().signInWithGoogle(),
                     width: 45,
                     height: 50,
-                    unpressedImage: Image.asset('asset/google.png'),
-                    pressedImage: Image.asset('asset/google.png'),
+                    unpressedImage: Image.asset('assets/google.png'),
+                    pressedImage: Image.asset('assets/google.png'),
 
                   ),
                 ],

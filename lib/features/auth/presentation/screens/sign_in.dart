@@ -106,7 +106,7 @@ class _LoginpageState extends State<Loginpage> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Image(image: AssetImage('asset/logo.png'))
+                child: const Image(image: AssetImage('assets/logo.png'))
               ),
               const SizedBox(height: 40),
               const Text(
@@ -252,8 +252,8 @@ class _LoginpageState extends State<Loginpage> {
                     },
                     width: 45,
                     height: 50,
-                    unpressedImage: Image.asset('asset/google.png'),
-                    pressedImage: Image.asset('asset/google.png'),
+                    unpressedImage: Image.asset('assets/google.png'),
+                    pressedImage: Image.asset('assets/google.png'),
                         
                   ),
                 ],

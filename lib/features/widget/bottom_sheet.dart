@@ -54,18 +54,18 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
         children: [
           SizedBox(
             child: ListTile(
-              contentPadding: const EdgeInsets.only(left: 24, right: 24),
+              contentPadding: const EdgeInsets.only(left: 12, right: 12),
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: FadeInImage.assetNetwork(
-                  placeholder: 'asset/itunes_256.png',
+                  placeholder: 'assets/itunes_256.png',
                   image: widget.song.image,
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      'asset/itunes_256.png',
+                      'assets/itunes_256.png',
                       width: 50,
                       height: 50,
                     );
@@ -106,7 +106,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
                       onTap: ()=> _handleToggleFavorite(widget.song),
                       icon: _isFavorite ? Icons.favorite : Icons.favorite_outline,
                       color: _isFavorite ? Colors.red : Theme.of(context).colorScheme.primary,
-                      title: 'Thêm vào danh sách yêu thích'
+                      title: _isFavorite ? 'Đã Thêm vào danh sách yêu thích' : 'Thêm vào danh sách yêu thích'
                   ),
                   SizedBox(height: 24,),
                   ActionButtonControl(

@@ -125,13 +125,13 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(raduis),
                           child: FadeInImage.assetNetwork(
-                              placeholder: 'asset/itunes_256.png',
+                              placeholder: 'assets/itunes_256.png',
                               image: _song.image,
                               width: screenWidth  - delta,
                               height: screenWidth  - delta,
                               fit: BoxFit.cover,
                               imageErrorBuilder: (context, error, stackTrace) {
-                                return Image.asset('asset/itunes_256.png',
+                                return Image.asset('assets/itunes_256.png',
                                   width: screenWidth  - delta,
                                   height: screenWidth  - delta,
                                 );
