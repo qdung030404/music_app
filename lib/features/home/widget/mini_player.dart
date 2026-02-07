@@ -21,8 +21,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
       stream: _audioPlayerManager.currentSongStream,
       builder: (context, snapshot) {
         final song = snapshot.data;
-        // Logic: "khi khởi động app thì dialog này bị ẩn đi" -> if song is null, hidden.
-        // "khi click play trong song detail ... dialog hiển thị" -> song will be non-null.
         if (song == null) {
           return const SizedBox.shrink();
         }
@@ -62,13 +60,13 @@ class _MiniPlayerState extends State<MiniPlayer> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: FadeInImage.assetNetwork(
-                      placeholder: 'asset/itunes_256.png',
+                      placeholder: 'assets/itunes_256.png',
                       image: song.image,
                       width: 48,
                       height: 48,
                       fit: BoxFit.cover,
                       imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset('asset/itunes_256.png', width: 48, height: 48);
+                        return Image.asset('assets/itunes_256.png', width: 48, height: 48);
                       },
                     ),
                   ),
