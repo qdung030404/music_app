@@ -39,11 +39,18 @@ class Header extends StatelessWidget {
                     spreadRadius: 5,
                     blurRadius: 15,
                   )
-                ],
-                image: DecorationImage(
-                  image: NetworkImage(album.image),
-                  fit: BoxFit.cover,
-                )),
+                ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                album.image,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey[900],
+                  child: const Icon(Icons.album, color: Colors.white54, size: 80),
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 24),
           customText(album.albumTitle, 28, FontWeight.bold),
