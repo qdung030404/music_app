@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music_app/data/model/playlist.dart';
+import '../../../playlist/presentation/playlist_detail.dart';
 
 import '../../../../data/datasources/user_activity_service.dart';
 
@@ -53,21 +54,23 @@ class PlaylistPageStorage extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple.withOpacity(0.3),
+                    color: Colors.grey.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.playlist_play, color: Colors.deepPurple, size: 30),
+                  child: const Icon(Icons.playlist_play, color: Colors.grey, size: 30),
                 ),
                 title: Text(
                   playlist.playlistName,
                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                subtitle: const Text(
-                  'Playlist cá nhân',
-                  style: TextStyle(color: Colors.white70),
-                ),
+
                 onTap: () {
-                  // Navigate to Playlist Detail logic when ready
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PlaylistDetail(playlist: playlist),
+                    ),
+                  );
                 },
               );
             },
@@ -83,15 +86,18 @@ class PlaylistPageStorage extends StatelessWidget {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.grey[900],
         title: const Text('Tạo playlist mới', style: TextStyle(color: Colors.white)),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            hintText: 'Tên playlist',
-            hintStyle: TextStyle(color: Colors.grey),
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
-            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: TextField(
+            controller: controller,
+            autofocus: true,
+            style: const TextStyle(color: Colors.white),
+            decoration: const InputDecoration(
+              hintText: 'Tên playlist',
+              hintStyle: TextStyle(color: Colors.grey),
+              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
+              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+            ),
           ),
         ),
         actions: [
