@@ -6,15 +6,17 @@ import '../../domain/entities/song_entity.dart';
 import '../song_detail/presentation/song_detail.dart';
 
 class SongCard extends StatelessWidget {
+  final Song song;
+  final List<Song> songs;
+  final double? width;
+  final String? playlistId;
+
   const SongCard({
     required this.song,
     required this.songs,
     this.width,
+    this.playlistId,
   });
-
-  final Song song;
-  final List<Song> songs;
-  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,7 @@ class SongCard extends StatelessWidget {
                     return SongBottomSheet(
                       song: song,
                       songs: songs,
+                      playlistId: playlistId,
                     );
                   }
                 );

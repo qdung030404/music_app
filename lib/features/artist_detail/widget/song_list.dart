@@ -7,11 +7,13 @@ class SongList extends StatelessWidget {
   final List<Song> songs;
   final String title;
   final VoidCallback? onViewAll;
+  final String? playlistId;
   const SongList({
     super.key,
     required this.songs,
     required this.title,
-    this.onViewAll
+    this.onViewAll,
+    this.playlistId,
   });
 
   @override
@@ -54,6 +56,7 @@ class SongList extends StatelessWidget {
               child: SongCard(
                 song: displaySongs[index],
                 songs: songs,
+                playlistId: playlistId,
               ),
             );
           },

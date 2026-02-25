@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:music_app/data/repository/song_repository.dart';
 import 'package:music_app/domain/usecases/get_songs.dart';
+import '../../../data/datasources/user_activity_service.dart';
 import '../../../domain/entities/song_entity.dart';
 
 class PlaylistViewModel {
@@ -17,21 +18,19 @@ class PlaylistViewModel {
   PlaylistViewModel({required this.playlistId})
       : _getSongs = GetSongs(SongRepositoryImpl());
 
-  Future<void> loadPlaylistSongs() async {
-    if (_isLoadingSubject.value) return;
-
+  void loadPlaylistSongs() {
     _isLoadingSubject.add(true);
-    try {
-      // In a real implementation, you would fetch songs from a specific collection
-      // or filter them if you have a mapping.
-      // For now, we return an empty list as we don't have the mapping yet.
-      await Future.delayed(const Duration(milliseconds: 500)); // Simulate network
-      _songsSubject.add([]);
-    } catch (e) {
-      _songsSubject.addError(e);
-    } finally {
-      _isLoadingSubject.add(false);
-    }
+    final service = UserActivityService();
+    service.getPlaylistSongsStream(playlistId).listen(
+      (songs) {
+        _songsSubject.add(songs);
+        _isLoadingSubject.add(false);
+      },
+      onError: (error) {
+        _songsSubject.addError(error);
+        _isLoadingSubject.add(false);
+      },
+    );
   }
 
   void dispose() {

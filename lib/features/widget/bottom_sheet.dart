@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/album_entity.dart';
 import '../../domain/entities/song_entity.dart';
+import '../../data/datasources/user_activity_service.dart';
 import '../managers/favorite_manager.dart';
+import 'playlist_bottom_sheet.dart';
 
 class SongBottomSheet extends StatefulWidget {
   final Song song;
   final List<Song> songs;
+  final String? playlistId;
   const SongBottomSheet({
     super.key,
     required this.song,
     required this.songs,
+    this.playlistId,
   });
 
   @override
@@ -45,6 +49,23 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
       });
     }
   }
+
+  Future<void> _handleRemoveFromPlaylist() async {
+    if (widget.playlistId != null) {
+      final service = UserActivityService();
+      await service.removeSongFromPlaylist(widget.playlistId!, widget.song.id);
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Đã xóa bài hát khỏi playlist'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -109,8 +130,23 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
                       title: _isFavorite ? 'Đã Thêm vào danh sách yêu thích' : 'Thêm vào danh sách yêu thích'
                   ),
                   SizedBox(height: 24,),
-                  ActionButtonControl(
-                      onTap: (){},
+                  widget.playlistId != null 
+                  ? ActionButtonControl(
+                      onTap: _handleRemoveFromPlaylist,
+                      icon: Icons.playlist_remove,
+                      title: 'Xóa khỏi playlist',
+                      color: Colors.white,
+                  )
+                  : ActionButtonControl(
+                      onTap: () {
+                        Navigator.pop(context); // Close the song bottom sheet
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => PlaylistBottomSheet(song: widget.song)
+                        );
+                      },
                       icon: Icons.playlist_add,
                       title: 'Thêm vào playlist',
                       color: Colors.white,

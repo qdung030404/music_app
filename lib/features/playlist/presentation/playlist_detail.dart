@@ -103,6 +103,7 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
                     SongList(
                       songs: playlistSongs,
                       title: 'Bài hát trong playlist',
+                      playlistId: widget.playlist.id,
                     ),
                     if (playlistSongs.isEmpty)
                       const Center(

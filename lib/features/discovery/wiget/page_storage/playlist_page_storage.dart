@@ -7,7 +7,8 @@ import '../../../playlist/presentation/playlist_detail.dart';
 import '../../../../data/datasources/user_activity_service.dart';
 
 class PlaylistPageStorage extends StatelessWidget {
-  const PlaylistPageStorage({super.key});
+  final Function(Playlist)? onPlaylistTap;
+  const PlaylistPageStorage({super.key, this.onPlaylistTap});
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +66,16 @@ class PlaylistPageStorage extends StatelessWidget {
                 ),
 
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PlaylistDetail(playlist: playlist),
-                    ),
-                  );
+                  if (onPlaylistTap != null) {
+                    onPlaylistTap!(playlist);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlaylistDetail(playlist: playlist),
+                      ),
+                    );
+                  }
                 },
               );
             },
