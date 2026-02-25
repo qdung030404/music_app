@@ -138,13 +138,13 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                   Center(
                     child: Text(
                       _song.albumDisplay,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      maxLines: 2,
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
@@ -152,7 +152,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       ),
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 40),
                   Center(
                     child: Container(
                       width: screenWidth - (padding * 2),
@@ -198,7 +198,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                               _song.title,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 32,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 0.5,
                               ),
@@ -210,7 +210,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                               _song.artistDisplay,
                               style: const TextStyle(
                                 color: Colors.white54,
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
