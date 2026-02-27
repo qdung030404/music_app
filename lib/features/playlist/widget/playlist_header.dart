@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
 import '../../../domain/entities/song_entity.dart';
+import '../presentation/song_list_page.dart';
 
 class PlaylistHeader extends StatefulWidget {
   final Playlist playlist;
@@ -72,7 +73,12 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                           ),
                         ),
                         onPressed: () {
-                          // TODO: Navigate to discovery to add songs
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SongListPage(playlistId: widget.playlist.id),
+                            ),
+                          );
                         },
                         icon: const Icon(Icons.add, color: Colors.white),
                         label: _customText('THÊM BÀI HÁT', 16, FontWeight.bold),
@@ -105,7 +111,14 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                         ),
                         const SizedBox(width: 32),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SongListPage(playlistId: widget.playlist.id),
+                              ),
+                            );
+                          },
                           icon: const Icon(
                             Icons.add_circle_outline,
                             size: 32,
