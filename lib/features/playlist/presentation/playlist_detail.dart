@@ -78,6 +78,7 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHeader(
                 playlist: widget.playlist,
+                songs: playlistSongs,
                 onPlayAll: () {
                   if (playlistSongs.isNotEmpty) {
                     AudioPlayerManager().setPlaylist(playlistSongs, 0);
