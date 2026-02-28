@@ -5,7 +5,7 @@ import '../../../domain/entities/song_entity.dart';
 import '../../../domain/usecases/get_songs.dart';
 
 class SongListPage extends StatefulWidget {
-  final String? playlistId; // Optional: if we want to directly add to a playlist
+  final String? playlistId;
 
   const SongListPage({super.key, this.playlistId});
 
