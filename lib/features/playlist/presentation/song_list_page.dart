@@ -6,7 +6,6 @@ import '../../../domain/usecases/get_songs.dart';
 
 class SongListPage extends StatefulWidget {
   final String? playlistId;
-
   const SongListPage({super.key, this.playlistId});
 
   @override
@@ -61,7 +60,7 @@ class _SongListPageState extends State<SongListPage> {
         elevation: 0,
         title: const Text('Tất cả bài hát', style: TextStyle(color: Colors.white)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
