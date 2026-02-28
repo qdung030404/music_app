@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/data/model/artist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:music_app/features/discovery/presentation/artist_list.dart';
 import '../../../data/datasources/user_activity_service.dart';
 import '../../artist_detail/presentation/artist_detail.dart';
 
@@ -38,9 +39,7 @@ class FollowedList extends StatelessWidget {
                     backgroundColor: const Color(0xFF06A0B5), // foreground
                   ),
                    onPressed: () { 
-                     ScaffoldMessenger.of(context).showSnackBar(
-                       const SnackBar(content: Text('Tính năng thêm nghệ sĩ đang được phát triển')),
-                     );
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => ArtistList()));
                    },
                   child: const Text('THÊM NGHỆ SĨ', style: TextStyle(fontSize: 16)
                   ),
@@ -88,9 +87,11 @@ class FollowedList extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             GestureDetector(
-              onTap: (){ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Tính năng thêm nghệ sĩ đang được phát triển')),
-              );},
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ArtistList()));
+              },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
