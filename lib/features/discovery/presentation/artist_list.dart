@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../data/repository/artist_repository.dart';
 import '../../../domain/entities/artist_entity.dart';
 import '../../../domain/usecases/get_artists.dart';
+import '../../../data/datasources/user_activity_service.dart';
 import '../../artist_detail/presentation/artist_detail.dart';
 
 class ArtistList extends StatefulWidget {
@@ -17,6 +18,8 @@ class _ArtistListState extends State<ArtistList> {
   List<Artist> _filteredArtists = [];
   bool _isLoading = true;
   String _searchQuery = '';
+  final Set<String> _selectedArtistIds = {};
+  final UserActivityService _userActivityService = UserActivityService();
 
   @override
   void initState() {
@@ -110,43 +113,134 @@ class _ArtistListState extends State<ArtistList> {
                         ),
                         itemCount: _filteredArtists.length,
                         itemBuilder: (context, index) {
-                          return _ArtistCard(artist: _filteredArtists[index]);
+                          final artist = _filteredArtists[index];
+                          final isSelected = _selectedArtistIds.contains(artist.id);
+                          return _ArtistCard(
+                            artist: artist,
+                            isSelected: isSelected,
+                            onTap: () {
+                              setState(() {
+                                if (isSelected) {
+                                  _selectedArtistIds.remove(artist.id);
+                                } else {
+                                  _selectedArtistIds.add(artist.id);
+                                }
+                              });
+                            },
+                          );
                         },
                       ),
           ),
+          if (_selectedArtistIds.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: _handleFollowSelected,
+                  child: Text(
+                    'XONG',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
+  }
+
+  Future<void> _handleFollowSelected() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      for (final artistId in _selectedArtistIds) {
+        final artist = _allArtists.firstWhere((a) => a.id == artistId);
+        await _userActivityService.addtoFollow(artist);
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Đã theo dõi các nghệ sĩ đã chọn'),
+            backgroundColor: Colors.deepPurple,
+          ),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Có lỗi xảy ra: $e')),
+        );
+      }
+    }
   }
 }
 
 class _ArtistCard extends StatelessWidget {
   final Artist artist;
+  final bool isSelected;
+  final VoidCallback onTap;
 
-  const _ArtistCard({required this.artist});
+  const _ArtistCard({
+    required this.artist,
+    required this.isSelected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ArtistDetail(artist: artist),
-          ),
-        );
-      },
+      onTap: onTap,
       child: Column(
         children: [
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage(artist.avatar),
-                  fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: NetworkImage(artist.avatar),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
+                if (isSelected)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.deepPurple,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
           const SizedBox(height: 12),
