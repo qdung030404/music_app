@@ -217,11 +217,20 @@ class _ArtistCard extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(artist.avatar),
-                      fit: BoxFit.cover,
-                    ),
+                    image: artist.avatar.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(artist.avatar),
+                            fit: BoxFit.cover,
+                          )
+                        : const DecorationImage(
+                            image: AssetImage('assets/itunes_256.png'),
+                            fit: BoxFit.cover,
+                          ),
                   ),
+                  child: artist.avatar.isEmpty
+                      ? const Center(
+                          child: Icon(Icons.person, color: Colors.white, size: 40))
+                      : null,
                 ),
                 if (isSelected)
                   Positioned(
