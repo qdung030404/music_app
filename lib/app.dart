@@ -11,7 +11,7 @@ class MusicApp extends StatelessWidget {
       title: 'Music App',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+
       ),
       home: const Wrapper(),
       debugShowCheckedModeBanner: false,

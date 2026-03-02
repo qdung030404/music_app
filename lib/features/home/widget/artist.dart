@@ -16,9 +16,12 @@ class BuildArtist extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Nghệ sĩ tiêu biểu',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child:const Text(
+            'Nghệ sĩ tiêu biểu',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
         const SizedBox(height: 12),
         SizedBox(

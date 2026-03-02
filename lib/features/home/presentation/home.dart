@@ -48,9 +48,19 @@ class _HomeTabPageState extends State<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF1A1A2E),
-      body: getBody(),
+    return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF06A0B5), Colors.black],
+              stops: [0.01, 0.15]
+          ),
+        ),
+        child:Scaffold(
+          backgroundColor: Colors.transparent,
+          body: getBody(),
+        )
     );
   }
   @override
@@ -64,11 +74,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
   Widget getBody() {
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 80), // Added bottom padding to avoid overlap
+        padding: const EdgeInsets.only( top: 16, bottom: 80), // Removed horizontal padding here
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BuildHeader(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: BuildHeader(),
+            ),
             const SizedBox(height: 24),
             BuildRecommend(songs: songs,),
             const SizedBox(height: 24),
