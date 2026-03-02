@@ -1,23 +1,63 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-class BuildHeader extends StatelessWidget {
-
+class BuildHeader extends StatefulWidget {
   const BuildHeader({super.key});
 
+  @override
+  State<BuildHeader> createState() => _BuildHeaderState();
+}
+
+class _BuildHeaderState extends State<BuildHeader> {
+  String _selectAtion = 'none';
+  int _menuCount = 0;
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return Row(
       children: [
-        CircleAvatar(
-          radius: 20,
-          backgroundImage: user?.photoURL != null
-              ? NetworkImage(user!.photoURL!)
-              : null,
-          child: user?.photoURL == null
-              ? const Icon(Icons.person, size: 22)
-              : null,
+        PopupMenuButton<String>(
+          onSelected: (value) async {
+            if (value == 'logout') {
+              await FirebaseAuth.instance.signOut();
+            }
+            setState(() {
+              _selectAtion = value;
+              _menuCount++;
+            });
+          },
+          color: Colors.grey[100],
+          elevation: 8,
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+                value: 'Setting',
+                child: ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                    color: Colors.lightBlue,
+                  ),
+                  title: Text('Cài đặt'),
+                  contentPadding: EdgeInsets.zero,
+                )),
+            const PopupMenuItem(
+                value: 'logout',
+                child: ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                    color: Colors.lightBlue,
+                  ),
+                  title: Text('Đăng xuất'),
+                  contentPadding: EdgeInsets.zero,
+                ))
+          ],
+          child: CircleAvatar(
+            radius: 20,
+            backgroundImage: user?.photoURL != null
+                ? NetworkImage(user!.photoURL!)
+                : null,
+            child: user?.photoURL == null
+                ? const Icon(Icons.person, size: 22)
+                : null,
+          ),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -41,8 +81,6 @@ class BuildHeader extends StatelessWidget {
           ),
         ),
         IconButton(onPressed: () {}, icon: const Icon(Icons.bar_chart, color: Colors.white)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none, color: Colors.white)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.settings, color: Colors.white)),
       ],
     );
   }
