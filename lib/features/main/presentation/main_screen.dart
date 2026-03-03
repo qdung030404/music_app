@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../home/presentation/home.dart';
-import '../../settings/presentation/screen/setting.dart';
+import '../../search/presentation/search.dart';
 import '../../discovery/presentation/discovery.dart';
 import '../../home/widget/mini_player.dart';
 
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _tabs = const [
     DiscoveryTab(),
     HomeTabs(),
-    SettingTab(),
+    SearchTab(),
   ];
 
   @override
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Discovery'),
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
             ],
           ),
           tabBuilder: (context, index) {
