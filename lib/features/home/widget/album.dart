@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/features/album/presentation/album_detail.dart';
 import 'package:music_app/features/widget/album_card.dart';
-
 import '../../../domain/entities/album_entity.dart';
 
 class BuildMediaCardList extends StatelessWidget {

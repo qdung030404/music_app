@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:music_app/features/widget/album_card.dart';
-
-import '../../../../data/datasources/user_activity_service.dart';
-import '../../../../domain/entities/album_entity.dart';
-import '../../../album/presentation/album_detail.dart';
 import 'album_page_storage.dart';
 import 'playlist_page_storage.dart';
 

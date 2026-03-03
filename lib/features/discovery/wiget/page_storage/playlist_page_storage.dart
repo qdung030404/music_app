@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music_app/data/model/playlist.dart';
 import '../../../playlist/presentation/playlist_detail.dart';
 
@@ -92,7 +91,7 @@ class PlaylistPageStorage extends StatelessWidget {
         backgroundColor: Colors.grey[900],
         title: const Text('Tạo playlist mới', style: TextStyle(color: Colors.white)),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery.of(context).size.width * 0.9,
           child: TextField(
             controller: controller,
             autofocus: true,

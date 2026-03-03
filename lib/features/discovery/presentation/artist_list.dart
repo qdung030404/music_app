@@ -3,7 +3,6 @@ import '../../../data/repository/artist_repository.dart';
 import '../../../domain/entities/artist_entity.dart';
 import '../../../domain/usecases/get_artists.dart';
 import '../../../data/datasources/user_activity_service.dart';
-import '../../artist_detail/presentation/artist_detail.dart';
 
 class ArtistList extends StatefulWidget {
   const ArtistList({super.key});
