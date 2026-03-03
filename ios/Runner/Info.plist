@@ -64,5 +64,9 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>speech recognition</string>
+		<key>NSMicrophoneUsageDescriptionn</key>
+		<string>access to the microphone</string>
 	</dict>
 </plist>
