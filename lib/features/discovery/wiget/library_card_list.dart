@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:music_app/features/discovery/presentation/downloaded.dart';
 import 'package:music_app/features/discovery/presentation/favorite_song.dart';
 import 'package:music_app/features/discovery/presentation/follow_artist.dart';
 
@@ -13,7 +14,7 @@ List<Map<String, dynamic>> items = [
   {
     'icon': Icons.arrow_circle_down_outlined,
     'color': Colors.deepPurple,
-    'text': 'Đã tải'
+    'text': 'Tải về'
   },
   {
     'icon': Icons.music_note,
@@ -63,6 +64,11 @@ class LibraryCardList extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const FollowArtist()),
+          );
+        } else if (item['text'] == 'Tải về'){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Downloaded())
           );
         }
       },

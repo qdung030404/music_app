@@ -37,26 +37,7 @@ class DiscoveryTab extends StatelessWidget {
                         decoration: TextDecoration.none,
                       ),
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.mic,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.search,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    )
+
                   ],
                 ),
               ),
