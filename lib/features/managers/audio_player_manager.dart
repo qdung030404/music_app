@@ -4,6 +4,7 @@ import 'dart:math';
 import '../../../../data/model/song.dart';
 import '../../../../domain/entities/song_entity.dart';
 import '../../../data/datasources/user_activity_service.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 class DurationState{
   const DurationState({
@@ -28,10 +29,13 @@ class AudioPlayerManager {
       ),
     ).asBroadcastStream();
 
-    // Auto-skip to next song when current one finishes
-    player.playerStateStream.listen((state) {
-      if (state.processingState == ProcessingState.completed) {
-        skipToNext();
+    // Lắng nghe sự thay đổi bài hát từ player để cập nhật UI và lịch sử
+    player.currentIndexStream.listen((index) {
+      if (index != null && _playlist.isNotEmpty && index < _playlist.length) {
+        _currentIndex = index;
+        final song = _playlist[index];
+        _currentSongController.add(song);
+        _addToHistory(song);
       }
     });
   }
@@ -56,105 +60,69 @@ class AudioPlayerManager {
   bool _isShuffle = false;
   bool get isShuffle => _isShuffle;
 
-  // Legacy URL support (internal use mostly now)
-  String songUrl = ''; 
-
   // History Management
   final List<Song> _history = [];
   final BehaviorSubject<List<Song>> _historySubject = BehaviorSubject<List<Song>>.seeded([]);
   Stream<List<Song>> get historyStream => _historySubject.stream;
   List<Song> get history => _history;
 
-  void prepare({bool isNewSong = false}){
-    if(isNewSong && songUrl.isNotEmpty){
-      print('DEBUG: Preparing new song: $songUrl');
-      player.setUrl(songUrl);
-      player.play();
-
-      // Add to history
-      if (currentSong != null) {
-        print('DEBUG: Adding ${currentSong!.title} to history');
-        _addToHistory(currentSong!);
-      } else {
-        print('DEBUG: currentSong is null, cannot add to history');
-      }
-    }
-  }
-
   void _addToHistory(Song song) {
-    // Avoid duplicates in history, move latest to front
+    // Tránh trùng lặp trong lịch sử
+    if (_history.isNotEmpty && _history.first.id == song.id) return;
+    
     _history.removeWhere((item) => item.id == song.id);
     _history.insert(0, song);
 
-    // Keep only last 5
     if (_history.length > 5) {
       _history.removeLast();
     }
     _historySubject.add(List.from(_history));
-
-    // Save to Firestore
     _userActivityService.addToHistory(song);
   }
-
-  void updateSong(String url){
-    songUrl = url;
-    prepare(); 
-  }
   
-  // New methods for Playlist Management
-  void setPlaylist(List<Song> songs, int initialIndex) {
+  // Playlist Management mới dùng ConcatenatingAudioSource
+  void setPlaylist(List<Song> songs, int initialIndex) async {
     _playlist = songs;
-    _currentIndex = initialIndex;
-    if (_currentIndex >= 0 && _currentIndex < _playlist.length) {
-      _playCurrentSong();
-    }
-  }
+    
+    // Tạo nguồn âm thanh dạng danh sách
+    final playlistSource = ConcatenatingAudioSource(
+      children: songs.map((song) => AudioSource.uri(
+        Uri.parse(song.source),
+        tag: MediaItem(
+          id: song.id,
+          album: song.albumName ?? "Unknown Album",
+          title: song.title,
+          artist: song.artistName ?? "Unknown Artist",
+          artUri: Uri.parse(song.image),
+        ),
+      )).toList(),
+    );
 
-  void _playCurrentSong() {
-    if (_playlist.isEmpty || _currentIndex < 0 || _currentIndex >= _playlist.length) return;
-    
-    final song = _playlist[_currentIndex];
-    _currentSongController.add(song);
-    songUrl = song.source;
-    
-    // Auto-play when song changes
-    prepare(isNewSong: true); 
+    await player.setAudioSource(playlistSource, initialIndex: initialIndex);
+    player.play();
   }
 
   void skipToNext() {
-    if (_playlist.isEmpty) return;
-    
-    if (_isShuffle) {
-      _currentIndex = Random().nextInt(_playlist.length);
+    if (player.hasNext) {
+      player.seekToNext();
     } else {
-       if (_currentIndex < _playlist.length - 1) {
-        _currentIndex++;
-      } else {
-        // Loop back to start.
-        _currentIndex = 0;
-      }
+      // Loop back to start if at the end
+      player.seek(Duration.zero, index: 0);
     }
-   
-    _playCurrentSong();
   }
 
   void skipToPrevious() {
-    if (_playlist.isEmpty) return;
-    
-    if (_isShuffle) {
-      _currentIndex = Random().nextInt(_playlist.length);
+    if (player.hasPrevious) {
+      player.seekToPrevious();
     } else {
-      if (_currentIndex > 0) {
-        _currentIndex--;
-      } else {
-        _currentIndex = _playlist.length - 1;
-      }
+      // Jump to last song if at the start
+      player.seek(Duration.zero, index: _playlist.length - 1);
     }
-    _playCurrentSong();
   }
 
   void setShuffle(bool enable) {
     _isShuffle = enable;
+    player.setShuffleModeEnabled(enable);
   }
 
   void setLoopMode(LoopMode mode) {
@@ -164,5 +132,6 @@ class AudioPlayerManager {
   void dispose(){
     player.dispose();
     _currentSongController.close();
+    _historySubject.close();
   }
 }
