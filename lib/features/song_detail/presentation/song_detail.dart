@@ -394,7 +394,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       children: [
         // Shuffle with pill background
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             color: _isShuffle ? Colors.white10 : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
