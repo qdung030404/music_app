@@ -3,11 +3,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/app.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import 'core/config/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   
   // Remove splash screen
