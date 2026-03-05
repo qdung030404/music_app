@@ -49,6 +49,7 @@ dependencies:
   get: ^4.7.3
   speech_to_text: ^7.3.0
   avatar_glow: ^3.0.1
+  just_audio_background: ^0.0.1-beta.17
 
 dev_dependencies:
   flutter_test:
