@@ -60,7 +60,12 @@ class FollowedList extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   leading: CircleAvatar(
                     radius: 30,
-                    backgroundImage: NetworkImage(artist.avatar),
+                    backgroundImage: artist.avatar.isNotEmpty
+                        ? NetworkImage(artist.avatar)
+                        : null,
+                    child: artist.avatar.isEmpty
+                        ? const Icon(Icons.person, color: Colors.white54, size: 30)
+                        : null,
                   ),
                   title: Text(
                     artist.name,

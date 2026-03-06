@@ -30,18 +30,25 @@ class AlbumCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      album.image,
-                      height: 160,
-                      width: 160,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        height: 160,
-                        width: 160,
-                        color: Colors.grey[900],
-                        child: const Icon(Icons.album, color: Colors.white54),
-                      ),
-                    ),
+                    child: album.image.isNotEmpty
+                        ? Image.network(
+                            album.image,
+                            height: 160,
+                            width: 160,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              height: 160,
+                              width: 160,
+                              color: Colors.grey[900],
+                              child: const Icon(Icons.album, color: Colors.white54),
+                            ),
+                          )
+                        : Container(
+                            height: 160,
+                            width: 160,
+                            color: Colors.grey[900],
+                            child: const Icon(Icons.album, color: Colors.white54),
+                          ),
                   ),
                   const SizedBox(height: 12),
                   Text(

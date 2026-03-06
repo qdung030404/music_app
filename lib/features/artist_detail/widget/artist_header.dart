@@ -54,11 +54,17 @@ class _ArtistHeaderState extends State<ArtistHeader> {
         Container(
           height: imageHeight,
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(widget.artist.avatar),
-              fit: BoxFit.cover,
-            ),
+            color: Colors.grey[900],
+            image: widget.artist.avatar.isNotEmpty
+                ? DecorationImage(
+                    image: NetworkImage(widget.artist.avatar),
+                    fit: BoxFit.cover,
+                  )
+                : null,
           ),
+          child: widget.artist.avatar.isEmpty
+              ? const Center(child: Icon(Icons.person, color: Colors.white54, size: 100))
+              : null,
         ),
         // Gradient overlay
         Container(

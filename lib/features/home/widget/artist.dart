@@ -58,11 +58,17 @@ class BuildArtist extends StatelessWidget {
               height: 150,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
-                image: DecorationImage(
-                  image: NetworkImage(artist.avatar),
-                  fit: BoxFit.cover,
-                ),
+                color: Colors.grey[900],
+                image: artist.avatar.isNotEmpty
+                    ? DecorationImage(
+                        image: NetworkImage(artist.avatar),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
+              child: artist.avatar.isEmpty
+                  ? const Center(child: Icon(Icons.person, color: Colors.white54, size: 50))
+                  : null,
             ),
             const SizedBox(height: 8),
             Text(

@@ -26,20 +26,26 @@ class SongCard extends StatelessWidget {
           contentPadding: const EdgeInsets.only(left: 24, right: 24),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: FadeInImage.assetNetwork(
-              placeholder: 'assets/itunes_256.png',
-              image: song.image,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/itunes_256.png',
-                  width: 50,
-                  height: 50,
-                );
-              },
-            ),
+            child: song.image.isNotEmpty
+                ? FadeInImage.assetNetwork(
+                    placeholder: 'assets/itunes_256.png',
+                    image: song.image,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/itunes_256.png',
+                        width: 50,
+                        height: 50,
+                      );
+                    },
+                  )
+                : Image.asset(
+                    'assets/itunes_256.png',
+                    width: 50,
+                    height: 50,
+                  ),
           ),
           title: Text(song.title,
             style: TextStyle(

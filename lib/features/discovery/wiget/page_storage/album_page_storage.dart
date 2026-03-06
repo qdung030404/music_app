@@ -53,18 +53,25 @@ class AlbumPageStorage extends StatelessWidget {
                 contentPadding: const EdgeInsets.only(bottom: 16),
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    album.image,
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      width: 60,
-                      height: 60,
-                      color: Colors.grey[900],
-                      child: const Icon(Icons.album, color: Colors.white54),
-                    ),
-                  ),
+                  child: album.image.isNotEmpty
+                      ? Image.network(
+                          album.image,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            width: 60,
+                            height: 60,
+                            color: Colors.grey[900],
+                            child: const Icon(Icons.album, color: Colors.white54),
+                          ),
+                        )
+                      : Container(
+                          width: 60,
+                          height: 60,
+                          color: Colors.grey[900],
+                          child: const Icon(Icons.album, color: Colors.white54),
+                        ),
                 ),
                 title: Text(
                   album.albumTitle,

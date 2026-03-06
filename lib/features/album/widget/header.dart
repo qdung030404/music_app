@@ -27,10 +27,10 @@ class Header extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 60), // Add space for back button in SliverAppBar
+          const SizedBox(height: 80), // Add space for back button in SliverAppBar
           Container(
-            width: 250,
-            height: 250,
+            width: 170,
+            height: 170,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
@@ -42,29 +42,34 @@ class Header extends StatelessWidget {
                 ]),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                album.image,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: Colors.grey[900],
-                  child: const Icon(Icons.album, color: Colors.white54, size: 80),
-                ),
-              ),
+              child: album.image.isNotEmpty
+                  ? Image.network(
+                      album.image,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: Colors.grey[900],
+                        child: const Icon(Icons.album, color: Colors.white54, size: 80),
+                      ),
+                    )
+                  : Container(
+                      color: Colors.grey[900],
+                      child: const Icon(Icons.album, color: Colors.white54, size: 80),
+                    ),
             ),
           ),
-          const SizedBox(height: 24),
-          customText(album.albumTitle, 28, FontWeight.bold),
+          const SizedBox(height: 15),
+          customText(album.albumTitle, 20, FontWeight.bold),
           const SizedBox(height: 8),
-          customText(album.artistDisplay, 18, FontWeight.normal),
+          customText(album.artistDisplay, 16, FontWeight.normal),
           const SizedBox(height: 8),
-          customText('Album', 14, FontWeight.normal),
-          const SizedBox(height: 24),
+          customText('Album', 12, FontWeight.normal),
+          const SizedBox(height: 15),
           HeaderAction(
             album: album,
             onPlayShuffle: onPlayShuffle,
             onDownload: onDownload,
           ),
-          const SizedBox(height: 24),
+
         ],
       ),
     );
@@ -134,8 +139,8 @@ class _HeaderActionState extends State<HeaderAction> {
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.deepPurple,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                backgroundColor: const Color(0xFF06A0B5),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
