@@ -68,7 +68,7 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 520,
+            expandedHeight: MediaQuery.of(context).size.height / 2,
             pinned: true,
             backgroundColor: Colors.black,
             leading: IconButton(
@@ -101,6 +101,7 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
                 }
                 return Column(
                   children: [
+                    SizedBox(height: 8),
                     SongList(
                       songs: playlistSongs,
                       title: 'Bài hát trong playlist',

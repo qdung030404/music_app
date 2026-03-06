@@ -66,7 +66,7 @@ class _DetailPageState extends State<AlbumDetailPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 520,
+            expandedHeight: MediaQuery.of(context).size.height /2,
             pinned: true,
             backgroundColor: Colors.black,
             leading: IconButton(

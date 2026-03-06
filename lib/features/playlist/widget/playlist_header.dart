@@ -30,10 +30,10 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 60),
+            const SizedBox(height: 80),
             Container(
-              width: 220,
-              height: 220,
+              width: 180,
+              height: 180,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: const LinearGradient(
@@ -56,17 +56,17 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
               ),
             ),
             const SizedBox(height: 24),
-            _customText(widget.playlist.playlistName, 28, FontWeight.bold),
+            _customText(widget.playlist.playlistName, 24, FontWeight.bold),
             const SizedBox(height: 8),
-            _customText('Playlist của tôi', 18, FontWeight.normal),
-            const SizedBox(height: 24),
+            _customText('Playlist của tôi', 16, FontWeight.normal),
+            const SizedBox(height: 16),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: widget.songs.isEmpty
                   ? Center(
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                           backgroundColor: const Color(0xFF06A0B5),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -99,7 +99,7 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
                               backgroundColor: const Color(0xFF06A0B5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),

@@ -138,7 +138,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   Center(
                     child: Text(
                       _song.albumDisplay,
@@ -152,7 +152,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   Center(
                     child: Container(
                       width: screenWidth - (padding * 2),
@@ -183,7 +183,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       ),
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 32),
                   
                   // Song Info & Actions
                   Row(
@@ -305,8 +305,8 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
 
         if (processingState == ProcessingState.loading || processingState == ProcessingState.buffering) {
           return Container(
-            width: 80,
-            height: 80,
+            width: 60,
+            height: 60,
             padding: const EdgeInsets.all(16),
             child: const CircularProgressIndicator(color: Color(0xFF06A0B5)),
           );
@@ -314,39 +314,39 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
           return GestureDetector(
             onTap: () => _audioPlayerManager.player.play(),
             child: Container(
-              width: 80,
-              height: 80,
+              width: 60,
+              height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFF06A0B5),
               ),
-              child: const Icon(Icons.play_arrow, color: Colors.white, size: 48),
+              child: const Icon(Icons.play_arrow, color: Colors.white, size: 40),
             ),
           );
         } else if (processingState != ProcessingState.completed) {
           return GestureDetector(
             onTap: () => _audioPlayerManager.player.pause(),
             child: Container(
-              width: 80,
-              height: 80,
+              width: 60,
+              height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFF06A0B5),
               ),
-              child: const Icon(Icons.pause, color: Colors.white, size: 48),
+              child: const Icon(Icons.pause, color: Colors.white, size: 40),
             ),
           );
         } else {
           return GestureDetector(
             onTap: () => _audioPlayerManager.player.seek(Duration.zero),
             child: Container(
-              width: 80,
-              height: 80,
+              width: 60,
+              height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFF06A0B5),
               ),
-              child: const Icon(Icons.replay, color: Colors.white, size: 48),
+              child: const Icon(Icons.replay, color: Colors.white, size: 40),
             ),
           );
         }
@@ -389,17 +389,16 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
   }
 
   Widget _mediaButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Shuffle with pill background
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: _isShuffle ? Colors.white10 : Colors.transparent,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: IconButton(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: _isShuffle ? Colors.white10 : Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child:Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
             onPressed: _setShuffle,
             icon: Icon(
               Icons.shuffle,
@@ -407,29 +406,28 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               size: 24,
             ),
           ),
-        ),
-        
-        IconButton(
-          onPressed: setPreviousSong,
-          icon: const Icon(Icons.skip_previous, color: Colors.white, size: 40),
-        ),
-        
-        _playerState(),
-        
-        IconButton(
-          onPressed: setNextSong,
-          icon: const Icon(Icons.skip_next, color: Colors.white, size: 40),
-        ),
-
-        IconButton(
-          onPressed: _setRepeatOption,
-          icon: Icon(
-            _repeatingIcon(),
-            color: _loopMode == LoopMode.off ? Colors.white70 : const Color(0xFF06A0B5),
-            size: 24,
+          IconButton(
+            onPressed: setPreviousSong,
+            icon: const Icon(Icons.skip_previous, color: Colors.white, size: 32),
           ),
-        ),
-      ],
+
+          _playerState(),
+
+          IconButton(
+            onPressed: setNextSong,
+            icon: const Icon(Icons.skip_next, color: Colors.white, size: 32),
+          ),
+
+          IconButton(
+            onPressed: _setRepeatOption,
+            icon: Icon(
+              _repeatingIcon(),
+              color: _loopMode == LoopMode.off ? Colors.white70 : const Color(0xFF06A0B5),
+              size: 24,
+            ),
+          ),
+        ],
+      )
     );
   }
 }
