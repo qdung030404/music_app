@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/artist_entity.dart';
 import '../widget/artist_header.dart';
-import '../widget/song_list.dart';
+import '../../widget/song_list.dart';
 import '../viewmodels/artist_detail_view_model.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/domain/entities/album_entity.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/features/artist_detail/widget/song_list.dart';
 import '../../managers/audio_player_manager.dart';
+import '../../widget/song_list.dart';
 import '../viewmodels/playlist_view_model.dart';
 import '../widget/playlist_header.dart';
 
