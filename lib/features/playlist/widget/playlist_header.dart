@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
+import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
 import '../../../domain/entities/song_entity.dart';
 import '../presentation/song_list_page.dart';
 
@@ -88,9 +89,17 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context, 
+                              builder: (context) => PlaylistMenuBottomSheet(
+                                playlist: widget.playlist, 
+                                popAfterDelete: true,
+                              ),
+                            );
+                          },
                           icon: const Icon(
-                            Icons.arrow_circle_down_outlined,
+                            Icons.more_horiz,
                             size: 32,
                             color: Colors.white,
                           ),

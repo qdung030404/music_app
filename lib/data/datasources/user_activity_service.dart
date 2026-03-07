@@ -271,7 +271,23 @@ class UserActivityService {
       print('UserActivityService Error: $e');
     }
   }
-
+  Future<void> updatePlaylistName(String playlistId, String newName) async {
+    final uid = _userId;
+    if (uid == null) return;
+    try {
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('playlists')
+          .doc(playlistId)
+          .update({
+        'name': newName,
+        // Không cập nhật timestamp nếu muốn giữ ngày tạo gốc
+      });
+    } catch (e) {
+      print('Error updating playlist: $e');
+    }
+  }
   Stream<List<Playlist>> getPlaylistStream() {
     final uid = _userId;
     if (uid == null) return Stream.value([]);

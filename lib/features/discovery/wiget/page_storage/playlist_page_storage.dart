@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:music_app/data/model/playlist.dart';
+import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
 import '../../../playlist/presentation/playlist_detail.dart';
 
 import '../../../../data/datasources/user_activity_service.dart';
@@ -48,34 +49,39 @@ class PlaylistPageStorage extends StatelessWidget {
               }
 
               final playlist = playlists[index - 1];
-              return ListTile(
-                contentPadding: const EdgeInsets.only(bottom: 16),
-                leading: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(Icons.playlist_play, color: Colors.grey, size: 30),
-                ),
-                title: Text(
-                  playlist.playlistName,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-
-                onTap: () {
-                  if (onPlaylistTap != null) {
-                    onPlaylistTap!(playlist);
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PlaylistDetail(playlist: playlist),
-                      ),
-                    );
-                  }
+              return GestureDetector(
+                onLongPress:(){
+                  showModalBottomSheet(context: context, builder: (context) => PlaylistMenuBottomSheet(playlist: playlist));
                 },
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                  leading: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(Icons.playlist_play, color: Colors.grey, size: 30),
+                  ),
+                  title: Text(
+                    playlist.playlistName,
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+
+                  onTap: () {
+                    if (onPlaylistTap != null) {
+                      onPlaylistTap!(playlist);
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlaylistDetail(playlist: playlist),
+                        ),
+                      );
+                    }
+                  },
+                ),
               );
             },
           );
