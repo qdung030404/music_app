@@ -68,5 +68,13 @@
 		<string>speech recognition</string>
 		<key>NSMicrophoneUsageDescriptionn</key>
 		<string>access to the microphone</string>
+		
+		<!-- Hỗ trợ hiển thị thư mục của ứng dụng trong app Tệp (Files) của iOS -->
+		<key>UIFileSharingEnabled</key>
+		<true/>
+		<key>LSSupportsOpeningDocumentsInPlace</key>
+		<true/>
+		<key>UISupportsDocumentBrowser</key>
+		<true/>
 	</dict>
 </plist>
