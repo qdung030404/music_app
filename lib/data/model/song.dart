@@ -29,4 +29,18 @@ class SongModel extends Song {
           : int.tryParse(json['duration']?.toString() ?? '0') ?? 0,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'albumId': albumId,
+      'artistId': artistId,
+      'albumName': albumName,
+      'artistName': artistName,
+      'source': source,
+      'image': image,
+      'duration': duration,
+    };
+  }
 }
