@@ -94,6 +94,7 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                               context: context, 
                               builder: (context) => PlaylistMenuBottomSheet(
                                 playlist: widget.playlist, 
+                                songs: widget.songs,
                                 popAfterDelete: true,
                               ),
                             );

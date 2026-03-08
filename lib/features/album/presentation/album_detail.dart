@@ -75,6 +75,7 @@ class _DetailPageState extends State<AlbumDetailPage> {
             flexibleSpace: FlexibleSpaceBar(
               background: Header(
                 album: widget.album,
+                songs: albumSongs,
                 onPlayShuffle: () {
                   // Logic to play shuffle if needed
                 },

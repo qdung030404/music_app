@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/album_entity.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
+import '../../../domain/entities/song_entity.dart';
+import '../../widget/download_song.dart';
 
 
 class Header extends StatelessWidget {
   final Album album;
+  final List<Song> songs;
   final VoidCallback? onPlayShuffle;
   final VoidCallback? onFavorite;
   final VoidCallback? onDownload;
@@ -13,6 +16,7 @@ class Header extends StatelessWidget {
   const Header({
     super.key,
     required this.album,
+    required this.songs,
     this.onPlayShuffle,
     this.onFavorite,
     this.onDownload,
@@ -66,6 +70,7 @@ class Header extends StatelessWidget {
           const SizedBox(height: 15),
           HeaderAction(
             album: album,
+            songs: songs,
             onPlayShuffle: onPlayShuffle,
             onDownload: onDownload,
           ),
@@ -78,12 +83,14 @@ class Header extends StatelessWidget {
 
 class HeaderAction extends StatefulWidget {
   final Album album;
+  final List<Song> songs;
   final VoidCallback? onPlayShuffle;
   final VoidCallback? onDownload;
 
   const HeaderAction({
     super.key,
     required this.album,
+    required this.songs,
     this.onPlayShuffle,
     this.onDownload,
   });
@@ -132,7 +139,13 @@ class _HeaderActionState extends State<HeaderAction> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            onPressed: widget.onDownload,
+            onPressed: (){
+              Navigator.push(
+                  context, MaterialPageRoute(
+                  builder: (context) => DownloadSong(songs: widget.songs,)
+              )
+              );
+            },
             icon: const Icon(Icons.arrow_circle_down_outlined, size: 28, color: Colors.white),
           ),
           const SizedBox(width: 24),

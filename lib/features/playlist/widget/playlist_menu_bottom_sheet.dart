@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
+import 'package:music_app/features/widget/download_song.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
 import '../presentation/song_list_page.dart';
+import '../../../domain/entities/song_entity.dart';
 
 class PlaylistMenuBottomSheet extends StatelessWidget {
   final Playlist playlist;
-  final bool popAfterDelete; // Thêm biến này
+  final List<Song>? songs; // Chuyển thành optional
+  final bool popAfterDelete;
 
   const PlaylistMenuBottomSheet({
     super.key,
     required this.playlist,
-    this.popAfterDelete = false, // Mặc định là false
+    this.songs, // Không còn required
+    this.popAfterDelete = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final _userActivityService = UserActivityService();
+    final userActivityService = UserActivityService();
     return Container(
       height: MediaQuery.of(context).size.height * 0.45,
       decoration: BoxDecoration(
@@ -66,10 +70,17 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
                     ),
                   );
                 }),
-                _buildMenuItem(Icons.edit, 'Chỉnh sửa tên playlist', () => _showUpdatePlaylistDialog(context, _userActivityService)),
-                _buildMenuItem(Icons.arrow_circle_down, 'Chọn bài hát để tải', () {}),
+                _buildMenuItem(Icons.edit, 'Chỉnh sửa tên playlist', () => _showUpdatePlaylistDialog(context, userActivityService)),
+                _buildMenuItem(Icons.arrow_circle_down, 'Chọn bài hát để tải', () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => DownloadSong(songs: songs ?? [])
+                    )
+                  );
+                }),
                 _buildMenuItem(Icons.delete_outline, 'Xóa playlist', () async {
-                  await _userActivityService.removeItem(playlist.id, 'playlists');
+                  await userActivityService.removeItem(playlist.id, 'playlists');
                   if (context.mounted) {
                     Navigator.pop(context); // Luôn đóng BottomSheet
                     
