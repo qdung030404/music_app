@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../domain/entities/song_entity.dart';
 import '../../data/model/song.dart';
 
 class DownloadService {
@@ -13,12 +13,16 @@ class DownloadService {
   // Yêu cầu quyền lưu trữ (Storage permission)
   Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
-      final status = await Permission.storage.request();
-      if (status.isGranted) return true;
-      
-      // Cho Android 13+ (API 33+) có thể cần quyền audio thay vì storage
-      final audioStatus = await Permission.audio.request();
-      return audioStatus.isGranted;
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+
+      if (androidInfo.version.sdkInt >= 33) {
+        // Android 13 trở lên
+        final audioStatus = await Permission.audio.request();
+        return audioStatus.isGranted;
+      } else {
+        // Android 12 trở xuống
+        final status = await Permission.storage.request();
+        return status.isGranted;      }
     }
     return true; // iOS thường được cấp thông qua Info.plist, nhưng có thể check thêm nếu cần
   }
