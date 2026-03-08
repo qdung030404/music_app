@@ -5,6 +5,8 @@ import 'package:music_app/data/model/song.dart';
 import 'package:music_app/features/managers/audio_player_manager.dart';
 import 'package:music_app/features/managers/favorite_manager.dart';
 
+import '../../../core/services/download_service.dart';
+
 class SongDetail extends StatelessWidget {
   const SongDetail({super.key, required this.songs, required this.playingSong});
   final List<Song> songs;
@@ -63,6 +65,31 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
 
     _loadFavoriteState(widget.playingSong.id);
     _isShuffle = _audioPlayerManager.isShuffle;
+  }
+
+  Future<void> _handleDownload(Song song) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Đang tải ${song.title}...')),
+    );
+
+    final downloadService = DownloadService();
+    final status = await downloadService.downloadSong(song);
+
+    if (mounted) {
+      if (status == 1) { // 1 = Tải thành công
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Tải xuống hoàn tất!')),
+        );
+      } else if (status == 2) { // 2 = Đã tồn tại
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Bài hát đã có trong máy!')),
+        );
+      } else { // 0 = Lỗi
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Tải bài hát thất bại.')),
+        );
+      }
+    }
   }
 
   Future<void> _handleToggleFavorite(Song song) async {
@@ -220,7 +247,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: ()=> _handleDownload(_song),
                             icon: const Icon(Icons.download_outlined, color: Colors.white70, size: 28),
                           ),
                           IconButton(

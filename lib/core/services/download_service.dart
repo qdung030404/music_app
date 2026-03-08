@@ -43,17 +43,17 @@ class DownloadService {
     return directory?.path;
   }
 
-  // Tải 1 bài hát
-  Future<bool> downloadSong(Song song, {Function(int, int)? onReceiveProgress}) async {
+  // Tải 1 bài hát. Trả về: 1 (Tải thành công), 2 (Đã tồn tại), 0 (Lỗi)
+  Future<int> downloadSong(Song song, {Function(int, int)? onReceiveProgress}) async {
     try {
       final hasPermission = await _requestPermission();
       if (!hasPermission) {
         print('Không có quyền lưu trữ');
-        return false;
+        return 0;
       }
 
       final dirPath = await _getDownloadDirectory();
-      if (dirPath == null) return false;
+      if (dirPath == null) return 0;
 
       // Xử lý tên file (lọc các ký tự đặc biệt)
       final safeTitle = song.title.replaceAll(RegExp(r'[\\/:*?"<>|]'), ' ');
@@ -62,7 +62,7 @@ class DownloadService {
       // Kiểm tra file đã tồn tại chưa
       if (File(savePath).existsSync()) {
         print('Bài hát đã tồn tại: $savePath');
-        return true; // Đã tải rồi
+        return 2; // 2 đại diện cho "Đã tồn tại"
       }
 
       await _dio.download(
@@ -75,10 +75,10 @@ class DownloadService {
       await _saveSongMetadata(song, savePath);
 
       print('Tải thành công: $savePath');
-      return true;
+      return 1; // 1 đại diện cho "Tải thành công"
     } catch (e) {
       print('Lỗi khi tải bài hát ${song.title}: $e');
-      return false;
+      return 0; // 0 đại diện cho "Lỗi"
     }
   }
 
@@ -90,8 +90,8 @@ class DownloadService {
   }) async {
     int successCount = 0;
     for (int i = 0; i < songs.length; i++) {
-        final success = await downloadSong(songs[i]);
-        if (success) successCount++;
+        final result = await downloadSong(songs[i]);
+        if (result == 1) successCount++;
         
         if (onProgress != null) {
           onProgress(i + 1, songs.length);
