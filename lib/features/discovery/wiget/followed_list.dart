@@ -3,7 +3,7 @@ import 'package:music_app/data/model/artist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:music_app/features/discovery/presentation/artist_list.dart';
 import '../../../data/datasources/user_activity_service.dart';
-import '../../artist_detail/presentation/artist_detail.dart';
+import '../../artist/presentation/artist_detail.dart';
 
 class FollowedList extends StatelessWidget {
   const FollowedList({super.key});

@@ -4,7 +4,7 @@ import 'package:music_app/domain/entities/artist_entity.dart';
 import 'package:music_app/domain/entities/album_entity.dart';
 import 'package:music_app/features/widget/song_card.dart';
 import '../../album/presentation/album_detail.dart';
-import '../../artist_detail/presentation/artist_detail.dart';
+import '../../artist/presentation/artist_detail.dart';
 
 class SearchResultsList extends StatelessWidget {
   final List<Song> filteredSongs;

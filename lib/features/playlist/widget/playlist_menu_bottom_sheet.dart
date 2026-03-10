@@ -3,18 +3,19 @@ import 'package:music_app/domain/entities/playlist_entity.dart';
 import 'package:music_app/features/widget/download_song.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
+import '../../widget/buildMenuItem.dart';
 import '../presentation/song_list_page.dart';
 import '../../../domain/entities/song_entity.dart';
 
 class PlaylistMenuBottomSheet extends StatelessWidget {
   final Playlist playlist;
-  final List<Song>? songs; // Chuyển thành optional
+  final List<Song>? songs;
   final bool popAfterDelete;
 
   const PlaylistMenuBottomSheet({
     super.key,
     required this.playlist,
-    this.songs, // Không còn required
+    this.songs,
     this.popAfterDelete = false,
   });
 
@@ -62,7 +63,7 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                _buildMenuItem(Icons.add_circle_outline, 'Thêm bài hát', (){
+                buildMenuItem(Icons.add_circle_outline, 'Thêm bài hát', (){
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -70,16 +71,18 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
                     ),
                   );
                 }),
-                _buildMenuItem(Icons.edit, 'Chỉnh sửa tên playlist', () => _showUpdatePlaylistDialog(context, userActivityService)),
-                _buildMenuItem(Icons.arrow_circle_down, 'Chọn bài hát để tải', () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (context) => DownloadSong(songs: songs ?? [])
-                    )
-                  );
-                }),
-                _buildMenuItem(Icons.delete_outline, 'Xóa playlist', () async {
+                buildMenuItem(Icons.edit, 'Chỉnh sửa tên playlist', () => _showUpdatePlaylistDialog(context, userActivityService)),
+                if (songs != null && songs!.isNotEmpty)
+                  buildMenuItem(Icons.arrow_circle_down, 'Chọn bài hát để tải', () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DownloadSong(songs: songs!)
+                        )
+                    );
+                  }
+                ),
+                buildMenuItem(Icons.delete_outline, 'Xóa playlist', () async {
                   await userActivityService.removeItem(playlist.id, 'playlists');
                   if (context.mounted) {
                     Navigator.pop(context); // Luôn đóng BottomSheet
@@ -148,11 +151,3 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
     );
   }
 }
-Widget _buildMenuItem(IconData icon, String title, VoidCallback onTap) {
-  return ListTile(
-    leading: Icon(icon, color: Colors.white),
-    title: Text(title, style: const TextStyle(color: Colors.white)),
-    onTap: onTap,
-  );
-}
-

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import '../../../data/datasources/user_activity_service.dart';
 import '../../../domain/entities/artist_entity.dart';
@@ -50,7 +50,6 @@ class _ArtistHeaderState extends State<ArtistHeader> {
 
     return Stack(
       children: [
-        // Background image
         Container(
           height: imageHeight,
           decoration: BoxDecoration(
@@ -66,7 +65,6 @@ class _ArtistHeaderState extends State<ArtistHeader> {
               ? const Center(child: Icon(Icons.person, color: Colors.white54, size: 100))
               : null,
         ),
-        // Gradient overlay
         Container(
           height: imageHeight,
           decoration: BoxDecoration(
@@ -82,7 +80,6 @@ class _ArtistHeaderState extends State<ArtistHeader> {
             ),
           ),
         ),
-        // Artist info
         Positioned(
           left: 16,
           right: 16,
@@ -102,7 +99,6 @@ class _ArtistHeaderState extends State<ArtistHeader> {
             ],
           ),
         ),
-        // Action buttons
         Positioned(
           left: 16,
           right: 16,
