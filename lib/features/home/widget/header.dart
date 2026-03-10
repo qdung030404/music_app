@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../setting/setting.dart';
+
 class BuildHeader extends StatelessWidget {
 
   const BuildHeader({super.key});
@@ -40,7 +42,14 @@ class BuildHeader extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.settings, color: Colors.white)),
+        IconButton(
+          icon: const Icon(Icons.settings, color: Colors.white),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Setting())
+            );
+          },),
         IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none, color: Colors.white)),
         IconButton(onPressed: (){FirebaseAuth.instance.signOut();}, icon: const Icon(Icons.logout, color: Colors.white))
       ],
