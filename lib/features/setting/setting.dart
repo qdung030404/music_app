@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/features/setting/download_setting.dart';
 import 'package:music_app/features/widget/buildMenuItem.dart';
 
 class Setting extends StatelessWidget {
@@ -28,15 +27,6 @@ class Setting extends StatelessWidget {
            mainAxisAlignment: MainAxisAlignment.start,
            children: [
              buildMenuItem(Icons.brush_outlined, 'Cá nhân hóa', () {}),
-             buildMenuItem(
-               Icons.arrow_circle_down,
-               'Tải nhạc', () => Navigator.push(
-                 context,
-                 MaterialPageRoute(builder: (context) =>
-                   DownloadSetting()
-                 )
-               )
-             ),
              buildMenuItem(Icons.headphones, 'Tai nghe & Bluetooth', () {}),
              buildMenuItem(Icons.notifications_none_outlined, 'Thông báo', () {}),
              Padding(
