@@ -32,8 +32,8 @@ class Header extends StatelessWidget {
         children: [
           const SizedBox(height: 80), // Add space for back button in SliverAppBar
           Container(
-            width: 170,
-            height: 170,
+            width: MediaQuery.of(context).size.width/ 2,
+            height: MediaQuery.of(context).size.width/ 2,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
              ),
@@ -139,20 +139,24 @@ class _HeaderActionState extends State<HeaderAction> {
               )
               );
             },
-            icon: const Icon(Icons.arrow_circle_down_outlined, size: 28, color: Colors.white),
+            icon: const Icon(Icons.arrow_circle_down_outlined, size: 28),
           ),
           const SizedBox(width: 24),
           Expanded(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                backgroundColor: const Color(0xFF06A0B5),
+                backgroundColor: Colors.deepPurpleAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               onPressed: widget.onPlayShuffle,
-              child: customText('PHÁT NGẪU NHIÊN', 16, FontWeight.bold),
+              child: Text('PHÁT NGẪU NHIÊN',
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
             ),
           ),
           const SizedBox(width: 24),
@@ -177,7 +181,6 @@ Widget customText(String text, double? size, FontWeight? fontWeight) {
     overflow: TextOverflow.ellipsis,
     style: TextStyle(
       fontSize: size,
-      color: Colors.white,
       fontWeight: fontWeight,
     ),
   );

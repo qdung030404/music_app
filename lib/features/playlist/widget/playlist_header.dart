@@ -32,8 +32,8 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
           children: [
             const SizedBox(height: 80),
             Container(
-              width: 180,
-              height: 180,
+              width: MediaQuery.of(context).size.width / 2,
+              height: MediaQuery.of(context).size.width / 2,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: const LinearGradient(

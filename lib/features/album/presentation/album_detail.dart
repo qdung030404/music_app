@@ -30,9 +30,10 @@ class AlbumDetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<AlbumDetailPage> {
+  late ScrollController _scrollController;
   late SongViewModel _viewModel;
   List<Song> albumSongs = [];
-
+  bool _showTitle = false;
 
   @override
   void initState() {
@@ -40,7 +41,18 @@ class _DetailPageState extends State<AlbumDetailPage> {
     _viewModel = SongViewModel(albumId: widget.album.id);
     _observeData();
     _viewModel.loadAlbumSongs();
-    
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 80 && !_showTitle) {
+        setState(() {
+          _showTitle = true;
+        });
+      } else if (_scrollController.offset <= 80 && _showTitle) {
+        setState(() {
+          _showTitle = false;
+        });
+      }
+    });
   }
 
   void _observeData() {
@@ -62,10 +74,19 @@ class _DetailPageState extends State<AlbumDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           SliverAppBar(
             expandedHeight: MediaQuery.of(context).size.height /2,
             pinned: true,
+            title: AnimatedOpacity(
+              opacity: _showTitle ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 200),
+              child: Text(
+                widget.album.albumTitle,
+                style: const TextStyle( fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context),

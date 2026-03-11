@@ -25,9 +25,11 @@ class ArtistDetailState extends StatefulWidget {
 }
 
 class _ArtistDetailStateState extends State<ArtistDetailState> {
+  late ScrollController _scrollController;
   late ArtistDetailViewModel _viewModel;
   List<Song> artistSongs = [];
   List<Album> artistAlbums = [];
+  bool _showTitle = false;
 
   @override
   void initState() {
@@ -35,6 +37,18 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
     _viewModel = ArtistDetailViewModel(artistId: widget.artist.id);
     _viewModel.loadArtistData();
     _observeData();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 80 && !_showTitle) {
+        setState(() {
+          _showTitle = true;
+        });
+      } else if (_scrollController.offset <= 80 && _showTitle) {
+        setState(() {
+          _showTitle = false;
+        });
+      }
+    });
   }
 
   void _observeData() {
@@ -57,6 +71,7 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
   @override
   void dispose() {
     _viewModel.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -64,6 +79,14 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
   Widget build(BuildContext context) {
     return Scaffold(
     appBar: AppBar(
+      title: AnimatedOpacity(
+          opacity: _showTitle ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 200),
+          child: Text(
+            widget.artist.name,
+            style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+      ),
       leading: IconButton(
         icon:Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context),
@@ -77,6 +100,7 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
     ),
     body: SafeArea(
         child: SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
