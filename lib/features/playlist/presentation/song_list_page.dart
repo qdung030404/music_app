@@ -56,12 +56,10 @@ class _SongListPageState extends State<SongListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -77,7 +75,6 @@ class _SongListPageState extends State<SongListPage> {
                 hintStyle: const TextStyle(color: Colors.grey),
                 prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 filled: true,
-                fillColor: Colors.grey[900],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
@@ -92,7 +89,7 @@ class _SongListPageState extends State<SongListPage> {
                     ? const Center(
                         child: Text(
                           'Không tìm thấy bài hát nào',
-                          style: TextStyle(color: Colors.white70),
+                          style: TextStyle(),
                         ),
                       )
                     : ListView.builder(
@@ -133,7 +130,6 @@ class _SongListPageState extends State<SongListPage> {
                   child: const Text(
                     'XONG',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -222,16 +218,15 @@ class _AddSongCard extends StatelessWidget {
       ),
       title: Text(
         song.title,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(),
       ),
       subtitle: Text(
         song.artistDisplay,
-        style: const TextStyle(color: Colors.white70),
+        style: const TextStyle(),
       ),
       trailing: IconButton(
         icon: Icon(
           isSelected ? Icons.check_circle : Icons.add_circle_outline,
-          color: isSelected ? Colors.green : Colors.white,
           size: 28,
         ),
         onPressed: onTap,

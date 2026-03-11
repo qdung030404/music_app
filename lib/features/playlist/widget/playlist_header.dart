@@ -26,7 +26,6 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
       physics: const NeverScrollableScrollPhysics(),
       child: Container(
         width: double.infinity,
-        color: Colors.black,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -42,13 +41,7 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 15,
-                  )
-                ],
+
               ),
               child: const Icon(
                 Icons.playlist_play,
@@ -82,7 +75,13 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                           );
                         },
                         icon: const Icon(Icons.add, color: Colors.white),
-                        label: _customText('THÊM BÀI HÁT', 16, FontWeight.bold),
+                        label: Text('THÊM BÀI HÁT',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
                       ),
                     )
                   : Row(
@@ -102,7 +101,6 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                           icon: const Icon(
                             Icons.more_horiz,
                             size: 32,
-                            color: Colors.white,
                           ),
                         ),
                         const SizedBox(width: 32),
@@ -110,13 +108,19 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 8),
-                              backgroundColor: const Color(0xFF06A0B5),
+                              backgroundColor: Colors.deepPurpleAccent,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
                             ),
                             onPressed: widget.onPlayAll,
-                            child: _customText('PHÁT TẤT CẢ', 16, FontWeight.bold),
+                            child: Text('PHÁT TẤT CẢ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 32),
@@ -132,7 +136,6 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                           icon: const Icon(
                             Icons.add_circle_outline,
                             size: 32,
-                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -155,7 +158,6 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         fontSize: size,
-        color: Colors.white,
         fontWeight: fontWeight,
       ),
     );

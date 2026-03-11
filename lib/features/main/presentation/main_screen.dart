@@ -40,10 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
         CupertinoTabScaffold(
           controller: _controller,
           tabBar: CupertinoTabBar(
-            backgroundColor: Colors.black,
             border: const Border(
               top: BorderSide(
-                color: Colors.white,
                 width: 0.2,
               ),
             ),

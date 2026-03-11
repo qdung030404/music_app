@@ -63,12 +63,10 @@ class _ArtistListState extends State<ArtistList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -78,13 +76,11 @@ class _ArtistListState extends State<ArtistList> {
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               onChanged: _filterArtists,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(),
               decoration: InputDecoration(
                 hintText: 'Tìm kiếm nghệ sĩ...',
-                hintStyle: const TextStyle(color: Colors.grey),
                 prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 filled: true,
-                fillColor: Colors.grey[900],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
@@ -99,7 +95,7 @@ class _ArtistListState extends State<ArtistList> {
                     ? const Center(
                         child: Text(
                           'Không tìm thấy nghệ sĩ nào',
-                          style: TextStyle(color: Colors.white70),
+                          style: TextStyle(),
                         ),
                       )
                     : GridView.builder(
@@ -147,7 +143,6 @@ class _ArtistListState extends State<ArtistList> {
                   child: Text(
                     'XONG',
                     style: const TextStyle(
-                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -228,7 +223,7 @@ class _ArtistCard extends StatelessWidget {
                   ),
                   child: artist.avatar.isEmpty
                       ? const Center(
-                          child: Icon(Icons.person, color: Colors.white, size: 40))
+                          child: Icon(Icons.person, size: 40))
                       : null,
                 ),
                 if (isSelected)
@@ -255,7 +250,6 @@ class _ArtistCard extends StatelessWidget {
           Text(
             artist.name,
             style: const TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

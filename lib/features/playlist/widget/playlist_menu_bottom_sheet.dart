@@ -25,7 +25,7 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.45,
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: Colors.grey[400],
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -49,7 +49,6 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
             ),
             title: Text(playlist.playlistName,
               style: TextStyle(
-                color: Colors.white,
                   fontWeight: FontWeight.bold
               ),
             ),
@@ -110,26 +109,28 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
-        title: const Text('Chỉnh sửa tên playlist', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey.shade900
+            : Colors.grey.shade200,
+        title: const Text('Chỉnh sửa tên playlist', style: TextStyle()),
         content: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: TextField(
             controller: controller,
             autofocus: true,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(),
             decoration: const InputDecoration(
               hintText: 'Tên playlist',
               hintStyle: TextStyle(color: Colors.grey),
               enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+              focusedBorder: UnderlineInputBorder(borderSide: BorderSide()),
             ),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('HỦY', style: TextStyle(color: Colors.grey)),
+            child: const Text('HỦY', style: TextStyle()),
           ),
           TextButton(
             onPressed: () async {
@@ -144,7 +145,7 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
 
               }
             },
-            child: const Text('THAY ĐỔI', style: TextStyle(color: Colors.deepPurple)),
+            child: const Text('THAY ĐỔI', style: TextStyle()),
           ),
         ],
       ),

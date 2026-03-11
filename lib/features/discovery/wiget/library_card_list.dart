@@ -78,7 +78,7 @@ class LibraryCardList extends StatelessWidget {
         height: 150,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.grey[800]
+          border: Border.all(color: Colors.black),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

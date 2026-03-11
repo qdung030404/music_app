@@ -37,81 +37,67 @@ class _FollowArtistState extends State<FollowArtist> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF06A0B5), Colors.black],
-            stops: [0.01, 0.15]
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: AnimatedOpacity(
+          opacity: _showTitle ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 200),
+          child: const Text(
+            'Nghệ sĩ',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.more_horiz),
+          ),
+        ],
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: _showTitle ? Colors.black.withOpacity(0.8) : Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: AnimatedOpacity(
-            opacity: _showTitle ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 200),
-            child: const Text(
-              'Nghệ sĩ',
-              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.more_horiz, color: Colors.white),
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 32,),
-                  const Center(
-                    child: Text('Nghệ sĩ',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 32,),
+                const Center(
+                  child: Text('Nghệ sĩ',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  StreamBuilder<List<Artist>>(
-                      stream: UserActivityService().getFollowedArtist(),
-                      builder: (context, snapshot) {
-                        final count = snapshot.data?.length ?? 0;
-                        if(count > 0){
-                          return Center(
-                            child: Text('$count nghệ sĩ • đã quan tâm',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white,
-                              ),
+                ),
+                StreamBuilder<List<Artist>>(
+                    stream: UserActivityService().getFollowedArtist(),
+                    builder: (context, snapshot) {
+                      final count = snapshot.data?.length ?? 0;
+                      if(count > 0){
+                        return Center(
+                          child: Text('$count nghệ sĩ • đã quan tâm',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.normal,
                             ),
-                          );
-                        }
-                        return SizedBox(height: 8);
+                          ),
+                        );
                       }
-                  ),
-                  const SizedBox(height: 32),
-                  const FollowedList(),
-                  const SizedBox(height: 100),
-                ],
-              ),
+                      return SizedBox(height: 8);
+                    }
+                ),
+                const SizedBox(height: 32),
+                const FollowedList(),
+                const SizedBox(height: 100),
+              ],
             ),
           ),
         ),

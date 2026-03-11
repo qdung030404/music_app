@@ -9,47 +9,36 @@ class DiscoveryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF06A0B5), Colors.black],
-            stops: [0.01, 0.15]
-        ),
-      ),
-      child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(
-                    top: 32, right: 16, bottom: 8, left: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Thư viện',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        decoration: TextDecoration.none,
-                      ),
+    return SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(
+                  top: 32, right: 16, bottom: 8, left: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Thư viện',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none,
                     ),
+                  ),
 
-                  ],
-                ),
+                ],
               ),
-              const LibraryCardList(),
-              const History(),
-              const SizedBox(
-                height: 400, // Adjust height as needed
-                child: Albumplaylist(),
-              ),
-            ],
-          )
-      ),
+            ),
+            const LibraryCardList(),
+            const History(),
+            const SizedBox(
+              height: 400, // Adjust height as needed
+              child: Albumplaylist(),
+            ),
+          ],
+        )
     );
   }
 }

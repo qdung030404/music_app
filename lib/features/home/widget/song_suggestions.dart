@@ -53,7 +53,6 @@ class _SongSuggestionsState extends State<SongSuggestions> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white
                 ),
               ),
             ),
@@ -67,10 +66,9 @@ class _SongSuggestionsState extends State<SongSuggestions> {
                       ),
                     ),
                     onPressed: _playAll,
-                    icon: Icon(Icons.play_arrow, color: Colors.white,),
+                    icon: Icon(Icons.play_arrow,),
                     label: Text('Phát tất cả',
                       style: TextStyle(
-                        color: Colors.white,
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -84,7 +82,7 @@ class _SongSuggestionsState extends State<SongSuggestions> {
                       ),
                     ),
                     onPressed: _shuffleSongs,
-                    icon: Icon(Icons.refresh_sharp, color: Colors.white,),
+                    icon: Icon(Icons.refresh_sharp),
                   ),
                 ]
             )

@@ -42,15 +42,10 @@ class _MiniPlayerState extends State<MiniPlayer> {
             height: 64,
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFF2E2E40), // Dark color matching theme
+              color: Theme.of(context).brightness == Brightness.dark 
+                  ? Colors.grey.shade900 
+                  : Colors.grey.shade200,
               borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                 ),
-              ],
             ),
             child: Row(
               children: [
@@ -82,7 +77,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -102,7 +96,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 // Controls
                 // Prev
                 IconButton(
-                  icon: const Icon(Icons.skip_previous, color: Colors.white),
+                  icon: const Icon(Icons.skip_previous),
                   onPressed: () => _audioPlayerManager.skipToPrevious(),
                 ),
                 // Play/Pause
@@ -120,17 +114,17 @@ class _MiniPlayerState extends State<MiniPlayer> {
                          height: 48, 
                          child: Padding(
                            padding: EdgeInsets.all(12),
-                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white,),
+                           child: CircularProgressIndicator(strokeWidth: 2,),
                          ),
                        );
                      } else if (playing != true) {
                        return IconButton(
-                         icon: const Icon(Icons.play_arrow, color: Colors.white),
+                         icon: const Icon(Icons.play_arrow),
                          onPressed: _audioPlayerManager.player.play,
                        );
                      } else {
                        return IconButton(
-                         icon: const Icon(Icons.pause, color: Colors.white),
+                         icon: const Icon(Icons.pause),
                          onPressed: _audioPlayerManager.player.pause,
                        );
                      }
@@ -138,7 +132,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 ),
                 // Next
                 IconButton(
-                  icon: const Icon(Icons.skip_next, color: Colors.white),
+                  icon: const Icon(Icons.skip_next),
                   onPressed: () => _audioPlayerManager.skipToNext(),
                 ),
               ],

@@ -63,17 +63,15 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    backgroundColor: Colors.black,
     appBar: AppBar(
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        icon:Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context),
       ),
-      backgroundColor: Colors.black,
       actions: [
         IconButton(
             onPressed: (){},
-            icon: Icon(Icons.more_horiz, color: Colors.white)
+            icon: Icon(Icons.more_horiz)
         )
       ],
     ),

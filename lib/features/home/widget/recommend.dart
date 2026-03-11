@@ -20,7 +20,7 @@ class BuildRecommend extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: const Text(
             'Recommended',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 12),
@@ -74,7 +74,6 @@ class BuildRecommend extends StatelessWidget {
               style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white
               ),
             ),
             Text(

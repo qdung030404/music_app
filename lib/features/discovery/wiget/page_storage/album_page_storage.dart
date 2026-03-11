@@ -62,24 +62,23 @@ class AlbumPageStorage extends StatelessWidget {
                           errorBuilder: (context, error, stackTrace) => Container(
                             width: 60,
                             height: 60,
-                            color: Colors.grey[900],
-                            child: const Icon(Icons.album, color: Colors.white54),
+                            color: Colors.grey.withOpacity(0.2),
+                            child: const Icon(Icons.album, color: Colors.grey),
                           ),
                         )
                       : Container(
                           width: 60,
                           height: 60,
-                          color: Colors.grey[900],
-                          child: const Icon(Icons.album, color: Colors.white54),
+                          color: Colors.grey.withOpacity(0.2),
+                          child: const Icon(Icons.album, color: Colors.grey),
                         ),
                 ),
                 title: Text(
                   album.albumTitle,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
                   album.artistDisplay,
-                  style: const TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   Navigator.push(

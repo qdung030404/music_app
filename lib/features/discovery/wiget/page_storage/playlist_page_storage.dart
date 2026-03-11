@@ -35,14 +35,14 @@ class PlaylistPageStorage extends StatelessWidget {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white10,
+                      color: Colors.grey,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.add, color: Colors.white, size: 30),
+                    child: const Icon(Icons.add, size: 30),
                   ),
                   title: const Text(
                     'Tạo playlist mới',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   onTap: () => _showCreatePlaylistDialog(context, userActivityService),
                 );
@@ -59,14 +59,14 @@ class PlaylistPageStorage extends StatelessWidget {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.playlist_play, color: Colors.grey, size: 30),
+                    child: const Icon(Icons.playlist_play, size: 30),
                   ),
                   title: Text(
                     playlist.playlistName,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
 
                   onTap: () {
@@ -94,19 +94,16 @@ class PlaylistPageStorage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
-        title: const Text('Tạo playlist mới', style: TextStyle(color: Colors.white)),
+        title: const Text('Tạo playlist mới'),
         content: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           child: TextField(
             controller: controller,
             autofocus: true,
-            style: const TextStyle(color: Colors.white),
             decoration: const InputDecoration(
               hintText: 'Tên playlist',
               hintStyle: TextStyle(color: Colors.grey),
               enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
             ),
           ),
         ),

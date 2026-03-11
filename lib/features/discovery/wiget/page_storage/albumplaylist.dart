@@ -43,8 +43,8 @@ class _AlbumPlaylistViewState extends State<AlbumPlaylistView> with SingleTicker
           TabBar(
             controller: _tabController,
             indicatorColor: Colors.deepPurple,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white70,
+            labelColor: Theme.of(context).textTheme.bodyLarge?.color,
+            unselectedLabelColor: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
             labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             unselectedLabelStyle: const TextStyle(fontSize: 16),
             tabs: const [

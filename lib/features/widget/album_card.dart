@@ -40,14 +40,14 @@ class AlbumCard extends StatelessWidget {
                               height: 160,
                               width: 160,
                               color: Colors.grey[900],
-                              child: const Icon(Icons.album, color: Colors.white54),
+                              child: const Icon(Icons.album),
                             ),
                           )
                         : Container(
                             height: 160,
                             width: 160,
                             color: Colors.grey[900],
-                            child: const Icon(Icons.album, color: Colors.white54),
+                            child: const Icon(Icons.album),
                           ),
                   ),
                   const SizedBox(height: 12),
@@ -58,7 +58,6 @@ class AlbumCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -68,7 +67,6 @@ class AlbumCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.white.withValues(alpha: 0.6),
                     ),
                   ),
                 ]

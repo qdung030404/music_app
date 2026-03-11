@@ -20,7 +20,7 @@ class BuildArtist extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child:const Text(
             'Nghệ sĩ tiêu biểu',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 12),
@@ -67,7 +67,7 @@ class BuildArtist extends StatelessWidget {
                     : null,
               ),
               child: artist.avatar.isEmpty
-                  ? const Center(child: Icon(Icons.person, color: Colors.white54, size: 50))
+                  ? const Center(child: Icon(Icons.person, size: 50))
                   : null,
             ),
             const SizedBox(height: 8),
@@ -76,7 +76,6 @@ class BuildArtist extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.white
               ),
             ),
           ],

@@ -24,9 +24,8 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      color: Colors.black,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -37,13 +36,7 @@ class Header extends StatelessWidget {
             height: 170,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 15,
-                  )
-                ]),
+             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: album.image.isNotEmpty

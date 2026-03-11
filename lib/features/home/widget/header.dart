@@ -35,7 +35,6 @@ class BuildHeader extends StatelessWidget {
                       user?.email?.split('@')[0] ??
                       'User',
                   style: const TextStyle(
-                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,)
               ),
@@ -43,15 +42,15 @@ class BuildHeader extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.settings, color: Colors.white),
+          icon: const Icon(Icons.settings),
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Setting())
             );
           },),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none, color: Colors.white)),
-        IconButton(onPressed: (){FirebaseAuth.instance.signOut();}, icon: const Icon(Icons.logout, color: Colors.white))
+        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
+        IconButton(onPressed: (){FirebaseAuth.instance.signOut();}, icon: const Icon(Icons.logout))
       ],
     );
   }

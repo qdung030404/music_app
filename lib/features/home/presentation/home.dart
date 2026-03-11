@@ -48,19 +48,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF06A0B5), Colors.black],
-              stops: [0.01, 0.15]
-          ),
-        ),
-        child:Scaffold(
-          backgroundColor: Colors.transparent,
-          body: getBody(),
-        )
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: getBody(),
     );
   }
   @override

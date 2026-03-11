@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'features/wrapper/wrapper.dart';
+import 'core/theme/app_theme.dart';
 
 class MusicApp extends StatelessWidget {
   const MusicApp({super.key});
@@ -9,10 +10,9 @@ class MusicApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Music App',
-      theme: ThemeData(
-        useMaterial3: true,
-
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: Get.find<ThemeService>().theme,
       home: const Wrapper(),
       debugShowCheckedModeBanner: false,
     );

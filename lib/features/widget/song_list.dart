@@ -33,7 +33,6 @@ class SongList extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
                 ),
               ),
             ],
@@ -46,19 +45,11 @@ class SongList extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: displaySongs.length,
           itemBuilder: (context, index) {
-            return Theme(
-              data: Theme.of(context).copyWith(
-                listTileTheme: const ListTileThemeData(
-                  textColor: Colors.white,
-                  iconColor: Colors.white70,
-                ),
-              ),
-              child: SongCard(
+            return SongCard(
                 song: displaySongs[index],
                 songs: songs,
                 playlistId: playlistId,
-              ),
-            );
+              );
           },
         ),
       ],

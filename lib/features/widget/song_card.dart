@@ -48,14 +48,10 @@ class SongCard extends StatelessWidget {
                   ),
           ),
           title: Text(song.title,
-            style: TextStyle(
-              color: Colors.white
-            ),
+
           ),
           subtitle: Text(song.artistDisplay,
-            style: TextStyle(
-                color: Colors.white
-            ),
+
           ),
           trailing: IconButton(
               onPressed: () {
@@ -70,7 +66,7 @@ class SongCard extends StatelessWidget {
                   }
                 );
               },
-              icon: Icon(Icons.more_horiz, color: Colors.white,)
+              icon: Icon(Icons.more_horiz,)
           ),
           onTap: () {
             Navigator.push(

@@ -62,7 +62,7 @@ class _ArtistHeaderState extends State<ArtistHeader> {
                 : null,
           ),
           child: widget.artist.avatar.isEmpty
-              ? const Center(child: Icon(Icons.person, color: Colors.white54, size: 100))
+              ? const Center(child: Icon(Icons.person, size: 100))
               : null,
         ),
         Container(
@@ -72,11 +72,11 @@ class _ArtistHeaderState extends State<ArtistHeader> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withOpacity(0.3),
-                Colors.black.withOpacity(0.7),
+                Colors.transparent,
+                Colors.black.withOpacity(0.5),
                 Colors.black,
               ],
-              stops: [0.0, 0.7, 1.0],
+              stops: const [0.7, 0.8, 1.0],
             ),
           ),
         ),
@@ -89,7 +89,7 @@ class _ArtistHeaderState extends State<ArtistHeader> {
             children: [
               Text(
                 widget.artist.name,
-                style: const TextStyle(
+                style:TextStyle(
                   color: Colors.white,
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -111,18 +111,18 @@ class _ArtistHeaderState extends State<ArtistHeader> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     side: BorderSide(
-                      color: _isFollowing ? Colors.transparent : Colors.white70, 
+                      color: Colors.white,
                       width: 1.5
                     ),
-                    backgroundColor: _isFollowing ? Colors.white24 : Colors.transparent,
+                    backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
                   ),
                   child: Text(
                     _isFollowing ? 'ĐANG QUAN TÂM' : 'QUAN TÂM',
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color:  Colors.white ,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.5,

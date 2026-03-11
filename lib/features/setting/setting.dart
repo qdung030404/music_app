@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/features/setting/personalize.dart';
 import 'package:music_app/features/widget/buildMenuItem.dart';
+
 
 class Setting extends StatelessWidget {
    const Setting({super.key});
@@ -7,29 +9,26 @@ class Setting extends StatelessWidget {
    @override
    Widget build(BuildContext context) {
      return Scaffold(
-       backgroundColor: Colors.black,
        appBar: AppBar(
-         backgroundColor: Colors.transparent,
-         elevation: 0,
-         title:
-           Text('Thiết lập',
-             style: TextStyle(
-               color: Colors.white,
-               fontSize: 18
-             ),
-           ),
+         title: const Text('Thiết lập'),
          leading: IconButton(
-           icon: const Icon(Icons.arrow_back, color: Colors.white,),
+           icon: const Icon(Icons.arrow_back),
            onPressed: () => Navigator.pop(context)),
        ),
        body: SingleChildScrollView(
          child: Column(
            mainAxisAlignment: MainAxisAlignment.start,
            children: [
-             buildMenuItem(Icons.brush_outlined, 'Cá nhân hóa', () {}),
+
+             buildMenuItem(Icons.brush_outlined, 'Cá nhân hóa', () {
+               Navigator.push(
+                 context,
+                 MaterialPageRoute(builder: (context) => Personalize())
+               );
+             }),
              buildMenuItem(Icons.headphones, 'Tai nghe & Bluetooth', () {}),
              buildMenuItem(Icons.notifications_none_outlined, 'Thông báo', () {}),
-             Padding(
+             const Padding(
                padding: EdgeInsets.symmetric(horizontal: 16),
                child: Divider(),
              ),
