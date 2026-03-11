@@ -236,107 +236,93 @@ class _SearchTabState extends State<SearchTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF06A0B5), Colors.black],
-          stops: [0.01, 0.15],
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 24),
+                    TextField(
+                      controller: _searchController,
+                      style: const TextStyle( fontSize: 16),
+                      onSubmitted: _addToHistory,
+                      decoration: InputDecoration(
+                        hintText: 'Bạn muốn nghe gì?',
+                        prefixIcon: const Icon(Icons.search),
+                        filled: true,
+                        suffixIcon: _searchQuery.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () => _searchController.clear(),
+                            )
+                          : IconButton(
+                            onPressed: () => showSpeechToTextDialog(),
+                            icon: const Icon(Icons.mic)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      _searchQuery.isEmpty ? 'Lịch sử tìm kiếm' : 'Kết quả tìm kiếm',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+            if (_searchQuery.isEmpty)
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 24),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: TextField(
-                          controller: _searchController,
-                          style: const TextStyle(color: Colors.black, fontSize: 16),
-                          onSubmitted: _addToHistory,
-                          decoration: InputDecoration(
-                            hintText: 'Bạn muốn nghe gì?',
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            prefixIcon: const Icon(Icons.search, color: Colors.black),
-                            suffixIcon: _searchQuery.isNotEmpty 
-                              ? IconButton(
-                                  icon: const Icon(Icons.clear, color: Colors.black),
-                                  onPressed: () => _searchController.clear(),
-                                )
-                              : IconButton(
-                                onPressed: () => showSpeechToTextDialog(),
-                                icon: const Icon(Icons.mic, color: Colors.black,)),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      Text(
-                        _searchQuery.isEmpty ? 'Lịch sử tìm kiếm' : 'Kết quả tìm kiếm',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: SearchHistory(
+                    history: _searchHistory,
+                    onSelect: (query) {
+                      _searchController.text = query;
+                    },
+                    onDelete: _removeFromHistory,
                   ),
                 ),
-              ),
-              if (_searchQuery.isEmpty)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: SearchHistory(
-                      history: _searchHistory,
-                      onSelect: (query) {
-                        _searchController.text = query;
-                      },
-                      onDelete: _removeFromHistory,
-                    ),
-                  ),
-                )
-              else if (_isLoading)
-                const SliverToBoxAdapter(
-                  child: Center(child: CircularProgressIndicator(color: Colors.white)),
-                )
-              else if (_filteredSongs.isEmpty && _filteredArtists.isEmpty && _filteredAlbums.isEmpty)
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'Không tìm thấy kết quả nào',
-                      style: TextStyle(color: Colors.grey, fontSize: 16),
-                    ),
-                  ),
-                )
-              else
-                SearchResultsList(
-                  filteredSongs: _filteredSongs,
-                  filteredArtists: _filteredArtists,
-                  filteredAlbums: _filteredAlbums,
-                  searchQuery: _searchController.text,
-                  onAddToHistory: _addToHistory,
-                ),
+              )
+            else if (_isLoading)
               const SliverToBoxAdapter(
-                child: SizedBox(height: 100), // Space for mini player/bottom bar
+                child: Center(child: CircularProgressIndicator(color: Colors.white)),
+              )
+            else if (_filteredSongs.isEmpty && _filteredArtists.isEmpty && _filteredAlbums.isEmpty)
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Không tìm thấy kết quả nào',
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                  ),
+                ),
+              )
+            else
+              SearchResultsList(
+                filteredSongs: _filteredSongs,
+                filteredArtists: _filteredArtists,
+                filteredAlbums: _filteredAlbums,
+                searchQuery: _searchController.text,
+                onAddToHistory: _addToHistory,
               ),
-            ],
-          ),
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 100), // Space for mini player/bottom bar
+            ),
+          ],
         ),
       ),
     );

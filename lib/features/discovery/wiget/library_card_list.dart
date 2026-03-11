@@ -34,7 +34,7 @@ class LibraryCardList extends StatelessWidget {
       children: [
         const SizedBox(height: 12),
         SizedBox(
-          height: 160,
+          height: MediaQuery.of(context).size.height *0.13,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -78,7 +78,9 @@ class LibraryCardList extends StatelessWidget {
         height: 150,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.black),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.grey.shade900
+              : Colors.grey.shade200,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

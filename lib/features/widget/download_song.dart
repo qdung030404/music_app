@@ -86,18 +86,14 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 2,
-
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
+          icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text('Tải bài hát',
           style: TextStyle(
-            color: Colors.white,
             fontSize: 16
           ),
         ),
@@ -107,7 +103,6 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
             child: Text( _selectedSongIds.length == _allSongs.length ? 'Bỏ Chọn' : 'Chọn tất cả',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white,
               ),
             ),
           ),
@@ -132,11 +127,11 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
               onPressed: _isDownloading ? null : _startDownload,
               backgroundColor: Colors.deepPurpleAccent,
               icon: _isDownloading
-                  ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                  : const Icon(Icons.download, color: Colors.white),
+                  ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator( strokeWidth: 2))
+                  : const Icon(Icons.download),
               label: Text(
                 _isDownloading ? 'Đang tải...' : 'Tải xuống (${_selectedSongIds.length})',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             )
           : null,
@@ -169,7 +164,6 @@ class DownloadSongCard extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
-          color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
@@ -179,7 +173,6 @@ class DownloadSongCard extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: Colors.white,
           fontSize: 14,
         ),
       ),

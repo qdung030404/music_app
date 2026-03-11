@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:just_audio/just_audio.dart';
@@ -76,15 +78,15 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
     final status = await downloadService.downloadSong(song);
 
     if (mounted) {
-      if (status == 1) { // 1 = Tải thành công
+      if (status == 1) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Tải xuống hoàn tất!')),
         );
-      } else if (status == 2) { // 2 = Đã tồn tại
+      } else if (status == 2) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Bài hát đã có trong máy!')),
         );
-      } else { // 0 = Lỗi
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Tải bài hát thất bại.')),
         );
@@ -122,12 +124,10 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
       builder: (context, snapshot) {
         final _song = snapshot.data ?? widget.playingSong;
         return Scaffold(
-          backgroundColor: Colors.black,
           appBar: AppBar(
-            backgroundColor: Colors.black,
-            elevation: 0,
+            elevation: 4,
             leading: IconButton(
-              icon: const Icon(Icons.keyboard_arrow_left, color: Colors.white, size: 32),
+              icon: const Icon(Icons.keyboard_arrow_left, size: 32),
               onPressed: () => Navigator.pop(context),
             ),
             title: Column(
@@ -136,16 +136,15 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                   'Phát từ:',
                   style: TextStyle(
                     fontSize: 10,
-                    color: Colors.white54,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
                   ),
                 ),
                 Text(
-                  _song.title, // Using album as playlist proxy if needed
+                  _song.title,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF06A0B5),
+                    color: Colors.deepPurpleAccent,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -155,7 +154,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
             actions: [
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.more_vert, color: Colors.white),
+                icon: const Icon(Icons.more_vert),
               ),
             ],
           ),
@@ -174,7 +173,6 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       maxLines: 2,
                       style: TextStyle(
                           fontSize: 20,
-                          color: Colors.white,
                           fontWeight: FontWeight.bold
                       ),
                     ),
@@ -224,7 +222,6 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                             Text(
                               _song.title,
                               style: const TextStyle(
-                                color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 0.5,
@@ -236,7 +233,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                             Text(
                               _song.artistDisplay,
                               style: const TextStyle(
-                                color: Colors.white54,
+
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -248,17 +245,20 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                         children: [
                           IconButton(
                             onPressed: ()=> _handleDownload(_song),
-                            icon: const Icon(Icons.download_outlined, color: Colors.white70, size: 28),
+                            icon: const Icon(Icons.download_outlined, size: 28),
                           ),
                           IconButton(
                             onPressed: () {},
-                            icon: const Icon(Icons.share_outlined, color: Colors.white70),
+                            icon: const Icon(Icons.share_outlined),
                           ),
                           IconButton(
                             onPressed: () => _handleToggleFavorite(_song),
                             icon: Icon(
                               _isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: _isFavorite ? const Color(0xFF06A0B5) : Colors.white70,
+                              color: _isFavorite ? Colors.deepPurpleAccent :
+                                Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           ),
                         ],
@@ -307,12 +307,11 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               onSeek: _audioPlayerManager.player.seek,
               barHeight: 4,
               baseBarColor: Colors.white24,
-              progressBarColor: const Color(0xFF06A0B5),
-              thumbColor: const Color(0xFF06A0B5),
+              progressBarColor:  Colors.deepPurpleAccent,
+              thumbColor: Colors.deepPurpleAccent,
               thumbRadius: 6,
               timeLabelLocation: TimeLabelLocation.below,
               timeLabelTextStyle: const TextStyle(
-                color: Colors.white54,
                 fontSize: 12,
               ),
             ),
@@ -345,9 +344,9 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF06A0B5),
+                color: Colors.deepPurpleAccent,
               ),
-              child: const Icon(Icons.play_arrow, color: Colors.white, size: 40),
+              child: const Icon(Icons.play_arrow, size: 40),
             ),
           );
         } else if (processingState != ProcessingState.completed) {
@@ -358,9 +357,9 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF06A0B5),
+                color: Colors.deepPurpleAccent,
               ),
-              child: const Icon(Icons.pause, color: Colors.white, size: 40),
+              child: const Icon(Icons.pause, size: 40),
             ),
           );
         } else {
@@ -371,9 +370,9 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF06A0B5),
+                color: Colors.deepPurpleAccent,
               ),
-              child: const Icon(Icons.replay, color: Colors.white, size: 40),
+              child: const Icon(Icons.replay, size: 40),
             ),
           );
         }
@@ -429,27 +428,34 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
             onPressed: _setShuffle,
             icon: Icon(
               Icons.shuffle,
-              color: _isShuffle ? const Color(0xFF06A0B5) : Colors.white70,
+              color: _isShuffle ?
+                Colors.deepPurpleAccent :
+                Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               size: 24,
             ),
           ),
           IconButton(
             onPressed: setPreviousSong,
-            icon: const Icon(Icons.skip_previous, color: Colors.white, size: 32),
+            icon: const Icon(Icons.skip_previous, size: 32),
           ),
 
           _playerState(),
 
           IconButton(
             onPressed: setNextSong,
-            icon: const Icon(Icons.skip_next, color: Colors.white, size: 32),
+            icon: const Icon(Icons.skip_next, size: 32),
           ),
 
           IconButton(
             onPressed: _setRepeatOption,
             icon: Icon(
               _repeatingIcon(),
-              color: _loopMode == LoopMode.off ? Colors.white70 : const Color(0xFF06A0B5),
+              color: _loopMode == LoopMode.off ?
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black : Colors.deepPurpleAccent,
               size: 24,
             ),
           ),

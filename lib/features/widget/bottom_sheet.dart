@@ -70,7 +70,9 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height *0.4,
-      color: Colors.grey[900],
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.black
+          : Colors.white,
       child: Column(
         children: [
           SizedBox(
@@ -95,12 +97,10 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
               ),
               title: Text(widget.song.title,
                 style: TextStyle(
-                    color: Colors.white
                 ),
               ),
               subtitle: Text(widget.song.artistDisplay,
                 style: TextStyle(
-                    color: Colors.white
                 ),
               ),
             ),
@@ -120,13 +120,15 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
                       onTap: (){ },
                       icon: Icons.arrow_circle_down,
                       title: 'Tải về',
-                      color: Colors.white,
                   ),
                   SizedBox(height: 24,),
                   ActionButtonControl(
                       onTap: ()=> _handleToggleFavorite(widget.song),
                       icon: _isFavorite ? Icons.favorite : Icons.favorite_outline,
-                      color: _isFavorite ? Colors.red : Theme.of(context).colorScheme.primary,
+                      color: _isFavorite ? Colors.red :
+                        Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                       title: _isFavorite ? 'Đã Thêm vào danh sách yêu thích' : 'Thêm vào danh sách yêu thích'
                   ),
                   SizedBox(height: 24,),
@@ -135,7 +137,6 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
                       onTap: _handleRemoveFromPlaylist,
                       icon: Icons.playlist_remove,
                       title: 'Xóa khỏi playlist',
-                      color: Colors.white,
                   )
                   : ActionButtonControl(
                       onTap: () {
@@ -149,7 +150,6 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
                       },
                       icon: Icons.playlist_add,
                       title: 'Thêm vào playlist',
-                      color: Colors.white,
                   ),
                 ],
               ),
@@ -170,7 +170,7 @@ class ActionButtonControl extends StatefulWidget {
     super.key,
     required this.onTap,
     required this.icon,
-    required this.color,
+    this.color,
     required this.title
   });
 
@@ -192,7 +192,6 @@ class _ActionButtonControlState extends State<ActionButtonControl> {
           Expanded(
             child: Text(widget.title,
               style: const TextStyle(
-                  color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.normal
               ),

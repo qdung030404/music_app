@@ -32,7 +32,9 @@ class _PlaylistBottomSheetState extends State<PlaylistBottomSheet> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
@@ -42,7 +44,6 @@ class _PlaylistBottomSheetState extends State<PlaylistBottomSheet> {
             child: Text(
               'Chọn Playlist',
               style: TextStyle(
-                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
