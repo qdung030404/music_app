@@ -73,9 +73,8 @@ class LibraryCardList extends StatelessWidget {
         }
       },
       child: Container(
-        padding: const EdgeInsets.only(top: 32, bottom: 20),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         width: itemWidth,
-        height: 150,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Theme.of(context).brightness == Brightness.dark
@@ -83,19 +82,20 @@ class LibraryCardList extends StatelessWidget {
               : Colors.grey.shade200,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FaIcon(
               item['icon'],
               size: 40,
               color: item['color'],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               item['text'],
               style: TextStyle(
                 color:  item['color'],
                 fontSize: 16,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
