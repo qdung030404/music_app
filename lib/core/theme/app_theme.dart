@@ -4,22 +4,50 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeService extends GetxController {
   final _key = 'isDarkMode';
-  
+  final _autoKey = 'isAutoChange';
   late SharedPreferences _prefs;
   
   Future<ThemeService> init() async {
     _prefs = await SharedPreferences.getInstance();
+    if(isAutoChange){
+      _applyTimeChange();
+    }
     return this;
   }
 
-  bool get isDarkMode => _prefs.getBool(_key) ?? true; // Default to Dark mode like your current app
+  bool get isAutoChange => _prefs.getBool(_autoKey) ?? true;
+
+  bool get isDarkMode {
+    if(isAutoChange){
+      final hour = DateTime.now().hour;
+      return hour >= 18 || hour < 6;
+    }
+    return _prefs.getBool(_key) ?? true;
+  }
 
   ThemeMode get theme => isDarkMode ? ThemeMode.dark : ThemeMode.light;
-
+  void isToggleTheme(bool val){
+    _prefs.setBool(_autoKey, val);
+    if(val){
+      _applyTimeChange();
+    }
+    update();
+  }
   void switchTheme() {
-    Get.changeThemeMode(isDarkMode ? ThemeMode.light : ThemeMode.dark);
+    if (isAutoChange) {
+      _prefs.setBool(_autoKey, false);
+    }
+    bool newMode = !isDarkMode;
+    Get.changeThemeMode(newMode ? ThemeMode.dark : ThemeMode.light);
     _saveThemeToBox(!isDarkMode);
     update();
+  }
+
+  void _applyTimeChange(){
+    final hour = DateTime.now().hour;
+    bool shouldBeDark = hour > 18 || hour < 6;
+    Get.changeThemeMode(shouldBeDark ? ThemeMode.dark : ThemeMode.light);
+    _saveThemeToBox(shouldBeDark);
   }
 
   void _saveThemeToBox(bool isDark) => _prefs.setBool(_key, isDark);

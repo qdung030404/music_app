@@ -36,6 +36,15 @@ class Personalize extends StatelessWidget{
                 secondary: Icon(themeService.isDarkMode ? Icons.dark_mode : Icons.light_mode),
               ),
             ),
+            GetBuilder<ThemeService>(
+              builder: (themeService) => SwitchListTile(
+                value: themeService.isAutoChange,
+                title: Text('Hiển thị theo ngày đêm'),
+                onChanged: (val) {
+                  themeService.isToggleTheme(val);
+                },
+              ),
+            ),
           ],
         ),
       ),
