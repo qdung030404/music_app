@@ -28,7 +28,6 @@ class Personalize extends StatelessWidget{
             ),
             GetBuilder<ThemeService>(
               builder: (themeService) {
-                // Determine the current ThemeMode group value
                 ThemeMode currentMode = themeService.isSystemMode
                     ? ThemeMode.system
                     : (themeService.isDarkMode ? ThemeMode.dark : ThemeMode.light);
@@ -51,7 +50,6 @@ class Personalize extends StatelessWidget{
                       ),
                     ),
 
-                    // Lựa chọn: Chế độ tối
                     VerticalRadioTile<ThemeMode>(
                       label: 'Chế độ tối',
                       value: ThemeMode.dark,
@@ -140,12 +138,12 @@ class VerticalRadioTile<T> extends StatelessWidget {
             label,
             style: const TextStyle(fontWeight: FontWeight.w500),
           ),
-          const SizedBox(height: 4), // Khoảng cách giữa chữ và radio
+          const SizedBox(height: 4),
           Radio<T>(
             value: value,
             groupValue: groupValue,
             onChanged: onChanged,
-            visualDensity: VisualDensity.compact, // Làm nút radio gọn hơn
+            visualDensity: VisualDensity.compact,
           ),
         ],
       ),
