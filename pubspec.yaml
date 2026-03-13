@@ -81,6 +81,9 @@ flutter:
     - assets/songs.json
     - assets/logo.png
     - assets/google.png
+    - assets/light_mode.png
+    - assets/dark_mode.png
+    - assets/auto_mode.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
