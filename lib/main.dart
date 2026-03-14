@@ -9,6 +9,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 
 import 'core/config/firebase_options.dart';
 import 'core/theme/app_theme.dart';
+import 'core/services/audio_device_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,9 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   
   await Get.putAsync(() => ThemeService().init());
+
+  // Khởi động service theo dõi thiết bị âm thanh
+  await AudioDeviceService().init();
 
   // Remove splash screen
   FlutterNativeSplash.remove();

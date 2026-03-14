@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/features/setting/headphone_&_bluetooth.dart';
 import 'package:music_app/features/setting/personalize.dart';
 import 'package:music_app/features/widget/buildMenuItem.dart';
 
@@ -26,7 +27,12 @@ class Setting extends StatelessWidget {
                  MaterialPageRoute(builder: (context) => Personalize())
                );
              }),
-             buildMenuItem(Icons.headphones, 'Tai nghe & Bluetooth', () {}),
+             buildMenuItem(Icons.headphones, 'Tai nghe & Bluetooth', () {
+               Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context) => HeadphoneBluetooth())
+               );
+             }),
              buildMenuItem(Icons.notifications_none_outlined, 'Thông báo', () {}),
              const Padding(
                padding: EdgeInsets.symmetric(horizontal: 16),

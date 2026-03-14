@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:math';
@@ -5,6 +6,7 @@ import '../../../../data/model/song.dart';
 import '../../../../domain/entities/song_entity.dart';
 import '../../../data/datasources/user_activity_service.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import '../../../../core/services/audio_device_service.dart';
 
 class DurationState{
   const DurationState({
@@ -18,6 +20,7 @@ class DurationState{
 }
 
 class AudioPlayerManager {
+  bool _wasPlayingBeforeDisconnect = false;
   AudioPlayerManager._internal() {
     durationState = Rx.combineLatest2<Duration, PlaybackEvent, DurationState>(
       player.positionStream,
@@ -38,6 +41,24 @@ class AudioPlayerManager {
         _addToHistory(song);
       }
     });
+
+    // 🎧 Tự động pause khi rút tai nghe hoặc ngắt kết nối Bluetooth
+    _headsetSubscription = AudioDeviceService().onDeviceChanged.listen((outputType) {
+      if (outputType == AudioOutputType.speaker &&
+          AudioDeviceService().autoPauseEnabled) {
+        if (player.playing) {
+          _wasPlayingBeforeDisconnect = true;
+          player.pause();
+        }
+      }else if((outputType == AudioOutputType.wiredHeadset ||
+                outputType == AudioOutputType.bluetooth) &&
+                AudioDeviceService().autoContinuePlayingEnabled){
+                  if (!player.playing && _wasPlayingBeforeDisconnect) {  // ← Check context
+                    _wasPlayingBeforeDisconnect = false;
+                    player.play();
+                  }
+                }
+    });
   }
   static final AudioPlayerManager _instance = AudioPlayerManager._internal();
   factory AudioPlayerManager() => _instance;
@@ -45,6 +66,7 @@ class AudioPlayerManager {
   final AudioPlayer player = AudioPlayer();
   late final Stream<DurationState> durationState;
   final _userActivityService = UserActivityService();
+  StreamSubscription<AudioOutputType>? _headsetSubscription;
   
   // Playlist Management
   List<Song> _playlist = [];
@@ -130,6 +152,7 @@ class AudioPlayerManager {
   }
 
   void dispose(){
+    _headsetSubscription?.cancel();
     player.dispose();
     _currentSongController.close();
     _historySubject.close();
