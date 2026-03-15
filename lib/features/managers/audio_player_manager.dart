@@ -1,12 +1,13 @@
 import 'dart:async';
+import 'package:audio_session/audio_session.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:math';
-import '../../../../data/model/song.dart';
-import '../../../../domain/entities/song_entity.dart';
-import '../../../data/datasources/user_activity_service.dart';
+import '../../data/model/song.dart';
+import '../../domain/entities/song_entity.dart';
+import '../../data/datasources/user_activity_service.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import '../../../../core/services/audio_device_service.dart';
+import '../../core/services/audio_device_service.dart';
 
 class DurationState{
   const DurationState({
@@ -42,31 +43,44 @@ class AudioPlayerManager {
       }
     });
 
-    // 🎧 Tự động pause khi rút tai nghe hoặc ngắt kết nối Bluetooth
+    // Tự động pause khi rút tai nghe hoặc ngắt kết nối Bluetooth
     _headsetSubscription = AudioDeviceService().onDeviceChanged.listen((outputType) {
-      if (outputType == AudioOutputType.speaker &&
-          AudioDeviceService().autoPauseEnabled) {
+      if (outputType == AudioOutputType.speaker && AudioDeviceService().autoPauseEnabled) {
         if (player.playing) {
           _wasPlayingBeforeDisconnect = true;
           player.pause();
         }
-      }else if((outputType == AudioOutputType.wiredHeadset ||
-                outputType == AudioOutputType.bluetooth) &&
-                AudioDeviceService().autoContinuePlayingEnabled){
-                  if (!player.playing && _wasPlayingBeforeDisconnect) {  // ← Check context
-                    _wasPlayingBeforeDisconnect = false;
-                    player.play();
-                  }
-                }
+      } else if ((outputType == AudioOutputType.wiredHeadset || outputType == AudioOutputType.bluetooth) &&
+          AudioDeviceService().autoContinuePlayingEnabled) {
+        if (!player.playing && _wasPlayingBeforeDisconnect) {
+          _wasPlayingBeforeDisconnect = false;
+          player.play();
+        }
+      }
+    });
+
+    // Xử lý gián đoạn âm thanh
+    _interruptionSubscription = AudioDeviceService().onInterruption?.listen((event) {
+      if (event.begin) {
+        if (player.playing) player.pause();
+      } else {
+        if (event.type != AudioInterruptionType.unknown) {
+          player.play();
+        }
+      }
     });
   }
   static final AudioPlayerManager _instance = AudioPlayerManager._internal();
   factory AudioPlayerManager() => _instance;
 
-  final AudioPlayer player = AudioPlayer();
+  final AudioPlayer player = AudioPlayer(
+    handleInterruptions: false,
+    handleAudioSessionActivation: false,
+  );
   late final Stream<DurationState> durationState;
   final _userActivityService = UserActivityService();
   StreamSubscription<AudioOutputType>? _headsetSubscription;
+  StreamSubscription<AudioInterruptionEvent>? _interruptionSubscription;
   
   // Playlist Management
   List<Song> _playlist = [];
@@ -101,8 +115,7 @@ class AudioPlayerManager {
     _historySubject.add(List.from(_history));
     _userActivityService.addToHistory(song);
   }
-  
-  // Playlist Management mới dùng ConcatenatingAudioSource
+
   void setPlaylist(List<Song> songs, int initialIndex) async {
     _playlist = songs;
     
@@ -128,7 +141,6 @@ class AudioPlayerManager {
     if (player.hasNext) {
       player.seekToNext();
     } else {
-      // Loop back to start if at the end
       player.seek(Duration.zero, index: 0);
     }
   }
@@ -137,7 +149,6 @@ class AudioPlayerManager {
     if (player.hasPrevious) {
       player.seekToPrevious();
     } else {
-      // Jump to last song if at the start
       player.seek(Duration.zero, index: _playlist.length - 1);
     }
   }
@@ -153,6 +164,7 @@ class AudioPlayerManager {
 
   void dispose(){
     _headsetSubscription?.cancel();
+    _interruptionSubscription?.cancel();
     player.dispose();
     _currentSongController.close();
     _historySubject.close();

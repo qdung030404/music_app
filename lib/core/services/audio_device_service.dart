@@ -1,81 +1,96 @@
 import 'dart:async';
 import 'package:audio_session/audio_session.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rxdart/rxdart.dart';
 
-/// Loại thiết bị âm thanh đang kết nối
 enum AudioOutputType {
-  /// Đang dùng loa trong của điện thoại
   speaker,
-
-  /// Đang cắm tai nghe có dây (wired headphones/earphones)
   wiredHeadset,
-
-  /// Đang kết nối Bluetooth (tai nghe/loa BT)
   bluetooth,
 }
 
-/// Service để theo dõi trạng thái kết nối thiết bị âm thanh.
-/// Sử dụng package `audio_session` để lắng nghe các sự kiện.
 class AudioDeviceService {
   static final AudioDeviceService _instance = AudioDeviceService._internal();
   factory AudioDeviceService() => _instance;
   AudioDeviceService._internal();
 
+  static const String _keyAutoPause = 'auto_pause_on_disconnect';
+  static const String _keyAutoContinuePlaying = 'auto_continue_playing_on_connect';
   AudioSession? _session;
-  final StreamController<AudioOutputType> _deviceController =
-      StreamController<AudioOutputType>.broadcast();
+
+  final BehaviorSubject<AudioOutputType> _deviceController =
+      BehaviorSubject<AudioOutputType>.seeded(AudioOutputType.speaker);
 
   /// Stream phát ra [AudioOutputType] mỗi khi thiết bị âm thanh thay đổi.
-  Stream<AudioOutputType> get onDeviceChanged => _deviceController.stream;
+  Stream<AudioOutputType> get onDeviceChanged => _deviceController.stream.distinct();
+
+  /// Stream phát ra sự kiện gián đoạn (ví dụ: cuộc gọi đến).
+  Stream<AudioInterruptionEvent>? get onInterruption => _session?.interruptionEventStream;
 
   AudioOutputType _currentOutput = AudioOutputType.speaker;
-
-  /// Loại thiết bị âm thanh hiện tại.
   AudioOutputType get currentOutput => _currentOutput;
 
-  /// Trả về `true` nếu đang kết nối tai nghe hoặc loa Bluetooth (không phải loa trong).
+  bool _autoPauseEnabled = true;
+  bool _autoContinuePlayingEnabled = true;
+
+  bool get autoPauseEnabled => _autoPauseEnabled;
+  bool get autoContinuePlayingEnabled => _autoContinuePlayingEnabled;
+
   bool get isHeadsetOrBluetoothConnected =>
       _currentOutput == AudioOutputType.wiredHeadset ||
       _currentOutput == AudioOutputType.bluetooth;
 
-  /// Khởi tạo service. Gọi một lần trong `main()` hoặc tại widget gốc.
+
   Future<void> init() async {
+    final prefs = await SharedPreferences.getInstance();
+    _autoPauseEnabled = prefs.getBool(_keyAutoPause) ?? true;
+    _autoContinuePlayingEnabled = prefs.getBool(_keyAutoContinuePlaying) ?? true;
     _session = await AudioSession.instance;
 
-    // Cấu hình session cho ứng dụng nhạc
-    await _session!.configure(const AudioSessionConfiguration.music());
+    await _session!.configure(const AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playback,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.none,
+      avAudioSessionMode: AVAudioSessionMode.defaultMode,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: AndroidAudioAttributes(
+        usage: AndroidAudioUsage.media,
+        contentType: AndroidAudioContentType.music,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+    ));
 
-    // Lắng nghe sự kiện "headset plugged/unplugged"
-    // devicesAdded và devicesRemoved là Set<AudioDevice>
-    _session!.devicesChangedEventStream.listen((event) {
-      _updateOutputType(event.devicesAdded, event.devicesRemoved);
+    // 1. Lắng nghe sự kiện "becoming noisy" (ví dụ: rút tai nghe)
+    _session!.becomingNoisyEventStream.listen((_) {
+      _currentOutput = AudioOutputType.speaker;
+      _deviceController.add(_currentOutput);
+    });
+
+    // 2. Lắng nghe sự kiện thay đổi thiết bị để cập nhật UI hoặc xử lý cắm lại
+    _session!.devicesChangedEventStream.listen((event) async {
+      await _updateCurrentOutput();
     });
 
     // Kiểm tra thiết bị hiện tại ngay khi khởi động
-    // getDevices() trả về Set<AudioDevice>
-    final devices = await _session!.getDevices();
-    _detectFromDeviceList(devices);
+    await _updateCurrentOutput();
   }
 
-  /// Cập nhật loại output dựa trên thiết bị được thêm/xóa.
-  void _updateOutputType(
-    Set<AudioDevice> added,
-    Set<AudioDevice> removed,
-  ) {
-    // Nếu có thiết bị mới được kết nối
-    for (final device in added) {
-      final type = _mapDeviceType(device.type);
-      if (type != null) {
-        _currentOutput = type;
-        _deviceController.add(_currentOutput);
-        return;
-      }
-    }
+  /// Cập nhật trạng thái output hiện tại bằng cách quét danh sách thiết bị
+  Future<void> _updateCurrentOutput() async {
+    final devices = await _session!.getDevices();
+    _detectFromDeviceList(devices);
+    _deviceController.add(_currentOutput);
+  }
 
-    // Nếu thiết bị bị ngắt kết nối → fallback về loa trong
-    if (removed.isNotEmpty) {
-      _currentOutput = AudioOutputType.speaker;
-      _deviceController.add(_currentOutput);
-    }
+  Future<void> setAutoPauseEnabled(bool value) async {
+    _autoPauseEnabled = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyAutoPause, value);
+  }
+  Future<void> setAutoContinuePlayingEnabled(bool value) async {
+    _autoContinuePlayingEnabled = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyAutoContinuePlaying, value);
   }
 
   /// Phát hiện thiết bị từ tập hợp hiện có khi khởi động.
@@ -100,11 +115,11 @@ class AudioDeviceService {
       case AudioDeviceType.bluetoothSco:  // tai nghe BT dùng cho điện thoại
         return AudioOutputType.bluetooth;
       default:
-        return null; // Không phải tai nghe hay BT → dùng loa trong
+        return null; // loa trong
     }
   }
 
-  /// Giải phóng tài nguyên (gọi khi app đóng).
+  /// Giải phóng tài nguyên
   void dispose() {
     _deviceController.close();
   }

@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:music_app/core/services/audio_device_service.dart';
+
+class HeadphoneBluetooth extends StatefulWidget {
+  const HeadphoneBluetooth({super.key});
+
+  @override
+  State<HeadphoneBluetooth> createState() => _HeadphoneBluetoothState();
+}
+
+class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
+  bool _autoPause = true;
+  bool _autoContinuePlaying = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Đọc giá trị hiện tại từ service
+    _autoPause = AudioDeviceService().autoPauseEnabled;
+    _autoContinuePlaying = AudioDeviceService().autoContinuePlayingEnabled;
+  }
+
+  Future<void> _toggleAutoPause(bool value) async {
+    await AudioDeviceService().setAutoPauseEnabled(value);
+    setState(() => _autoPause = value);
+  }
+  Future<void> _toggleAutoContinuePlaying(bool value) async {
+    await AudioDeviceService().setAutoContinuePlayingEnabled(value);
+    setState(() => _autoContinuePlaying = value);
+  }
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Tai nghe & Bluetooth'),
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+              child: Text(
+                'Tai nghe / Loa',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                )
+              )
+            ),
+
+            _SettingTile(
+              title: 'tạm dừng phát khi ngắt kết nối',
+              trailing: Switch(
+                value: _autoPause,
+                onChanged: _toggleAutoPause,
+                activeThumbColor: colorScheme.primary,
+              )
+            ),
+            _SettingTile(
+              title: 'phát tiếp khi kết nối',
+              trailing: Switch(
+                value: _autoContinuePlaying,
+                onChanged: _toggleAutoContinuePlaying,
+                activeThumbColor: colorScheme.primary,
+                activeTrackColor: colorScheme.primary.withOpacity(0.4)
+              )
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SettingTile extends StatelessWidget {
+  const _SettingTile({
+    required this.title,
+    required this.trailing,
+  });
+
+  final String title;
+  final Widget trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+      trailing: trailing,
+    );
+  }
+}
