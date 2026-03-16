@@ -192,5 +192,11 @@ class FirebaseAuthService {
     await googleSignIn.signOut();
     await auth.signOut();
   }
+  Future<void> deleteAccount()async {
+    User? user = auth.currentUser;
+    if(user != null){
+      await user.delete();
+    }
+  }
 }
 

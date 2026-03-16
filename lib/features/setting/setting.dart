@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_app/features/setting/headphone_&_bluetooth.dart';
 import 'package:music_app/features/setting/personalize.dart';
 import 'package:music_app/features/widget/buildMenuItem.dart';
+import 'package:music_app/features/setting/other_setting.dart';
 
 
 class Setting extends StatelessWidget {
@@ -40,7 +41,12 @@ class Setting extends StatelessWidget {
              ),
              buildMenuItem(Icons.info_outline, 'Thông tin ứng dụng', () {}),
              buildMenuItem(Icons.help_outline, 'Trợ giúp và báo lỗi', () {}),
-             buildMenuItem(Icons.more_horiz_outlined, 'Khác', () {})
+             buildMenuItem(Icons.more_horiz_outlined, 'Khác', () {
+               Navigator.push(
+                 context,
+                 MaterialPageRoute(builder: (context) => const OtherSetting()),
+               );
+             })
            ],
          ),
        )
