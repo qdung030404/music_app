@@ -48,9 +48,8 @@ class BuildHeader extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => Setting())
             );
-          },),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
-        IconButton(onPressed: (){FirebaseAuth.instance.signOut();}, icon: const Icon(Icons.logout))
+          },
+        )
       ],
     );
   }

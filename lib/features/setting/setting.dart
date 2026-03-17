@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:music_app/features/setting/FAQ_feedback.dart';
+import 'package:music_app/features/setting/feedback.dart';
 import 'package:music_app/features/setting/headphone_&_bluetooth.dart';
 import 'package:music_app/features/setting/personalize.dart';
 import 'package:music_app/features/widget/buildMenuItem.dart';
@@ -43,18 +44,23 @@ class Setting extends StatelessWidget {
              buildMenuItem(Icons.info_outline, 'Thông tin ứng dụng', () {
 
              }),
-             buildMenuItem(Icons.help_outline, 'Trợ giúp và báo lỗi', () {
+             buildMenuItem(Icons.feedback_outlined, 'Góp ý & báo lỗi', () {
                Navigator.push(
                    context,
-                   MaterialPageRoute(builder: (context) => FaqFeedback())
+                   MaterialPageRoute(builder: (context) => FeedbackPage())
                );
              }),
+             const Padding(
+               padding: EdgeInsets.symmetric(horizontal: 16),
+               child: Divider(),
+             ),
              buildMenuItem(Icons.more_horiz_outlined, 'Khác', () {
                Navigator.push(
                  context,
                  MaterialPageRoute(builder: (context) => const OtherSetting()),
                );
-             })
+             }),
+             buildMenuItem(Icons.logout, 'Đăng xuất', (){FirebaseAuth.instance.signOut();})
            ],
          ),
        )

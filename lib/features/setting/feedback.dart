@@ -1,39 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../core/services/feedback_service.dart';
-import '../widget/buildMenuItem.dart';
-
-class FaqFeedback extends StatelessWidget {
-  const FaqFeedback({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Trợ giúp và báo lỗi'),
-        elevation: 4,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          buildMenuItem(Icons.help_outline, 'Trợ giúp', () {
-            // Có thể thêm trang FAQ ở đây nếu cần
-          }),
-          buildMenuItem(Icons.flag_outlined, 'Góp ý, báo lỗi', () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const FeedbackPage()),
-            );
-          }),
-        ],
-      ),
-    );
-  }
-}
-
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
 
