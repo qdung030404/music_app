@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/features/setting/FAQ_feedback.dart';
 import 'package:music_app/features/setting/headphone_&_bluetooth.dart';
 import 'package:music_app/features/setting/personalize.dart';
 import 'package:music_app/features/widget/buildMenuItem.dart';
@@ -39,8 +40,15 @@ class Setting extends StatelessWidget {
                padding: EdgeInsets.symmetric(horizontal: 16),
                child: Divider(),
              ),
-             buildMenuItem(Icons.info_outline, 'Thông tin ứng dụng', () {}),
-             buildMenuItem(Icons.help_outline, 'Trợ giúp và báo lỗi', () {}),
+             buildMenuItem(Icons.info_outline, 'Thông tin ứng dụng', () {
+
+             }),
+             buildMenuItem(Icons.help_outline, 'Trợ giúp và báo lỗi', () {
+               Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context) => FaqFeedback())
+               );
+             }),
              buildMenuItem(Icons.more_horiz_outlined, 'Khác', () {
                Navigator.push(
                  context,
