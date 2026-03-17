@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/core/services/audio_device_service.dart';
 import 'package:music_app/core/services/firebase_auth_service.dart';
 import 'package:music_app/features/wrapper/wrapper.dart';
 
 import '../widget/buildMenuItem.dart';
 
-class OtherSetting extends StatelessWidget {
+class OtherSetting extends StatefulWidget {
   const OtherSetting({super.key});
+
+  @override
+  State<OtherSetting> createState() => _OtherSettingState();
+}
+
+class _OtherSettingState extends State<OtherSetting> {
+  bool _pauseOnInterruption = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _pauseOnInterruption = AudioDeviceService().pauseOnInterruptionEnabled;
+  }
+
+  Future<void> _togglePauseOnInterruption(bool value) async {
+    await AudioDeviceService().setPauseOnInterruptionEnabled(value);
+    setState(() => _pauseOnInterruption = value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +37,18 @@ class OtherSetting extends StatelessWidget {
         title: const Text('Khác'),
         elevation: 4,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: ListView(
         children: [
+          SwitchListTile(
+            title: const Text('Tạm dừng khi app khác phát âm thanh'),
+            subtitle: _pauseOnInterruption
+                ? const Text('Tự động dừng nhạc khi bạn mở video Facebook, YouTube hoặc chơi game.')
+                : null,
+            value: _pauseOnInterruption,
+            onChanged: _togglePauseOnInterruption,
+            secondary: const Icon(Icons.pause_circle_outline),
+          ),
+          const Divider(),
           buildMenuItem(Icons.delete_outlined, 'Xóa tài khoản', () {
             deleteAccountDialog(context, FirebaseAuthService());
           }),

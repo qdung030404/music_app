@@ -16,6 +16,7 @@ class AudioDeviceService {
 
   static const String _keyAutoPause = 'auto_pause_on_disconnect';
   static const String _keyAutoContinuePlaying = 'auto_continue_playing_on_connect';
+  static const String _keyPauseOnInterruption = 'pause_on_interruption';
   AudioSession? _session;
 
   final BehaviorSubject<AudioOutputType> _deviceController =
@@ -32,9 +33,11 @@ class AudioDeviceService {
 
   bool _autoPauseEnabled = true;
   bool _autoContinuePlayingEnabled = true;
+  bool _pauseOnInterruptionEnabled = true;
 
   bool get autoPauseEnabled => _autoPauseEnabled;
   bool get autoContinuePlayingEnabled => _autoContinuePlayingEnabled;
+  bool get pauseOnInterruptionEnabled => _pauseOnInterruptionEnabled;
 
   bool get isHeadsetOrBluetoothConnected =>
       _currentOutput == AudioOutputType.wiredHeadset ||
@@ -45,6 +48,7 @@ class AudioDeviceService {
     final prefs = await SharedPreferences.getInstance();
     _autoPauseEnabled = prefs.getBool(_keyAutoPause) ?? true;
     _autoContinuePlayingEnabled = prefs.getBool(_keyAutoContinuePlaying) ?? true;
+    _pauseOnInterruptionEnabled = prefs.getBool(_keyPauseOnInterruption) ?? true;
     _session = await AudioSession.instance;
 
     await _session!.configure(const AudioSessionConfiguration(
@@ -91,6 +95,12 @@ class AudioDeviceService {
     _autoContinuePlayingEnabled = value;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyAutoContinuePlaying, value);
+  }
+
+  Future<void> setPauseOnInterruptionEnabled(bool value) async {
+    _pauseOnInterruptionEnabled = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyPauseOnInterruption, value);
   }
 
   /// Phát hiện thiết bị từ tập hợp hiện có khi khởi động.

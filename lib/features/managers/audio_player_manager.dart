@@ -59,8 +59,11 @@ class AudioPlayerManager {
       }
     });
 
-    // Xử lý gián đoạn âm thanh
+    // Xử lý gián đoạn âm thanh (Ví dụ: Facebook bật video, Game có tiếng...)
     _interruptionSubscription = AudioDeviceService().onInterruption?.listen((event) {
+      // Chỉ xử lý nếu tính năng đang được bật
+      if (!AudioDeviceService().pauseOnInterruptionEnabled) return;
+
       if (event.begin) {
         if (player.playing) player.pause();
       } else {
