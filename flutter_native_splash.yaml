@@ -37,7 +37,7 @@ flutter_native_splash:
   # remain optional. NOTE that if you specify the [required] color, then you cant
   # use the [required] background_image in the next section. the reverse is true.
   # select one, they cant work together.
-  color: "#000000"
+  color: "#ffffff"
   color_dark: "#000000"
   # platform-specific color. will override general color if active:
   #color_android: "#42a5f5"
@@ -63,18 +63,18 @@ flutter_native_splash:
   # general image for all platform (except android 12+):
   # allows you to specify an image used in the splash screen. It must be a
   # png file and should be sized for 4x pixel density.
-  image:                assets/logo.png
-  #image_dark:          assets/splash-invert.png
+  image:                assets/splash_logo.png
+  image_dark:          assets/splash_logo.png
   # platform-specific image. will override general image if active:
-  #image_android:       assets/splash-android.png
-  #image_dark_android:  assets/splash-invert-android.png
+  # image_android:       assets/splash_logo.png
+  # image_dark_android:  assets/splash_logo.png
   #image_ios:           assets/splash-ios.png
   #image_dark_ios:      assets/splash-invert-ios.png
   #image_web:           assets/splash-web.gif
   #image_dark_web:      assets/splash-invert-web.gif
 
   # image alignment (default center if not specified, or speccified something else):
-  #android_gravity: center       # bottom, center, center_horizontal, center_vertical,
+  android_gravity: center       # bottom, center, center_horizontal, center_vertical,
   # clip_horizontal, clip_vertical, end, fill, fill_horizontal, fill_vertical, left, right, start, top. could also be a combination like `android_gravity: fill|clip_vertical`
   # This will fill the width while maintaining the image's vertical aspect ratio.
   # visit https://developer.android.com/reference/android/view/Gravity
@@ -111,7 +111,7 @@ flutter_native_splash:
 
   # hide notif bar on android. ios already hides it by default.
   # Has no effect in web since web has no notification bar.
-  fullscreen: true                # default false
+  fullscreen: true              # default false
     # if you dont want to hide notif bar, for android just set this to false,
     # but for ios, add this to your flutter main():
     # WidgetsFlutterBinding.ensureInitialized();
@@ -133,7 +133,7 @@ flutter_native_splash:
   #! ANDROID 12+ configuration:
   android_12:
     # background color
-    color: "#000000"
+    color: "#ffffff"
     color_dark: "#000000"
 
     # center-logo
@@ -142,11 +142,11 @@ flutter_native_splash:
     # with background: 960×960 px (fit within circle 640px in diameter)
     # without background: 1152×1152 px (fit within circle 768px in diameter)
     # ensure that the most important design elements of your image are placed within a circular area
-    image: assets/logo.png
+    image: assets/splash_logo.png
     # image_dark: assets/images/logo/logo-splash2.png
 
     # center-logo background color
-    icon_background_color: "#000000"
+    # icon_background_color: "#000000"
     # icon_background_color_dark: "#000000"
 
     # branding:
