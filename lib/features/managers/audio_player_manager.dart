@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:audio_session/audio_session.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:just_audio/just_audio.dart';
-import 'dart:math';
 import '../../data/model/song.dart';
 import '../../domain/entities/song_entity.dart';
 import '../../data/datasources/user_activity_service.dart';
@@ -138,6 +137,36 @@ class AudioPlayerManager {
 
     await player.setAudioSource(playlistSource, initialIndex: initialIndex);
     player.play();
+  }
+
+  int _lastTapTime = 0;
+  int _tapCount = 0;
+  Timer? _tapTimer;
+  void handleMediaButton() {
+    if (!AudioDeviceService().mediaButtonControlEnabled) return;
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    if (currentTime - _lastTapTime < 500) { // nhấn nhanh trong vòng 0.5 giây
+      _tapCount++;
+    } else {
+      _tapCount = 1;
+    }
+
+    _lastTapTime = currentTime;
+    _tapTimer?.cancel();
+    _tapTimer = Timer(const Duration(milliseconds: 500), () {
+      if (_tapCount == 1) {
+        // Nhấn 1 lần: Play/Pause
+        player.playing ? player.pause() : player.play();
+      } else if (_tapCount == 2) {
+        // Nhấn 2 lần: Chuyển bài kế tiếp
+        skipToNext();
+      } else if (_tapCount >= 3) {
+        // Nhấn 3 lần: Quay lại bài trước
+        skipToPrevious();
+      }
+      _tapCount = 0;
+    });
   }
 
   void skipToNext() {

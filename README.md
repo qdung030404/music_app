@@ -4,44 +4,64 @@
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
 
-Một ứng dụng nghe nhạc hiện đại được xây dựng bằng Flutter, tích hợp Firebase để quản lý dữ liệu và xác thực người dùng.
+Một ứng dụng nghe nhạc hiện đại được xây dựng bằng **Flutter**, mang đến trải nghiệm âm nhạc mượt mà với nhiều tính năng nâng cao, giao diện đẹp mắt và quản lý dữ liệu toàn diện qua Firebase.
 
 ## 🚀 Tính năng nổi bật
 
-- **Trang chủ (Home):** Gợi ý bài hát và các nghệ sĩ phổ biến.
-- **Khám phá (Discovery/Library):**
-  - Quản lý thư viện cá nhân.
-  - Xem lịch sử nghe nhạc gần đây (Gần đây).
-  - Truy cập danh sách bài hát yêu thích.
-- **Phát nhạc (Music Player):**
-  - Trình phát nhạc chi tiết với đầy đủ chức năng (Play/Pause, Seek, Next/Previous).
-  - Thanh tiến trình trực quan.
-- **Yêu thích (Favorites):** Lưu trữ và quản lý các bài hát bạn yêu thích với hiệu ứng giao diện mượt mà.
-- **Xác thực (Authentication):** Đăng nhập qua Firebase (Email/Password, Google Sign-In).
+- **Khám phá & Trang chủ (Home & Discovery):**
+  - Gợi ý bài hát, tĩnh năng khám phá âm nhạc và các nghệ sĩ phổ biến.
+  - Quản lý thư viện cá nhân, danh sách phát (Playlist) và nghệ sĩ (Artist).
+  - Truy cập danh sách bài hát yêu thích, lịch sử nghe nhạc gần đây trực quan.
+- **Trình phát nhạc nâng cao (Music Player):**
+  - Trình phát chi tiết với thiết kế UI hiện đại, thanh tiến trình trực quan (Play/Pause, Seek, Next/Previous).
+  - Hỗ trợ phát nhạc dưới nền (Background Audio) và điều khiển linh hoạt qua thanh thông báo/màn hình khóa.
+- **Tìm kiếm thông minh (Search):**
+  - Tích hợp tìm kiếm bằng giọng nói (`speech_to_text`) mang lại trải nghiệm tiện lợi (Hands-free).
+  - Lưu trữ và quản lý lịch sử tìm kiếm dễ dàng.
+- **Giao diện & Trải nghiệm (UI/UX):**
+  - Tính năng chuyển đổi Chế độ Sáng/Tối (Light/Dark mode) linh hoạt qua cài đặt.
+  - Tích hợp màn hình khởi động native mượt mà (Splash Screen).
+- **Xác thực & Bảo mật (Authentication):**
+  - Quản lý tài khoản an toàn qua hệ thống Firebase Auth (Hỗ trợ xác thực bằng Email/Password và Google Sign-In).
+  - Tính năng Cài đặt, gửi Phản hồi (Feedback) và quản lý thiết bị âm thanh đầu vào.
 
-## 🛠 Công nghệ sử dụng
+## 🛠 Công nghệ & Thư viện sử dụng
 
-- **Framework:** [Flutter](https://flutter.dev/)
-- **State Management:** [GetX](https://pub.dev/packages/get) & RxDart.
-- **Backend:** [Firebase](https://firebase.google.com/) (Auth, Firestore).
-- **Audio Player:** [just_audio](https://pub.dev/packages/just_audio).
-- **UI:** Modern Custom UI với thanh AppBar động và Gradient background.
+- **Framework:** [Flutter](https://flutter.dev/) (SDK ^3.10.7)
+- **State Management & Routing:** [GetX](https://pub.dev/packages/get) & RxDart.
+- **Backend Services:** [Firebase](https://firebase.google.com/) (Auth, Firestore đám mây).
+- **Audio Core:** [just_audio](https://pub.dev/packages/just_audio), [just_audio_background](https://pub.dev/packages/just_audio_background), `audio_session`.
+- **Tiện ích và UI:** `speech_to_text`, `dio`, `shared_preferences`, `flutter_native_splash`, `audio_video_progress_bar`, `font_awesome_flutter`.
 
-## 📂 Cấu trúc thư mục (Clean Architecture Style)
+## 📂 Kiến trúc dự án (Clean Architecture Style)
 
-Dự án được tổ chức theo tính năng (Feature-first approach):
-- `lib/features/home`: Giao diện và logic trang chủ.
-- `lib/features/discovery`: Quản lý thư viện, lịch sử và bài hát yêu thích.
-- `lib/features/song_detail`: Trình phát nhạc chi tiết.
-- `lib/features/auth`: Xử lý đăng nhập và đăng ký.
-- `lib/data`: Chứa các Service và Data Source (Firebase interaction).
-- `lib/domain`: Chứa các thực thể (Entities) và logic nghiệp vụ chính.
+Mã nguồn dự án được tổ chức theo hướng phân tách tính năng (Feature-first approach), đảm bảo nguyên tắc Clean Architecture:
 
-## ⚙️ Cài đặt & Chạy ứng dụng
+```text
+lib/
+├── core/         # Các module cốt lõi: Theme (Sáng/Tối), Services (Audio Device), Configs...
+├── data/         # Khai báo cấu trúc Datasources (Tương tác Firebase), Repositories, APIs...
+├── domain/       # Các thực thể cốt lõi (Entities) và Logic nghiệp vụ chính (Business Logic).
+├── features/     # Giao diện UI phân chia theo chức năng:
+│   ├── auth/          # Đăng ký, Đăng nhập
+│   ├── home/          # Màn hình chính
+│   ├── discovery/     # Quản lý Thư viện, Lịch sử nghe, Yêu thích
+│   ├── search/        # Tìm kiếm, Lịch sử tìm kiếm & Điều khiển Giọng nói
+│   ├── song_detail/   # Màn hình trình phát nhạc chi tiết
+│   ├── playlist/      # Quản lý danh sách phát
+│   ├── album/         # Quản lý Album
+│   ├── artist/        # Quản lý Nghệ sĩ
+│   └── setting/       # Cấu hình Theme, Feedback, Thiết bị, Profiling
+└── app.dart      # Cấu hình Material App, Theme và Route ban đầu
+└── main.dart     # Entry point khởi tạo FlutterBindings, Firebase, GetX và Services
+```
+
+## ⚙️ Cài đặt & Khởi chạy
 
 1. **Clone dự án:**
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/qdung030404/music_app.git
+   cd music_app
    ```
 
 2. **Cài đặt dependencies:**
@@ -50,8 +70,8 @@ Dự án được tổ chức theo tính năng (Feature-first approach):
    ```
 
 3. **Cấu hình Firebase:**
-   - Tạo dự án trên [Firebase Console](https://console.firebase.google.com/).
-   - Thêm ứng dụng Android/iOS và tải file cấu hình (`google-services.json` / `GoogleService-Info.plist`) vào đúng thư mục tương ứng.
+   - Dự án yêu cầu liên kết với Firebase. Bạn cần tạo project trên [Firebase Console](https://console.firebase.google.com/).
+   - Copy file cấu hình `google-services.json` (dành cho Android) và `GoogleService-Info.plist` (dành cho iOS) vào thư mục tương ứng theo hướng dẫn của Firebase.
 
 4. **Chạy ứng dụng:**
    ```bash
@@ -60,7 +80,7 @@ Dự án được tổ chức theo tính năng (Feature-first approach):
 
 ## 📸 Ảnh chụp giao diện (Mockups)
 
-*(Bạn có thể thêm ảnh chụp màn hình ứng dụng tại đây)*
+*(Bạn có thể thêm các ảnh chụp màn hình ứng dụng thực tế hoặc Mockups tại đây)*
 
 ---
 Developed by **Dũng**

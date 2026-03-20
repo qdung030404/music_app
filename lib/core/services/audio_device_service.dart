@@ -17,6 +17,7 @@ class AudioDeviceService {
   static const String _keyAutoPause = 'auto_pause_on_disconnect';
   static const String _keyAutoContinuePlaying = 'auto_continue_playing_on_connect';
   static const String _keyPauseOnInterruption = 'pause_on_interruption';
+  static const String _keyMediaButtonControl = 'media_button_control';
   AudioSession? _session;
 
   final BehaviorSubject<AudioOutputType> _deviceController =
@@ -34,10 +35,12 @@ class AudioDeviceService {
   bool _autoPauseEnabled = true;
   bool _autoContinuePlayingEnabled = true;
   bool _pauseOnInterruptionEnabled = true;
+  bool _mediaButtonControlEnabled = true;
 
   bool get autoPauseEnabled => _autoPauseEnabled;
   bool get autoContinuePlayingEnabled => _autoContinuePlayingEnabled;
   bool get pauseOnInterruptionEnabled => _pauseOnInterruptionEnabled;
+  bool get mediaButtonControlEnabled => _mediaButtonControlEnabled;
 
   bool get isHeadsetOrBluetoothConnected =>
       _currentOutput == AudioOutputType.wiredHeadset ||
@@ -49,6 +52,7 @@ class AudioDeviceService {
     _autoPauseEnabled = prefs.getBool(_keyAutoPause) ?? true;
     _autoContinuePlayingEnabled = prefs.getBool(_keyAutoContinuePlaying) ?? true;
     _pauseOnInterruptionEnabled = prefs.getBool(_keyPauseOnInterruption) ?? true;
+    _mediaButtonControlEnabled = prefs.getBool(_keyMediaButtonControl) ?? true;
     _session = await AudioSession.instance;
 
     await _session!.configure(const AudioSessionConfiguration(
@@ -101,6 +105,12 @@ class AudioDeviceService {
     _pauseOnInterruptionEnabled = value;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyPauseOnInterruption, value);
+  }
+
+  Future<void> setMediaButtonControlEnabled(bool value) async {
+    _mediaButtonControlEnabled = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyMediaButtonControl, value);
   }
 
   /// Phát hiện thiết bị từ tập hợp hiện có khi khởi động.

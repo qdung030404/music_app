@@ -11,13 +11,14 @@ class HeadphoneBluetooth extends StatefulWidget {
 class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
   bool _autoPause = true;
   bool _autoContinuePlaying = true;
-
+  bool _mediaButtonControl = true;
   @override
   void initState() {
     super.initState();
     // Đọc giá trị hiện tại từ service
     _autoPause = AudioDeviceService().autoPauseEnabled;
     _autoContinuePlaying = AudioDeviceService().autoContinuePlayingEnabled;
+    _mediaButtonControl = AudioDeviceService().mediaButtonControlEnabled;
   }
 
   Future<void> _toggleAutoPause(bool value) async {
@@ -27,6 +28,10 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
   Future<void> _toggleAutoContinuePlaying(bool value) async {
     await AudioDeviceService().setAutoContinuePlayingEnabled(value);
     setState(() => _autoContinuePlaying = value);
+  }
+  Future<void> _toggleMediaControl(bool value) async {
+    await AudioDeviceService().setMediaButtonControlEnabled(value);
+    setState(() => _mediaButtonControl = value);
   }
   @override
   Widget build(BuildContext context) {
@@ -53,6 +58,7 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: colorScheme.primary,
                   fontWeight: FontWeight.bold,
+                  fontSize: 20
                 )
               )
             ),
@@ -73,7 +79,26 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
                 activeThumbColor: colorScheme.primary,
                 activeTrackColor: colorScheme.primary.withOpacity(0.4)
               )
-            )
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+                child: Text(
+                    'Thiết bị bluetooth',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
+                    )
+                )
+            ),
+            _SettingTile(
+                title: 'Cho phép điều khiển bằng phím tai nghe',
+                trailing: Switch(
+                  value: _mediaButtonControl,
+                  onChanged: _toggleMediaControl,
+                  activeThumbColor: colorScheme.primary,
+                )
+            ),
           ],
         ),
       ),
