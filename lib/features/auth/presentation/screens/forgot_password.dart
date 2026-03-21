@@ -22,24 +22,21 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back)),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 20),
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                alignment: Alignment.centerLeft,
-                onPressed: () => Navigator.pop(context),
-              ),
               const SizedBox(height: 40),
               Container(
-                height: 200,
+                height: 100,
                 decoration: BoxDecoration(
-                  color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Image(image: AssetImage('assets/logo.png')),
@@ -48,7 +45,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               const Text(
                 'Reset your account',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
@@ -56,7 +52,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               const SizedBox(height: 32),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: const Color(0xFF2A2A2A)),
                 ),

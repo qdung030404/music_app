@@ -60,7 +60,12 @@ class Setting extends StatelessWidget {
                  MaterialPageRoute(builder: (context) => const OtherSetting()),
                );
              }),
-             buildMenuItem(Icons.logout, 'Đăng xuất', (){FirebaseAuth.instance.signOut();})
+             buildMenuItem(Icons.logout, 'Đăng xuất', () async {
+               await FirebaseAuth.instance.signOut();
+               if (context.mounted) {
+                 Navigator.of(context).popUntil((route) => route.isFirst);
+               }
+             })
            ],
          ),
        )

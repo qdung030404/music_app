@@ -62,24 +62,21 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back)),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 20),
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                alignment: Alignment.centerLeft,
-                onPressed: () => Navigator.pop(context),
-              ),
               const SizedBox(height: 40),
               Container(
-                height: 200,
+                height: 100,
                 decoration: BoxDecoration(
-                  color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Image(image: AssetImage('assets/logo.png')),
@@ -88,7 +85,6 @@ class _RegisterPageState extends State<RegisterPage> {
               const Text(
                 'Create your account',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
@@ -96,7 +92,6 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 32),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: const Color(0xFF2A2A2A)),
                 ),
@@ -115,7 +110,6 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: const Color(0xFF2A2A2A)),
                 ),
@@ -146,14 +140,12 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: const Color(0xFF2A2A2A)),
                 ),
                 child: TextField(
                   controller: _confirmPasswordController,
                   obscureText: _obscureConfirmPassword,
-                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'Confirm Password',
                     hintStyle: const TextStyle(color: Colors.grey),

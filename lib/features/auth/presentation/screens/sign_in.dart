@@ -92,7 +92,7 @@ class _LoginpageState extends State<Loginpage> {
   @override
   Widget build(BuildContext context) {
     return isLoading ? const Center(child: CircularProgressIndicator()) : Scaffold(
-      backgroundColor: Colors.black,
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -101,9 +101,8 @@ class _LoginpageState extends State<Loginpage> {
             children: [
               const SizedBox(height: 40),
               Container(
-                height: 200,
+                height: 100,
                 decoration: BoxDecoration(
-                  color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Image(image: AssetImage('assets/logo.png'))
@@ -112,7 +111,6 @@ class _LoginpageState extends State<Loginpage> {
               const Text(
                 'Login to your account',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
@@ -120,7 +118,6 @@ class _LoginpageState extends State<Loginpage> {
               const SizedBox(height: 32),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: const Color(0xFF2A2A2A)),
                 ),
@@ -139,7 +136,6 @@ class _LoginpageState extends State<Loginpage> {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: const Color(0xFF2A2A2A)),
                 ),
@@ -189,7 +185,6 @@ class _LoginpageState extends State<Loginpage> {
                   const Text(
                     'Remember me',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -220,7 +215,10 @@ class _LoginpageState extends State<Loginpage> {
                 onPressed: () => Get.to(const ForgotPasswordPage()),
                 child: const Text(
                   'Forgot the password?',
-                  style: TextStyle(color: Color(0xFF00D9D9)),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF00D9D9)
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -264,7 +262,7 @@ class _LoginpageState extends State<Loginpage> {
                 children: [
                   const Text(
                     "Don't have an account? ",
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   GestureDetector(
                     onTap: () => Get.to(const RegisterPage()),
