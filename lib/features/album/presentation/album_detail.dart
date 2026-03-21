@@ -43,11 +43,18 @@ class _DetailPageState extends State<AlbumDetailPage> {
     _viewModel.loadAlbumSongs();
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.offset > 80 && !_showTitle) {
+      if (!mounted) return;
+      // Tính chiều cao khi mở rộng và thu gọn
+      final expandedHeight = MediaQuery.of(context).size.width / 2 + 260;
+      final collapsedHeight = kToolbarHeight + MediaQuery.of(context).padding.top;
+      // Ngưỡng cuộn: show title khi gần thu gọn hoàn toàn (ảnh đã bị che khuất)
+      final threshold = expandedHeight - collapsedHeight - 40; 
+      
+      if (_scrollController.offset > threshold && !_showTitle) {
         setState(() {
           _showTitle = true;
         });
-      } else if (_scrollController.offset <= 80 && _showTitle) {
+      } else if (_scrollController.offset <= threshold && _showTitle) {
         setState(() {
           _showTitle = false;
         });
@@ -77,7 +84,7 @@ class _DetailPageState extends State<AlbumDetailPage> {
         controller: _scrollController,
         slivers: [
           SliverAppBar(
-            expandedHeight: MediaQuery.of(context).size.height /2,
+            expandedHeight: MediaQuery.of(context).size.width / 2 + 260,
             pinned: true,
             title: AnimatedOpacity(
               opacity: _showTitle ? 1.0 : 0.0,

@@ -26,49 +26,51 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 80), // Add space for back button in SliverAppBar
-          Container(
-            width: MediaQuery.of(context).size.width/ 2,
-            height: MediaQuery.of(context).size.width/ 2,
-            decoration: BoxDecoration(
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 80),
+            Container(
+              width: MediaQuery.of(context).size.width/ 2,
+              height: MediaQuery.of(context).size.width/ 2,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+               ),
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: album.image.isNotEmpty
-                  ? Image.network(
-                      album.image,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
+                child: album.image.isNotEmpty
+                    ? Image.network(
+                        album.image,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey[900],
+                          child: const Icon(Icons.album, color: Colors.white54, size: 80),
+                        ),
+                      )
+                    : Container(
                         color: Colors.grey[900],
                         child: const Icon(Icons.album, color: Colors.white54, size: 80),
                       ),
-                    )
-                  : Container(
-                      color: Colors.grey[900],
-                      child: const Icon(Icons.album, color: Colors.white54, size: 80),
-                    ),
+              ),
             ),
-          ),
-          const SizedBox(height: 15),
-          customText(album.albumTitle, 20, FontWeight.bold),
-          const SizedBox(height: 8),
-          customText(album.artistDisplay, 16, FontWeight.normal),
-          const SizedBox(height: 8),
-          customText('Album', 12, FontWeight.normal),
-          const SizedBox(height: 15),
-          HeaderAction(
-            album: album,
-            songs: songs,
-            onPlayShuffle: onPlayShuffle,
-            onDownload: onDownload,
-          ),
-
-        ],
+            const SizedBox(height: 15),
+            customText(album.albumTitle, 20, FontWeight.bold),
+            const SizedBox(height: 8),
+            customText(album.artistDisplay, 16, FontWeight.normal),
+            const SizedBox(height: 8),
+            customText('Album', 12, FontWeight.normal),
+            const SizedBox(height: 15),
+            HeaderAction(
+              album: album,
+              songs: songs,
+              onPlayShuffle: onPlayShuffle,
+              onDownload: onDownload,
+            ),
+          ],
+        ),
       ),
     );
   }
