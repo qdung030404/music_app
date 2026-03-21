@@ -49,3 +49,43 @@ google-services.json
 firebase_options.dart
 pubspec.lock
 /devtools_options.yaml
+
+# ===== BỔ SUNG CÁC FILE CHUẨN CỦA FLUTTER APP =====
+
+# Environment variables
+.env
+.env.*
+
+# Plugins & Generated Scripts
+.flutter-plugins
+flutter_export_environment.sh
+.metadata
+
+# Keep secure keys out of version control
+key.properties
+*.keystore
+*.jks
+
+# Android specific
+**/android/local.properties
+**/android/.gradle/
+**/android/app/build/
+**/*.apk
+**/*.aab
+
+# iOS specific
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/app.flx
+**/ios/Flutter/Flutter.podspec
+**/ios/Runner/GoogleService-Info.plist
+
+# Desktop & Web generated / ephemeral
+**/linux/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+**/windows/flutter/ephemeral/
+**/build/web/
