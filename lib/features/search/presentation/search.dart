@@ -1,16 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/domain/entities/artist_entity.dart';
-import 'package:music_app/domain/entities/album_entity.dart';
-import 'package:music_app/domain/usecases/get_songs.dart';
-import 'package:music_app/domain/usecases/get_artists.dart';
-import 'package:music_app/domain/usecases/get_album.dart';
-import 'package:music_app/data/repository/song_repository.dart';
-import 'package:music_app/data/repository/artist_repository.dart';
-import 'package:music_app/data/repository/album_repository.dart';
 import '../widget/Search_history.dart';
 import '../widget/search_results_list.dart';
+import 'package:music_app/data/datasources/jamendo_service.dart';
+import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/model/artist.dart';
+import 'package:music_app/data/model/album.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -48,21 +43,51 @@ class _SearchTabState extends State<SearchTab> {
   }
 
   Future<void> _loadAllData() async {
-    final getSongs = GetSongs(SongRepositoryImpl());
-    final getArtists = GetArtists(ArtistRepositoryImpl());
-    final getAlbums = GetAlbums(AlbumRepositoryImp());
+    final jamendo = JamendoService();
+    try {
+      final songsData = await jamendo.fetchPopularTracks();
+      final artistsData = await jamendo.fetchPopularArtists();
+      final albumsData = await jamendo.fetchPopularAlbums();
 
-    final songs = await getSongs();
-    final artists = await getArtists();
-    final albums = await getAlbums();
+      final List<Song> s = songsData.map<Song>((e) => SongModel(
+        id: e['id']?.toString() ?? '',
+        title: e['name'] ?? 'Unknown',
+        albumId: e['album_id']?.toString() ?? '',
+        artistId: e['artist_id']?.toString() ?? '',
+        albumName: e['album_name'],
+        artistName: e['artist_name'],
+        source: e['audio'] ?? '',
+        image: e['image'] ?? e['album_image'] ?? '',
+        duration: e['duration'] ?? 180,
+      )).toList();
 
-    if (mounted) {
-      setState(() {
-        _allSongs = songs ?? [];
-        _allArtists = artists;
-        _allAlbums = albums;
-        _isLoading = false;
-      });
+      final List<Artist> ar = artistsData
+          .where((e) => e['image'] != null && e['image'].toString().trim().isNotEmpty)
+          .map<Artist>((e) => ArtistModel(
+        id: e['id']?.toString() ?? '',
+        name: e['name'] ?? 'Unknown',
+        avatar: e['image'] ?? '',
+      )).toList();
+
+      final List<Album> al = albumsData.map<Album>((e) => AlbumModel(
+        id: e['id']?.toString() ?? '',
+        albumTitle: e['name'] ?? 'Unknown',
+        artistId: e['artist_id']?.toString() ?? '',
+        artistName: e['artist_name'] ?? 'Unknown',
+        image: e['image'] ?? '',
+      )).toList();
+
+      if (mounted) {
+        setState(() {
+          _allSongs = s;
+          _allArtists = ar;
+          _allAlbums = al;
+          _isLoading = false;
+        });
+      }
+    } catch(e) {
+       print("Loi tai trang search: $e");
+       if (mounted) setState(() => _isLoading = false);
     }
   }
   void onListen({BuildContext? dialogContext, VoidCallback? onStatusChanged}) async {
