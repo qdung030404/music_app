@@ -1,19 +1,11 @@
 import 'dart:async';
-import 'package:music_app/domain/entities/artist_entity.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/domain/usecases/get_artists.dart';
-import 'package:music_app/domain/usecases/get_songs.dart';
-import 'package:music_app/data/repository/artist_repository.dart';
-import 'package:music_app/data/repository/song_repository.dart';
-
-import '../../../data/repository/album_repository.dart';
-import '../../../domain/entities/album_entity.dart';
-import '../../../domain/usecases/get_album.dart';
+import 'package:music_app/data/datasources/jamendo_service.dart';
+import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/model/artist.dart';
+import 'package:music_app/data/model/album.dart';
 
 class HomeViewModel {
-  final GetSongs _getSongs;
-  final GetArtists _getArtists;
-  final GetAlbums _getAlbums;
+
 
   final StreamController<List<Song>> songsController =
       StreamController<List<Song>>();
@@ -22,29 +14,85 @@ class HomeViewModel {
   final StreamController<List<Album>> albumController =
       StreamController<List<Album>>();
 
-
-  HomeViewModel()
-      : _getSongs = GetSongs(SongRepositoryImpl()),
-        _getArtists = GetArtists(ArtistRepositoryImpl()),
-        _getAlbums = GetAlbums(AlbumRepositoryImp());
-
   Future<void> loadSongs() async {
-    final songs = await _getSongs();
-    if (songs != null && songs.isNotEmpty) {
-      songsController.add(songs);
+    List<Song> allSongs = [];
+
+    try {
+      final jamendoService = JamendoService();
+      final jamendoData = await jamendoService.fetchPopularTracks();
+      
+      final List<Song> jamendoSongs = jamendoData.map<Song>((e) => SongModel(
+        id: e['id']?.toString() ?? '',
+        title: e['name'] ?? 'Unknown',
+        albumId: e['album_id']?.toString() ?? '',
+        artistId: e['artist_id']?.toString() ?? '',
+        albumName: e['album_name'],
+        artistName: e['artist_name'],
+        source: e['audio'] ?? '',
+        image: e['image'] ?? e['album_image'] ?? '',
+        duration: e['duration'] ?? 180,
+      )).toList();
+
+      jamendoSongs.shuffle(); // Đảo trộn ngẫu nhiên danh sách nhạc
+      allSongs.addAll(jamendoSongs);
+    } catch (e) {
+      print("Loi ghep nhac Jamendo: $e");
+    }
+
+    if (allSongs.isNotEmpty) {
+      songsController.add(allSongs);
     }
   }
 
   Future<void> loadArtists() async {
-    final artists = await _getArtists();
-    if (artists.isNotEmpty) {
-      artistsController.add(artists);
+    List<Artist> allArtists = [];
+    try {
+      final jamendoService = JamendoService();
+      final jamendoData = await jamendoService.fetchPopularArtists();
+      
+      final List<Artist> jamendoArtists = jamendoData
+          .where((e) => e['image'] != null && e['image'].toString().trim().isNotEmpty)
+          .map<Artist>((e) => ArtistModel(
+        id: e['id']?.toString() ?? '',
+        name: e['name'] ?? 'Unknown',
+        avatar: e['image'] ?? '',
+      )).toList();
+
+      jamendoArtists.shuffle(); // Đảo trộn ngẫu nhiên danh sách nghệ sĩ
+
+      allArtists.addAll(jamendoArtists);
+    } catch (e) {
+      print("Loi ghep Jamendo Artists: $e");
+    }
+
+    if (allArtists.isNotEmpty) {
+      artistsController.add(allArtists);
     }
   }
+  
   Future<void> loadAlbum() async {
-    final albums = await _getAlbums();
-    if (albums.isNotEmpty) {
-      albumController.add(albums);
+    List<Album> allAlbums = [];
+    try {
+      final jamendoService = JamendoService();
+      final jamendoData = await jamendoService.fetchPopularAlbums();
+      
+      final List<Album> jamendoAlbums = jamendoData.map<Album>((e) => AlbumModel(
+        id: e['id']?.toString() ?? '',
+        albumTitle: e['name'] ?? 'Unknown',
+        artistId: e['artist_id']?.toString() ?? '',
+        artistName: e['artist_name'] ?? 'Unknown',
+        image: e['image'] ?? '',
+      )).toList();
+
+      jamendoAlbums.shuffle(); // Đảo trộn ngẫu nhiên danh sách Album
+
+      allAlbums.addAll(jamendoAlbums);
+    } catch (e) {
+      print("Loi ghep Jamendo Albums: $e");
+    }
+
+    if (allAlbums.isNotEmpty) {
+      albumController.add(allAlbums);
     }
   }
   void dispose() {
