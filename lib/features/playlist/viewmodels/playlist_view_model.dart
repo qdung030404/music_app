@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
-import 'package:music_app/data/repository/song_repository.dart';
-import 'package:music_app/domain/usecases/get_songs.dart';
 import '../../../data/datasources/user_activity_service.dart';
 import '../../../domain/entities/song_entity.dart';
+import 'package:music_app/data/model/song.dart';
 
 class PlaylistViewModel {
-  final GetSongs _getSongs;
   final String playlistId;
 
   final _songsSubject = BehaviorSubject<List<Song>>();
@@ -15,8 +13,7 @@ class PlaylistViewModel {
   Stream<List<Song>> get songsStream => _songsSubject.stream;
   Stream<bool> get isLoadingStream => _isLoadingSubject.stream;
 
-  PlaylistViewModel({required this.playlistId})
-      : _getSongs = GetSongs(SongRepositoryImpl());
+  PlaylistViewModel({required this.playlistId});
 
   void loadPlaylistSongs() {
     _isLoadingSubject.add(true);

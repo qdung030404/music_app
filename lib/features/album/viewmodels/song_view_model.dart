@@ -1,42 +1,45 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
-import 'package:music_app/data/repository/song_repository.dart';
-import 'package:music_app/domain/usecases/get_songs.dart';
-import '../../../domain/entities/song_entity.dart';
-
+import 'package:music_app/data/datasources/jamendo_service.dart';
+import 'package:music_app/data/model/song.dart';
 class SongViewModel {
-  final GetSongs _getSongs;
   final String albumId;
 
-  // BehaviorSubject holds the most recent value and emits it to new listeners
+  // BehaviorSubject sẽ lưu giữ lại giá trị mới nhất, và tự động phát lại (gửi lại) giá trị đó cho những người mới bắt đầu lắng nghe.
   final _songsSubject = BehaviorSubject<List<Song>>();
   final _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
 
-  // Expose streams for UI to listen to
+  // Hiển thị các luồng dữ liệu để giao diện người dùng có thể lắng nghe.
   Stream<List<Song>> get songsStream => _songsSubject.stream;
   Stream<bool> get isLoadingStream => _isLoadingSubject.stream;
 
-  // Convenience getters for current values
+  // Các hàm lấy dữ liệu tiện ích (giúp truy cập nhanh giá trị hiện tại)
   List<Song> get currentSongs => _songsSubject.valueOrNull ?? [];
   bool get isLoading => _isLoadingSubject.value;
 
-  SongViewModel({required this.albumId})
-      : _getSongs = GetSongs(SongRepositoryImpl());
+  SongViewModel({required this.albumId});
 
   Future<void> loadAlbumSongs() async {
-    // Prevent multiple simultaneous loads
     if (_isLoadingSubject.value) return;
 
     _isLoadingSubject.add(true);
     try {
-      final allSongs = await _getSongs();
-      if (allSongs != null) {
-        // Filter songs by albumId
-        final albumSongs = allSongs.where((song) => song.albumId == albumId).toList();
-        _songsSubject.add(albumSongs);
-      } else {
-        _songsSubject.add([]);
-      }
+      final jamendo = JamendoService();
+      final songsData = await jamendo.fetchTracksByAlbumId(albumId);
+      
+      final List<Song> albumSongs = songsData.map<Song>((e) => SongModel(
+        id: e['id']?.toString() ?? '',
+        title: e['name'] ?? 'Unknown',
+        albumId: e['album_id']?.toString() ?? '',
+        artistId: e['artist_id']?.toString() ?? '',
+        albumName: e['album_name'],
+        artistName: e['artist_name'],
+        source: e['audio'] ?? '',
+        image: e['image'] ?? e['album_image'] ?? '',
+        duration: e['duration'] ?? 180,
+      )).toList();
+      
+      _songsSubject.add(albumSongs);
     } catch (e) {
       _songsSubject.addError(e);
     } finally {

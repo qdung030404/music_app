@@ -1,22 +1,16 @@
 import 'dart:async';
-import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/domain/entities/album_entity.dart';
-import 'package:music_app/domain/usecases/get_songs.dart';
-import 'package:music_app/domain/usecases/get_album.dart';
-import 'package:music_app/data/repository/song_repository.dart';
-import 'package:music_app/data/repository/album_repository.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:music_app/data/datasources/jamendo_service.dart';
+import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/model/album.dart';
 
 class ArtistDetailViewModel {
-  final GetSongs _getSongs;
-  final GetAlbums _getAlbums;
   final String artistId;
 
-  final StreamController<List<Song>> songsController = StreamController<List<Song>>();
-  final StreamController<List<Album>> albumsController = StreamController<List<Album>>();
+  final BehaviorSubject<List<Song>> songsController = BehaviorSubject<List<Song>>();
+  final BehaviorSubject<List<Album>> albumsController = BehaviorSubject<List<Album>>();
 
-  ArtistDetailViewModel({required this.artistId})
-      : _getSongs = GetSongs(SongRepositoryImpl()),
-        _getAlbums = GetAlbums(AlbumRepositoryImp());
+  ArtistDetailViewModel({required this.artistId});
 
   Future<void> loadArtistData() async {
     await Future.wait([
@@ -26,19 +20,39 @@ class ArtistDetailViewModel {
   }
 
   Future<void> loadArtistSongs() async {
-    final allSongs = await _getSongs();
-    if (allSongs != null) {
-      final artistSongs = allSongs.where((song) => song.artistId == artistId).toList();
+    try {
+      final jamendo = JamendoService();
+      final songsData = await jamendo.fetchTracksByArtistId(artistId);
+      
+      final List<Song> artistSongs = songsData.map<Song>((e) => SongModel(
+        id: e['id']?.toString() ?? '',
+        title: e['name'] ?? 'Unknown',
+        albumId: e['album_id']?.toString() ?? '',
+        artistId: e['artist_id']?.toString() ?? '',
+        albumName: e['album_name'],
+        artistName: e['artist_name'],
+        source: e['audio'] ?? '',
+        image: e['image'] ?? e['album_image'] ?? '',
+        duration: e['duration'] ?? 180,
+      )).toList();
+      
       songsController.add(artistSongs);
-    }
+    } catch(e) { }
   }
 
   Future<void> loadArtistAlbums() async {
-    final allAlbums = await _getAlbums();
-    if (allAlbums.isNotEmpty) {
-      final artistAlbums = allAlbums.where((album) => album.artistId == artistId).toList();
+    try {
+      final jamendo = JamendoService();
+      final albumsData = await jamendo.fetchAlbumsByArtistId(artistId);
+      final List<Album> artistAlbums = albumsData.map<Album>((e) => AlbumModel(
+        id: e['id']?.toString() ?? '',
+        albumTitle: e['name'] ?? 'Unknown',
+        artistId: e['artist_id']?.toString() ?? '',
+        artistName: e['artist_name'] ?? 'Unknown',
+        image: e['image'] ?? '',
+      )).toList();
       albumsController.add(artistAlbums);
-    }
+    } catch(e) { print(e); }
   }
 
   void dispose() {

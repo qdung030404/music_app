@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../data/datasources/user_activity_service.dart';
-import '../../../data/repository/song_repository.dart';
-import '../../../domain/entities/song_entity.dart';
-import '../../../domain/usecases/get_songs.dart';
+import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/datasources/jamendo_service.dart';
 
 class SongListPage extends StatefulWidget {
   final String? playlistId;
@@ -13,7 +12,6 @@ class SongListPage extends StatefulWidget {
 }
 
 class _SongListPageState extends State<SongListPage> {
-  final GetSongs _getSongs = GetSongs(SongRepositoryImpl());
   List<Song> _allSongs = [];
   List<Song> _filteredSongs = [];
   bool _isLoading = true;
@@ -28,13 +26,30 @@ class _SongListPageState extends State<SongListPage> {
   }
 
   Future<void> _loadSongs() async {
-    final songs = await _getSongs();
-    if (mounted) {
-      setState(() {
-        _allSongs = songs ?? [];
-        _filteredSongs = _allSongs;
-        _isLoading = false;
-      });
+    final jamendo = JamendoService();
+    try {
+      final songsData = await jamendo.fetchPopularTracks();
+      final List<Song> s = songsData.map<Song>((e) => SongModel(
+        id: e['id']?.toString() ?? '',
+        title: e['name'] ?? 'Unknown',
+        albumId: e['album_id']?.toString() ?? '',
+        artistId: e['artist_id']?.toString() ?? '',
+        albumName: e['album_name'],
+        artistName: e['artist_name'],
+        source: e['audio'] ?? '',
+        image: e['image'] ?? e['album_image'] ?? '',
+        duration: e['duration'] ?? 180,
+      )).toList();
+
+      if (mounted) {
+        setState(() {
+          _allSongs = s;
+          _filteredSongs = _allSongs;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 

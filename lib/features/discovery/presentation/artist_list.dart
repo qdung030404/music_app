@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../data/repository/artist_repository.dart';
-import '../../../domain/entities/artist_entity.dart';
-import '../../../domain/usecases/get_artists.dart';
 import '../../../data/datasources/user_activity_service.dart';
+import 'package:music_app/data/datasources/jamendo_service.dart';
+import 'package:music_app/data/model/artist.dart';
 
 class ArtistList extends StatefulWidget {
   const ArtistList({super.key});
@@ -12,7 +11,6 @@ class ArtistList extends StatefulWidget {
 }
 
 class _ArtistListState extends State<ArtistList> {
-  final GetArtists _getArtists = GetArtists(ArtistRepositoryImpl());
   List<Artist> _allArtists = [];
   List<Artist> _filteredArtists = [];
   bool _isLoading = true;
@@ -28,7 +26,17 @@ class _ArtistListState extends State<ArtistList> {
 
   Future<void> _loadArtists() async {
     try {
-      final artists = await _getArtists();
+      final jamendo = JamendoService();
+      final data = await jamendo.fetchPopularArtists();
+      
+      final List<Artist> artists = data
+        .where((e) => e['image'] != null && e['image'].toString().trim().isNotEmpty)
+        .map<Artist>((e) => ArtistModel(
+        id: e['id']?.toString() ?? '',
+        name: e['name'] ?? 'Unknown',
+        avatar: e['image'] ?? '',
+      )).toList();
+
       if (mounted) {
         setState(() {
           _allArtists = artists;
