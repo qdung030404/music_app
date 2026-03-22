@@ -77,10 +77,5 @@ lib/
    ```bash
    flutter run
    ```
-
-## 📸 Ảnh chụp giao diện (Mockups)
-
-*(Bạn có thể thêm các ảnh chụp màn hình ứng dụng thực tế hoặc Mockups tại đây)*
-
 ---
 Developed by **Dũng**
