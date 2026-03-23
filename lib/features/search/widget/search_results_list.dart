@@ -32,7 +32,6 @@ class SearchResultsList extends StatelessWidget {
             child: Text(
               "Bài hát",
               style: TextStyle(
-                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -50,7 +49,6 @@ class SearchResultsList extends StatelessWidget {
             child: Text(
               "Nghệ sĩ",
               style: TextStyle(
-                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -86,7 +84,7 @@ class SearchResultsList extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           artist.name,
-                          style: const TextStyle(color: Colors.white, fontSize: 13),
+                          style: const TextStyle(fontSize: 13),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -105,7 +103,6 @@ class SearchResultsList extends StatelessWidget {
             child: Text(
               "Album",
               style: TextStyle(
-                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -148,11 +145,10 @@ class SearchResultsList extends StatelessWidget {
                         Text(
                           album.albumTitle,
                           style: const TextStyle(
-                            color: Colors.white,
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
