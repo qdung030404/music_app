@@ -62,7 +62,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
     super.dispose();
   }
   Widget getBody() {
-    return SafeArea(
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.wait([
+          _homeViewModel.loadSongs(),
+          _homeViewModel.loadArtists(),
+          _homeViewModel.loadAlbum(),
+        ]);
+      },
       child: SingleChildScrollView(
         padding: const EdgeInsets.only( top: 16, bottom: 80), // Removed horizontal padding here
         child: Column(
