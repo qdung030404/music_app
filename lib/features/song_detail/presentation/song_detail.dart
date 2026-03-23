@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_app/data/model/song.dart';
 import 'package:music_app/features/managers/audio_player_manager.dart';
 import 'package:music_app/features/managers/favorite_manager.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 import '../../../core/services/download_service.dart';
 
@@ -140,8 +141,12 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                     letterSpacing: 1.2,
                   ),
                 ),
-                Text(
+                TextScroll(
                   _song.title,
+                  mode: TextScrollMode.endless,
+                  velocity: const Velocity(pixelsPerSecond: Offset(30, 0)),
+                  delayBefore: const Duration(seconds: 1),
+                  pauseBetween: const Duration(seconds: 2),
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.deepPurpleAccent,
@@ -219,15 +224,17 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            TextScroll(
                               _song.title,
+                              mode: TextScrollMode.endless,
+                              velocity: const Velocity(pixelsPerSecond: Offset(30, 0)),
+                              delayBefore: const Duration(seconds: 1),
+                              pauseBetween: const Duration(seconds: 2),
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 0.5,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Text(

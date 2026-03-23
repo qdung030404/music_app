@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:music_app/features/managers/audio_player_manager.dart';
 import 'package:music_app/domain/entities/song_entity.dart'; // Use Entity or Model
 import 'package:music_app/features/song_detail/presentation/song_detail.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key});
@@ -72,10 +73,12 @@ class _MiniPlayerState extends State<MiniPlayer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      TextScroll(
                         song.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        mode: TextScrollMode.endless,
+                        velocity: const Velocity(pixelsPerSecond: Offset(30, 0)),
+                        delayBefore: const Duration(seconds: 1),
+                        pauseBetween: const Duration(seconds: 2),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
