@@ -47,6 +47,8 @@ class _OtherSettingState extends State<OtherSetting> {
             value: _pauseOnInterruption,
             onChanged: _togglePauseOnInterruption,
             secondary: const Icon(Icons.pause_circle_outline),
+            activeThumbColor: Color(0xFF00D9D9),
+            activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
           ),
           const Divider(),
           buildMenuItem(Icons.delete_outlined, 'Xóa tài khoản', () {

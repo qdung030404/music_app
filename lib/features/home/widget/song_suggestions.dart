@@ -60,15 +60,17 @@ class _SongSuggestionsState extends State<SongSuggestions> {
                 children: [
                   TextButton.icon(
                     style: TextButton.styleFrom(
-                      side: BorderSide(color: Colors.grey, width: 1),
+                      side: BorderSide(color: const Color(0xFF00D9D9), width: 1),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
+                      backgroundColor: const Color(0xFF00D9D9)
                     ),
                     onPressed: _playAll,
-                    icon: Icon(Icons.play_arrow,),
+                    icon: Icon(Icons.play_arrow,color: Colors.black),
                     label: Text('Phát tất cả',
                       style: TextStyle(
+                        color: Colors.black,
                         fontWeight: FontWeight.bold
                       ),
                     ),

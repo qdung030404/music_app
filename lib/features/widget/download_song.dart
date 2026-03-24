@@ -125,13 +125,16 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
       floatingActionButton: _selectedSongIds.isNotEmpty
           ? FloatingActionButton.extended(
               onPressed: _isDownloading ? null : _startDownload,
-              backgroundColor: Colors.deepPurpleAccent,
+              backgroundColor: const Color(0xFF00D9D9),
               icon: _isDownloading
                   ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator( strokeWidth: 2))
-                  : const Icon(Icons.download),
+                  : const Icon(Icons.download, color: Colors.black),
               label: Text(
                 _isDownloading ? 'Đang tải...' : 'Tải xuống (${_selectedSongIds.length})',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+                ),
               ),
             )
           : null,
@@ -155,7 +158,7 @@ class DownloadSongCard extends StatelessWidget {
     return CheckboxListTile(
       value: isSelected,
       onChanged: (_) => onTap(),
-      activeColor: Colors.deepPurpleAccent,
+      activeColor: const Color(0xFF00D9D9),
       checkColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       controlAffinity: ListTileControlAffinity.trailing,

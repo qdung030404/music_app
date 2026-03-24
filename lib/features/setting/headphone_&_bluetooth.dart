@@ -56,7 +56,6 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
               child: Text(
                 'Tai nghe / Loa',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: colorScheme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 20
                 )
@@ -68,7 +67,8 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
               trailing: Switch(
                 value: _autoPause,
                 onChanged: _toggleAutoPause,
-                activeThumbColor: colorScheme.primary,
+                activeThumbColor: Color(0xFF00D9D9),
+                activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
               )
             ),
             _SettingTile(
@@ -76,8 +76,8 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
               trailing: Switch(
                 value: _autoContinuePlaying,
                 onChanged: _toggleAutoContinuePlaying,
-                activeThumbColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withOpacity(0.4)
+                activeThumbColor: Color(0xFF00D9D9),
+                activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
               )
             ),
             Padding(
@@ -85,7 +85,6 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
                 child: Text(
                     'Thiết bị bluetooth',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: colorScheme.primary,
                       fontWeight: FontWeight.bold,
                       fontSize: 20
                     )
@@ -96,7 +95,8 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
                 trailing: Switch(
                   value: _mediaButtonControl,
                   onChanged: _toggleMediaControl,
-                  activeThumbColor: colorScheme.primary,
+                    activeThumbColor: Color(0xFF00D9D9),
+                    activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
                 )
             ),
           ],

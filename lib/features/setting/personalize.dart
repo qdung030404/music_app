@@ -86,6 +86,8 @@ class Personalize extends StatelessWidget{
               builder: (themeService) => SwitchListTile(
                 value: themeService.isAutoChange,
                 title: Text('Hiển thị theo ngày đêm'),
+                activeColor: const Color(0xFF00D9D9),
+                activeTrackColor: const Color(0xFF00D9D9).withOpacity(0.3),
                 onChanged: (val) {
                   themeService.isToggleTheme(val);
                 },
@@ -115,7 +117,9 @@ class VerticalRadioTile<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSelected = value == groupValue;
     return InkWell(
-      onTap: () => onChanged(value),
+      onTap: () {
+        onChanged(value);
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -124,7 +128,7 @@ class VerticalRadioTile<T> extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                    color: isSelected ? Colors.deepPurpleAccent : Colors.transparent,
+                    color: isSelected ? Color(0xFF00D9D9) : Colors.transparent,
                     width: 2
                 )
             ),

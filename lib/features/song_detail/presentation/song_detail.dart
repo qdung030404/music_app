@@ -149,7 +149,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                   pauseBetween: const Duration(seconds: 2),
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.deepPurpleAccent,
+                    color: const Color(0xFF00D9D9),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -262,7 +262,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                             onPressed: () => _handleToggleFavorite(_song),
                             icon: Icon(
                               _isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: _isFavorite ? Colors.deepPurpleAccent :
+                              color: _isFavorite ? const Color(0xFF00D9D9) :
                                 Theme.of(context).brightness == Brightness.dark
                                   ? Colors.white
                                   : Colors.black,
@@ -313,12 +313,12 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               buffered: durationState?.buffered ?? Duration.zero,
               onSeek: _audioPlayerManager.player.seek,
               barHeight: 4,
-              baseBarColor: Colors.white24,
-              progressBarColor:  Colors.deepPurpleAccent,
-              thumbColor: Colors.deepPurpleAccent,
+              baseBarColor: Colors.grey,
+              progressBarColor: const Color(0xFF00D9D9),
+              thumbColor: const Color(0xFF00D9D9),
               thumbRadius: 6,
               timeLabelLocation: TimeLabelLocation.below,
-              timeLabelTextStyle: const TextStyle(
+              timeLabelTextStyle:TextStyle(
                 fontSize: 12,
               ),
             ),
@@ -351,7 +351,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.deepPurpleAccent,
+                color: const Color(0xFF00D9D9),
               ),
               child: const Icon(Icons.play_arrow, size: 40),
             ),
@@ -462,7 +462,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               color: _loopMode == LoopMode.off ?
               Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
-                  : Colors.black : Colors.deepPurpleAccent,
+                  : Colors.black : Color(0xFF00D9D9),
               size: 24,
             ),
           ),

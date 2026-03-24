@@ -35,11 +35,16 @@ class FollowedList extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 48),
+                    backgroundColor: Color(0xFF00D9D9)
                   ),
                    onPressed: () { 
                      Navigator.push(context, MaterialPageRoute(builder: (context) => ArtistList()));
                    },
-                  child: const Text('THÊM NGHỆ SĨ', style: TextStyle(fontSize: 16)
+                  child: const Text('THÊM NGHỆ SĨ',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black
+                    )
                   ),
                 )
             ],
@@ -100,17 +105,16 @@ class FollowedList extends StatelessWidget {
                   SizedBox(width: 12,),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFF06A0B5),
-                      border: Border.all(color: Colors.grey, width: 1),
+                      color: Color(0xFF00D9D9),
+                      border: Border.all(color: Color(0xFF00D9D9), width: 1),
                       borderRadius: BorderRadius.circular(60),
                     ),
                     padding: const EdgeInsets.all(16),
-                    child: Icon(Icons.add_circle_outline, color: Colors.white, size: 32),
+                    child: Icon(Icons.add_circle_outline, size: 32),
                   ),
                   SizedBox(width: 16,),
                   Text('Thêm Nghệ Sĩ',
                     style: TextStyle(
-
                         fontSize: 16,
                         fontWeight: FontWeight.bold
                     ),

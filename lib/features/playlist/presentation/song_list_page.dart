@@ -99,7 +99,7 @@ class _SongListPageState extends State<SongListPage> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
+                ? const Center(child: CircularProgressIndicator(color: const Color(0xFF00D9D9)))
                 : _filteredSongs.isEmpty
                     ? const Center(
                         child: Text(
@@ -135,7 +135,7 @@ class _SongListPageState extends State<SongListPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: const Color(0xFF00D9D9),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -145,6 +145,7 @@ class _SongListPageState extends State<SongListPage> {
                   child: const Text(
                     'XONG',
                     style: TextStyle(
+                      color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -242,6 +243,9 @@ class _AddSongCard extends StatelessWidget {
       trailing: IconButton(
         icon: Icon(
           isSelected ? Icons.check_circle : Icons.add_circle_outline,
+          color: isSelected ? Color(0xFF00D9D9): Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
           size: 28,
         ),
         onPressed: onTap,

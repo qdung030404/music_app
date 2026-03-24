@@ -148,7 +148,7 @@ class _HeaderActionState extends State<HeaderAction> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                backgroundColor: Colors.deepPurpleAccent,
+                backgroundColor: const Color(0xFF00D9D9),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -165,7 +165,9 @@ class _HeaderActionState extends State<HeaderAction> {
           IconButton(
             onPressed: () => _toggleFavorite(widget.album),
             icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_outline, size: 28),
-            color: _isFavorite ? Colors.red : Colors.white,
+            color: _isFavorite ? Color(0xFF00D9D9) : Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ],
       ),

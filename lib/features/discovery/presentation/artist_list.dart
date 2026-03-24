@@ -98,7 +98,7 @@ class _ArtistListState extends State<ArtistList> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
+                ? const Center(child: CircularProgressIndicator(color: Color(0xFF00D9D9)))
                 : _filteredArtists.isEmpty
                     ? const Center(
                         child: Text(
@@ -141,7 +141,7 @@ class _ArtistListState extends State<ArtistList> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: const Color(0xFF00D9D9),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -151,6 +151,7 @@ class _ArtistListState extends State<ArtistList> {
                   child: Text(
                     'XONG',
                     style: const TextStyle(
+                      color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -178,7 +179,7 @@ class _ArtistListState extends State<ArtistList> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Đã theo dõi các nghệ sĩ đã chọn'),
-            backgroundColor: Colors.deepPurple,
+            backgroundColor: Color(0xFF00D9D9),
           ),
         );
         Navigator.pop(context);
@@ -241,7 +242,7 @@ class _ArtistCard extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: const BoxDecoration(
-                        color: Colors.deepPurple,
+                        color: Color(0xFF00D9D9),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
