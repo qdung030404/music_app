@@ -5,7 +5,8 @@ import '../../../domain/entities/artist_entity.dart';
 
 class ArtistHeader extends StatefulWidget {
   final Artist artist;
-  const ArtistHeader({super.key, required this.artist});
+  final VoidCallback? onPlayAll;
+  const ArtistHeader({super.key, required this.artist, this.onPlayAll});
 
   @override
   State<ArtistHeader> createState() => _ArtistHeaderState();
@@ -76,7 +77,7 @@ class _ArtistHeaderState extends State<ArtistHeader> {
                 Colors.black.withOpacity(0.5),
                 Colors.black,
               ],
-              stops: const [0.7, 0.8, 1.0],
+              stops: const [0.6, 0.8, 1.0],
             ),
           ),
         ),
@@ -95,7 +96,6 @@ class _ArtistHeaderState extends State<ArtistHeader> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -133,9 +133,9 @@ class _ArtistHeaderState extends State<ArtistHeader> {
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: (){},
+                  onPressed: widget.onPlayAll,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF7C4DFF),
+                    backgroundColor: const Color(0xFF00D9D9),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),

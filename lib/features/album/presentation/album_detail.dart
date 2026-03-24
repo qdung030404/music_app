@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/album_entity.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
+import 'package:music_app/features/song_detail/presentation/song_detail.dart';
 import '../../widget/song_list.dart';
 import '../viewmodels/song_view_model.dart';
 import '../widget/header.dart';
@@ -103,7 +104,15 @@ class _DetailPageState extends State<AlbumDetailPage> {
                 album: widget.album,
                 songs: albumSongs,
                 onPlayShuffle: () {
-                  // Logic to play shuffle if needed
+                  final randomSongs = List<Song>.from(albumSongs)..shuffle();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SongDetail(
+                        songs: randomSongs,
+                        playingSong: randomSongs[0])
+                    )
+                  );
                 },
               ),
             ),

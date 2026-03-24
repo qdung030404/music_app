@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:get/get.dart';
 import 'package:music_app/features/managers/audio_player_manager.dart';
-import 'package:music_app/domain/entities/song_entity.dart'; // Use Entity or Model
+import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/features/song_detail/presentation/song_detail.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -28,7 +28,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
         return GestureDetector(
           onTap: () {
-            // Navigate to Song Detail using GetX for better compatibility
             Get.to(
               () => SongDetail(
                 playingSong: song,

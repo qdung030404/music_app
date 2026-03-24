@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/artist_entity.dart';
+import '../../song_detail/presentation/song_detail.dart';
 import '../widget/artist_header.dart';
 import '../../widget/song_list.dart';
 import '../viewmodels/artist_detail_view_model.dart';
@@ -106,6 +107,18 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
                 children: [
                 ArtistHeader(
                   artist: widget.artist,
+                  onPlayAll: (){
+                    final randomSongs = List<Song>.from(artistSongs)..shuffle();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SongDetail(
+                          songs: randomSongs,
+                          playingSong: randomSongs[0],
+                        ),
+                      ),
+                    );
+                  }
                 ),
                 SongList(
                   songs: artistSongs,
