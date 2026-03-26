@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../data/datasources/user_activity_service.dart';
 import 'package:music_app/data/datasources/jamendo_service.dart';
 import 'package:music_app/data/model/artist.dart';
+
+import '../../../data/datasources/user_activity_service.dart';
 
 class ArtistList extends StatefulWidget {
   const ArtistList({super.key});
@@ -28,14 +29,20 @@ class _ArtistListState extends State<ArtistList> {
     try {
       final jamendo = JamendoService();
       final data = await jamendo.fetchPopularArtists();
-      
+
       final List<Artist> artists = data
-        .where((e) => e['image'] != null && e['image'].toString().trim().isNotEmpty)
-        .map<Artist>((e) => ArtistModel(
-        id: e['id']?.toString() ?? '',
-        name: e['name'] ?? 'Unknown',
-        avatar: e['image'] ?? '',
-      )).toList();
+          .where(
+            (e) =>
+                e['image'] != null && e['image'].toString().trim().isNotEmpty,
+          )
+          .map<Artist>(
+            (e) => ArtistModel(
+              id: e['id']?.toString() ?? '',
+              name: e['name'] ?? 'Unknown',
+              avatar: e['image'] ?? '',
+            ),
+          )
+          .toList();
 
       if (mounted) {
         setState(() {
@@ -61,8 +68,10 @@ class _ArtistListState extends State<ArtistList> {
         _filteredArtists = _allArtists;
       } else {
         _filteredArtists = _allArtists
-            .where((artist) =>
-                artist.name.toLowerCase().contains(query.toLowerCase()))
+            .where(
+              (artist) =>
+                  artist.name.toLowerCase().contains(query.toLowerCase()),
+            )
             .toList();
       }
     });
@@ -98,41 +107,44 @@ class _ArtistListState extends State<ArtistList> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: Color(0xFF00D9D9)))
+                ? const Center(
+                    child: CircularProgressIndicator(color: Color(0xFF00D9D9)),
+                  )
                 : _filteredArtists.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'Không tìm thấy nghệ sĩ nào',
-                          style: TextStyle(),
-                        ),
-                      )
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                ? const Center(
+                    child: Text(
+                      'Không tìm thấy nghệ sĩ nào',
+                      style: TextStyle(),
+                    ),
+                  )
+                : GridView.builder(
+                    padding: const EdgeInsets.all(16),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 0.8,
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),
-                        itemCount: _filteredArtists.length,
-                        itemBuilder: (context, index) {
-                          final artist = _filteredArtists[index];
-                          final isSelected = _selectedArtistIds.contains(artist.id);
-                          return _ArtistCard(
-                            artist: artist,
-                            isSelected: isSelected,
-                            onTap: () {
-                              setState(() {
-                                if (isSelected) {
-                                  _selectedArtistIds.remove(artist.id);
-                                } else {
-                                  _selectedArtistIds.add(artist.id);
-                                }
-                              });
-                            },
-                          );
+                    itemCount: _filteredArtists.length,
+                    itemBuilder: (context, index) {
+                      final artist = _filteredArtists[index];
+                      final isSelected = _selectedArtistIds.contains(artist.id);
+                      return _ArtistCard(
+                        artist: artist,
+                        isSelected: isSelected,
+                        onTap: () {
+                          setState(() {
+                            if (isSelected) {
+                              _selectedArtistIds.remove(artist.id);
+                            } else {
+                              _selectedArtistIds.add(artist.id);
+                            }
+                          });
                         },
-                      ),
+                      );
+                    },
+                  ),
           ),
           if (_selectedArtistIds.isNotEmpty)
             Padding(
@@ -231,8 +243,7 @@ class _ArtistCard extends StatelessWidget {
                           ),
                   ),
                   child: artist.avatar.isEmpty
-                      ? const Center(
-                          child: Icon(Icons.person, size: 40))
+                      ? const Center(child: Icon(Icons.person, size: 40))
                       : null,
                 ),
                 if (isSelected)

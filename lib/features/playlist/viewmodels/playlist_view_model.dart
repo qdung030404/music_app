@@ -1,8 +1,10 @@
 import 'dart:async';
+
+import 'package:music_app/data/model/song.dart';
 import 'package:rxdart/rxdart.dart';
+
 import '../../../data/datasources/user_activity_service.dart';
 import '../../../domain/entities/song_entity.dart';
-import 'package:music_app/data/model/song.dart';
 
 class PlaylistViewModel {
   final String playlistId;
@@ -11,6 +13,7 @@ class PlaylistViewModel {
   final _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
 
   Stream<List<Song>> get songsStream => _songsSubject.stream;
+
   Stream<bool> get isLoadingStream => _isLoadingSubject.stream;
 
   PlaylistViewModel({required this.playlistId});
@@ -18,16 +21,18 @@ class PlaylistViewModel {
   void loadPlaylistSongs() {
     _isLoadingSubject.add(true);
     final service = UserActivityService();
-    service.getPlaylistSongsStream(playlistId).listen(
-      (songs) {
-        _songsSubject.add(songs);
-        _isLoadingSubject.add(false);
-      },
-      onError: (error) {
-        _songsSubject.addError(error);
-        _isLoadingSubject.add(false);
-      },
-    );
+    service
+        .getPlaylistSongsStream(playlistId)
+        .listen(
+          (songs) {
+            _songsSubject.add(songs);
+            _isLoadingSubject.add(false);
+          },
+          onError: (error) {
+            _songsSubject.addError(error);
+            _isLoadingSubject.add(false);
+          },
+        );
   }
 
   void dispose() {

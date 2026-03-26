@@ -8,6 +8,7 @@ class SongList extends StatelessWidget {
   final String title;
   final VoidCallback? onViewAll;
   final String? playlistId;
+
   const SongList({
     super.key,
     required this.songs,
@@ -18,7 +19,7 @@ class SongList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(songs.isEmpty) return const SizedBox.shrink();
+    if (songs.isEmpty) return const SizedBox.shrink();
     final displaySongs = songs.toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,10 +47,10 @@ class SongList extends StatelessWidget {
           itemCount: displaySongs.length,
           itemBuilder: (context, index) {
             return SongCard(
-                song: displaySongs[index],
-                songs: songs,
-                playlistId: playlistId,
-              );
+              song: displaySongs[index],
+              songs: songs,
+              playlistId: playlistId,
+            );
           },
         ),
       ],

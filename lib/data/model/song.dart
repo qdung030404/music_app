@@ -1,4 +1,5 @@
 import 'package:music_app/domain/entities/song_entity.dart';
+
 export 'package:music_app/domain/entities/song_entity.dart';
 
 class SongModel extends Song {
@@ -19,7 +20,8 @@ class SongModel extends Song {
       id: json['id']?.toString() ?? '',
       title: json['title'] ?? json['name'] ?? '',
       albumId: json['albumId']?.toString() ?? json['album']?.toString() ?? '',
-      artistId: json['artistId']?.toString() ?? json['artist']?.toString() ?? '',
+      artistId:
+          json['artistId']?.toString() ?? json['artist']?.toString() ?? '',
       albumName: (json['albumName'] ?? json['album_title'])?.toString(),
       artistName: (json['artistName'] ?? json['artist_name'])?.toString(),
       source: json['source'] ?? '',

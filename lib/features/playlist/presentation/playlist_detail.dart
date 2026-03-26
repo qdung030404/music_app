@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
+
 import '../../managers/audio_player_manager.dart';
 import '../../widget/song_list.dart';
 import '../viewmodels/playlist_view_model.dart';
@@ -24,6 +25,7 @@ class PlaylistDetail extends StatelessWidget {
 
 class PlaylistDetailPage extends StatefulWidget {
   final Playlist playlist;
+
   const PlaylistDetailPage({
     super.key,
     required this.playlist,
@@ -93,7 +95,9 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.all(32.0),
-                      child: CircularProgressIndicator(color: Colors.deepPurple),
+                      child: CircularProgressIndicator(
+                        color: Colors.deepPurple,
+                      ),
                     ),
                   );
                 }

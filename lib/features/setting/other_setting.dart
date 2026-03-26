@@ -42,13 +42,15 @@ class _OtherSettingState extends State<OtherSetting> {
           SwitchListTile(
             title: const Text('Tạm dừng khi app khác phát âm thanh'),
             subtitle: _pauseOnInterruption
-                ? const Text('Tự động dừng nhạc khi bạn mở video Facebook, YouTube hoặc chơi game.')
+                ? const Text(
+                    'Tự động dừng nhạc khi bạn mở video Facebook, YouTube hoặc chơi game.',
+                  )
                 : null,
             value: _pauseOnInterruption,
             onChanged: _togglePauseOnInterruption,
             secondary: const Icon(Icons.pause_circle_outline),
             activeThumbColor: Color(0xFF00D9D9),
-            activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
+            activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3),
           ),
           const Divider(),
           buildMenuItem(Icons.delete_outlined, 'Xóa tài khoản', () {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/data/model/artist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:music_app/data/model/artist.dart';
 import 'package:music_app/features/discovery/presentation/artist_list.dart';
+
 import '../../../data/datasources/user_activity_service.dart';
 import '../../artist/presentation/artist_detail.dart';
 
@@ -19,34 +20,40 @@ class FollowedList extends StatelessWidget {
         if (followedArtist.isEmpty) {
           return Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.15), // Khoảng cách đẩy xuống giữa
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.15,
+              ), // Khoảng cách đẩy xuống giữa
               const FaIcon(
-                  FontAwesomeIcons.music,
-                  color: Colors.grey,
-                  size: 160,
+                FontAwesomeIcons.music,
+                color: Colors.grey,
+                size: 160,
               ),
-              const Text('bạn chưa theo dõi nghệ sĩ nào',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16
+              const Text(
+                'bạn chưa theo dõi nghệ sĩ nào',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 48,
+                  ),
+                  backgroundColor: Color(0xFF00D9D9),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ArtistList()),
+                  );
+                },
+                child: const Text(
+                  'THÊM NGHỆ SĨ',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ),
-                const SizedBox(height: 8,),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 48),
-                    backgroundColor: Color(0xFF00D9D9)
-                  ),
-                   onPressed: () { 
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => ArtistList()));
-                   },
-                  child: const Text('THÊM NGHỆ SĨ',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black
-                    )
-                  ),
-                )
             ],
           );
         }
@@ -60,7 +67,10 @@ class FollowedList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final artist = followedArtist[index];
                 return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   leading: CircleAvatar(
                     radius: 30,
                     backgroundImage: artist.avatar.isNotEmpty
@@ -94,15 +104,18 @@ class FollowedList extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ArtistList()));
+                  context,
+                  MaterialPageRoute(builder: (context) => ArtistList()),
+                );
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(width: 12,),
+                  SizedBox(
+                    width: 12,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       color: Color(0xFF00D9D9),
@@ -112,17 +125,17 @@ class FollowedList extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     child: Icon(Icons.add_circle_outline, size: 32),
                   ),
-                  SizedBox(width: 16,),
-                  Text('Thêm Nghệ Sĩ',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                    ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                    'Thêm Nghệ Sĩ',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         );
       },

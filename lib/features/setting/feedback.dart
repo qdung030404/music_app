@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../core/services/feedback_service.dart';
+
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
 
@@ -10,7 +12,7 @@ class FeedbackPage extends StatefulWidget {
 class _FeedbackPageState extends State<FeedbackPage> {
   final FeedbackService _feedbackService = FeedbackService();
   bool _isLoading = false;
-  
+
   final List<String> _feedbackOptions = [
     'Lỗi phát nhạc',
     'Lỗi giao diện',
@@ -63,7 +65,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                 ),
                 hint: const Text('Chọn một mục'),
                 items: _feedbackOptions.map((String value) {
@@ -77,7 +82,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     _selectedIssue = newValue;
                   });
                 },
-                validator: (value) => value == null ? 'Vui lòng chọn vấn đề' : null,
+                validator: (value) =>
+                    value == null ? 'Vui lòng chọn vấn đề' : null,
               ),
               const SizedBox(height: 16),
               const Text(
@@ -89,7 +95,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 controller: _contentController,
                 maxLines: 5,
                 decoration: InputDecoration(
-                  hintText: 'Nhập ý kiến hoặc mô tả lỗi bạn gặp phải tại đây...',
+                  hintText:
+                      'Nhập ý kiến hoặc mô tả lỗi bạn gặp phải tại đây...',
                   filled: true,
                   fillColor: Theme.of(context).brightness == Brightness.dark
                       ? Colors.grey.shade900
@@ -99,8 +106,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                validator: (value) =>
-                    (value == null || value.isEmpty) ? 'Vui lòng nhập nội dung chi tiết' : null,
+                validator: (value) => (value == null || value.isEmpty)
+                    ? 'Vui lòng nhập nội dung chi tiết'
+                    : null,
               ),
               _buildInputField(
                 context,
@@ -148,7 +156,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Cảm ơn bạn đã gửi đóng góp ý kiến!'),
+                                    content: Text(
+                                      'Cảm ơn bạn đã gửi đóng góp ý kiến!',
+                                    ),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
@@ -190,7 +200,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         )
                       : const Text(
                           'Gửi góp ý',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                 ),
               ),
@@ -232,7 +245,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
               borderSide: BorderSide.none,
             ),
           ),
-          validator: (value) => (value == null || value.isEmpty) ? validatorText : null,
+          validator: (value) =>
+              (value == null || value.isEmpty) ? validatorText : null,
         ),
       ],
     );

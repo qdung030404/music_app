@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'features/wrapper/wrapper.dart';
+
 import 'core/theme/app_theme.dart';
+import 'features/wrapper/wrapper.dart';
 
 class MusicApp extends StatelessWidget {
   const MusicApp({super.key});

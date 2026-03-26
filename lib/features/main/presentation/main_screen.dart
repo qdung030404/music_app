@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../home/presentation/home.dart';
-import '../../search/presentation/search.dart';
+
 import '../../discovery/presentation/discovery.dart';
+import '../../home/presentation/home.dart';
 import '../../home/widget/mini_player.dart';
+import '../../search/presentation/search.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,9 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.album), label: 'Discovery'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.album),
+                label: 'Discovery',
+              ),
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
             ],
           ),
           tabBuilder: (context, index) {

@@ -1,7 +1,5 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_app/data/model/song.dart';
 import 'package:music_app/features/managers/audio_player_manager.dart';
@@ -12,8 +10,10 @@ import '../../../core/services/download_service.dart';
 
 class SongDetail extends StatelessWidget {
   const SongDetail({super.key, required this.songs, required this.playingSong});
+
   final List<Song> songs;
   final Song playingSong;
+
   @override
   Widget build(BuildContext context) {
     return SongDetailPage(
@@ -24,14 +24,21 @@ class SongDetail extends StatelessWidget {
 }
 
 class SongDetailPage extends StatefulWidget {
-  const SongDetailPage({super.key, required this.songs, required this.playingSong});
+  const SongDetailPage({
+    super.key,
+    required this.songs,
+    required this.playingSong,
+  });
+
   final List<Song> songs;
   final Song playingSong;
+
   @override
   State<SongDetailPage> createState() => _SongDetailPageState();
 }
 
-class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProviderStateMixin{
+class _SongDetailPageState extends State<SongDetailPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late AudioPlayerManager _audioPlayerManager;
   late FavoriteManager _favoriteManager;
@@ -177,8 +184,8 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -214,7 +221,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                     ),
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Song Info & Actions
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -227,7 +234,9 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                             TextScroll(
                               _song.title,
                               mode: TextScrollMode.endless,
-                              velocity: const Velocity(pixelsPerSecond: Offset(30, 0)),
+                              velocity: const Velocity(
+                                pixelsPerSecond: Offset(30, 0),
+                              ),
                               delayBefore: const Duration(seconds: 1),
                               pauseBetween: const Duration(seconds: 2),
                               style: const TextStyle(
@@ -240,7 +249,6 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                             Text(
                               _song.artistDisplay,
                               style: const TextStyle(
-
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -251,7 +259,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                       Row(
                         children: [
                           IconButton(
-                            onPressed: ()=> _handleDownload(_song),
+                            onPressed: () => _handleDownload(_song),
                             icon: const Icon(Icons.download_outlined, size: 28),
                           ),
                           IconButton(
@@ -261,9 +269,13 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                           IconButton(
                             onPressed: () => _handleToggleFavorite(_song),
                             icon: Icon(
-                              _isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: _isFavorite ? const Color(0xFF00D9D9) :
-                                Theme.of(context).brightness == Brightness.dark
+                              _isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: _isFavorite
+                                  ? const Color(0xFF00D9D9)
+                                  : Theme.of(context).brightness ==
+                                        Brightness.dark
                                   ? Colors.white
                                   : Colors.black,
                             ),
@@ -273,14 +285,14 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
                     ],
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Progress Bar
                   _progressBar(),
                   const SizedBox(height: 32),
-                  
+
                   // Playback Controls
                   _mediaButton(),
-                  
+
                   const SizedBox(height: 48),
                 ],
               ),
@@ -318,7 +330,7 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
               thumbColor: const Color(0xFF00D9D9),
               thumbRadius: 6,
               timeLabelLocation: TimeLabelLocation.below,
-              timeLabelTextStyle:TextStyle(
+              timeLabelTextStyle: TextStyle(
                 fontSize: 12,
               ),
             ),
@@ -336,7 +348,8 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
         final processingState = playerState?.processingState;
         final playing = playerState?.playing;
 
-        if (processingState == ProcessingState.loading || processingState == ProcessingState.buffering) {
+        if (processingState == ProcessingState.loading ||
+            processingState == ProcessingState.buffering) {
           return Container(
             width: 60,
             height: 60,
@@ -428,16 +441,16 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
         color: _isShuffle ? Colors.white10 : Colors.transparent,
         borderRadius: BorderRadius.circular(20),
       ),
-      child:Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
             onPressed: _setShuffle,
             icon: Icon(
               Icons.shuffle,
-              color: _isShuffle ?
-                Colors.deepPurpleAccent :
-                Theme.of(context).brightness == Brightness.dark
+              color: _isShuffle
+                  ? Colors.deepPurpleAccent
+                  : Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
                   : Colors.black,
               size: 24,
@@ -459,15 +472,16 @@ class _SongDetailPageState extends State<SongDetailPage> with SingleTickerProvid
             onPressed: _setRepeatOption,
             icon: Icon(
               _repeatingIcon(),
-              color: _loopMode == LoopMode.off ?
-              Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black : Color(0xFF00D9D9),
+              color: _loopMode == LoopMode.off
+                  ? Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black
+                  : Color(0xFF00D9D9),
               size: 24,
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../wiget/page_storage/albumplaylist.dart';
-import '../wiget/library_card_list.dart';
 import '../wiget/History.dart';
+import '../wiget/library_card_list.dart';
+import '../wiget/page_storage/albumplaylist.dart';
 
 class DiscoveryTab extends StatelessWidget {
   const DiscoveryTab({super.key});
@@ -10,35 +10,38 @@ class DiscoveryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(
-                  top: 32, right: 16, bottom: 8, left: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Thư viện',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                    ),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(
+              top: 32,
+              right: 16,
+              bottom: 8,
+              left: 16,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Thư viện',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none,
                   ),
-
-                ],
-              ),
+                ),
+              ],
             ),
-            const LibraryCardList(),
-            const History(),
-            const SizedBox(
-              height: 400, // Adjust height as needed
-              child: Albumplaylist(),
-            ),
-          ],
-        )
+          ),
+          const LibraryCardList(),
+          const History(),
+          const SizedBox(
+            height: 400, // Adjust height as needed
+            child: Albumplaylist(),
+          ),
+        ],
+      ),
     );
   }
 }

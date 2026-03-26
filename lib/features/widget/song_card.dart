@@ -21,66 +21,67 @@ class SongCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: width,
-        child: ListTile(
-          contentPadding: const EdgeInsets.only(left: 24, right: 24),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: song.image.isNotEmpty
-                ? FadeInImage.assetNetwork(
-                    placeholder: 'assets/itunes_256.png',
-                    image: song.image,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/itunes_256.png',
-                        width: 50,
-                        height: 50,
-                      );
-                    },
-                  )
-                : Image.asset(
-                    'assets/itunes_256.png',
-                    width: 50,
-                    height: 50,
-                  ),
-          ),
-          title: Text(song.title,
-
-          ),
-          subtitle: Text(song.artistDisplay,
-
-          ),
-          trailing: IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context){
-                    return SongBottomSheet(
-                      song: song,
-                      songs: songs,
-                      playlistId: playlistId,
+      width: width,
+      child: ListTile(
+        contentPadding: const EdgeInsets.only(left: 24, right: 24),
+        leading: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: song.image.isNotEmpty
+              ? FadeInImage.assetNetwork(
+                  placeholder: 'assets/itunes_256.png',
+                  image: song.image,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/itunes_256.png',
+                      width: 50,
+                      height: 50,
                     );
-                  }
+                  },
+                )
+              : Image.asset(
+                  'assets/itunes_256.png',
+                  width: 50,
+                  height: 50,
+                ),
+        ),
+        title: Text(
+          song.title,
+        ),
+        subtitle: Text(
+          song.artistDisplay,
+        ),
+        trailing: IconButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return SongBottomSheet(
+                  song: song,
+                  songs: songs,
+                  playlistId: playlistId,
                 );
               },
-              icon: Icon(Icons.more_horiz,)
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (context) =>
-                    SongDetail(
-                      songs: songs,
-                      playingSong: song,
-                    ),
-              ),
             );
           },
-        )
+          icon: Icon(
+            Icons.more_horiz,
+          ),
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => SongDetail(
+                songs: songs,
+                playingSong: song,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../data/datasources/user_activity_service.dart';
-import 'package:music_app/data/model/song.dart';
 import 'package:music_app/data/datasources/jamendo_service.dart';
+import 'package:music_app/data/model/song.dart';
+
+import '../../../data/datasources/user_activity_service.dart';
 
 class SongListPage extends StatefulWidget {
   final String? playlistId;
+
   const SongListPage({super.key, this.playlistId});
 
   @override
@@ -29,17 +31,21 @@ class _SongListPageState extends State<SongListPage> {
     final jamendo = JamendoService();
     try {
       final songsData = await jamendo.fetchPopularTracks();
-      final List<Song> s = songsData.map<Song>((e) => SongModel(
-        id: e['id']?.toString() ?? '',
-        title: e['name'] ?? 'Unknown',
-        albumId: e['album_id']?.toString() ?? '',
-        artistId: e['artist_id']?.toString() ?? '',
-        albumName: e['album_name'],
-        artistName: e['artist_name'],
-        source: e['audio'] ?? '',
-        image: e['image'] ?? e['album_image'] ?? '',
-        duration: e['duration'] ?? 180,
-      )).toList();
+      final List<Song> s = songsData
+          .map<Song>(
+            (e) => SongModel(
+              id: e['id']?.toString() ?? '',
+              title: e['name'] ?? 'Unknown',
+              albumId: e['album_id']?.toString() ?? '',
+              artistId: e['artist_id']?.toString() ?? '',
+              albumName: e['album_name'],
+              artistName: e['artist_name'],
+              source: e['audio'] ?? '',
+              image: e['image'] ?? e['album_image'] ?? '',
+              duration: e['duration'] ?? 180,
+            ),
+          )
+          .toList();
 
       if (mounted) {
         setState(() {
@@ -60,9 +66,13 @@ class _SongListPageState extends State<SongListPage> {
         _filteredSongs = _allSongs;
       } else {
         _filteredSongs = _allSongs
-            .where((song) =>
-                song.title.toLowerCase().contains(query.toLowerCase()) ||
-                song.artistDisplay.toLowerCase().contains(query.toLowerCase()))
+            .where(
+              (song) =>
+                  song.title.toLowerCase().contains(query.toLowerCase()) ||
+                  song.artistDisplay.toLowerCase().contains(
+                    query.toLowerCase(),
+                  ),
+            )
             .toList();
       }
     });
@@ -99,34 +109,38 @@ class _SongListPageState extends State<SongListPage> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: const Color(0xFF00D9D9)))
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: const Color(0xFF00D9D9),
+                    ),
+                  )
                 : _filteredSongs.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'Không tìm thấy bài hát nào',
-                          style: TextStyle(),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: _filteredSongs.length,
-                        itemBuilder: (context, index) {
-                          final song = _filteredSongs[index];
-                          final isSelected = _selectedSongIds.contains(song.id);
-                          return _AddSongCard(
-                            song: song,
-                            isSelected: isSelected,
-                            onTap: () {
-                              setState(() {
-                                if (isSelected) {
-                                  _selectedSongIds.remove(song.id);
-                                } else {
-                                  _selectedSongIds.add(song.id);
-                                }
-                              });
-                            },
-                          );
+                ? const Center(
+                    child: Text(
+                      'Không tìm thấy bài hát nào',
+                      style: TextStyle(),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: _filteredSongs.length,
+                    itemBuilder: (context, index) {
+                      final song = _filteredSongs[index];
+                      final isSelected = _selectedSongIds.contains(song.id);
+                      return _AddSongCard(
+                        song: song,
+                        isSelected: isSelected,
+                        onTap: () {
+                          setState(() {
+                            if (isSelected) {
+                              _selectedSongIds.remove(song.id);
+                            } else {
+                              _selectedSongIds.add(song.id);
+                            }
+                          });
                         },
-                      ),
+                      );
+                    },
+                  ),
           ),
           if (_selectedSongIds.isNotEmpty)
             Padding(
@@ -243,7 +257,9 @@ class _AddSongCard extends StatelessWidget {
       trailing: IconButton(
         icon: Icon(
           isSelected ? Icons.check_circle : Icons.add_circle_outline,
-          color: isSelected ? Color(0xFF00D9D9): Theme.of(context).brightness == Brightness.dark
+          color: isSelected
+              ? Color(0xFF00D9D9)
+              : Theme.of(context).brightness == Brightness.dark
               ? Colors.white
               : Colors.black,
           size: 28,

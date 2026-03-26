@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'album_page_storage.dart';
 import 'playlist_page_storage.dart';
 
@@ -18,7 +19,8 @@ class AlbumPlaylistView extends StatefulWidget {
   State<AlbumPlaylistView> createState() => _AlbumPlaylistViewState();
 }
 
-class _AlbumPlaylistViewState extends State<AlbumPlaylistView> with SingleTickerProviderStateMixin {
+class _AlbumPlaylistViewState extends State<AlbumPlaylistView>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -44,8 +46,13 @@ class _AlbumPlaylistViewState extends State<AlbumPlaylistView> with SingleTicker
             controller: _tabController,
             indicatorColor: Colors.deepPurple,
             labelColor: Theme.of(context).textTheme.bodyLarge?.color,
-            unselectedLabelColor: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
-            labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            unselectedLabelColor: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.color?.withOpacity(0.7),
+            labelStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
             unselectedLabelStyle: const TextStyle(fontSize: 16),
             tabs: const [
               Tab(text: 'Playlist'),
@@ -60,11 +67,9 @@ class _AlbumPlaylistViewState extends State<AlbumPlaylistView> with SingleTicker
                 AlbumPageStorage(),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
-
-

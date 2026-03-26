@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/domain/entities/artist_entity.dart';
 import 'package:music_app/domain/entities/album_entity.dart';
+import 'package:music_app/domain/entities/artist_entity.dart';
+import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/features/widget/song_card.dart';
+
 import '../../album/presentation/album_detail.dart';
 import '../../artist/presentation/artist_detail.dart';
 
@@ -37,10 +38,12 @@ class SearchResultsList extends StatelessWidget {
               ),
             ),
           ),
-          ...filteredSongs.map((song) => GestureDetector(
-            onTapDown: (_) => onAddToHistory(searchQuery),
-            child: SongCard(song: song, songs: filteredSongs),
-          )),
+          ...filteredSongs.map(
+            (song) => GestureDetector(
+              onTapDown: (_) => onAddToHistory(searchQuery),
+              child: SongCard(song: song, songs: filteredSongs),
+            ),
+          ),
           const SizedBox(height: 16),
         ],
         if (filteredArtists.isNotEmpty) ...[

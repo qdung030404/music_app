@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
+import 'package:music_app/domain/entities/song_entity.dart';
 
 import '../../widget/song_card.dart';
 

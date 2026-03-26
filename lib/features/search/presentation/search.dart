@@ -1,13 +1,15 @@
 import 'dart:async';
+
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:music_app/data/datasources/jamendo_service.dart';
+import 'package:music_app/data/model/album.dart';
+import 'package:music_app/data/model/artist.dart';
+import 'package:music_app/data/model/song.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+
 import '../widget/Search_history.dart';
 import '../widget/search_results_list.dart';
-import 'package:music_app/data/datasources/jamendo_service.dart';
-import 'package:music_app/data/model/song.dart';
-import 'package:music_app/data/model/artist.dart';
-import 'package:music_app/data/model/album.dart';
-import 'package:avatar_glow/avatar_glow.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class SearchTab extends StatefulWidget {
   const SearchTab({super.key});
@@ -22,11 +24,11 @@ class _SearchTabState extends State<SearchTab> {
   Timer? _debounce;
   late stt.SpeechToText _speechToText;
   bool _isListening = false;
-  
+
   List<Song> _allSongs = [];
   List<Artist> _allArtists = [];
   List<Album> _allAlbums = [];
-  
+
   List<Song> _filteredSongs = [];
   List<Artist> _filteredArtists = [];
   List<Album> _filteredAlbums = [];
@@ -49,33 +51,47 @@ class _SearchTabState extends State<SearchTab> {
       final artistsData = await jamendo.fetchPopularArtists();
       final albumsData = await jamendo.fetchPopularAlbums();
 
-      final List<Song> s = songsData.map<Song>((e) => SongModel(
-        id: e['id']?.toString() ?? '',
-        title: e['name'] ?? 'Unknown',
-        albumId: e['album_id']?.toString() ?? '',
-        artistId: e['artist_id']?.toString() ?? '',
-        albumName: e['album_name'],
-        artistName: e['artist_name'],
-        source: e['audio'] ?? '',
-        image: e['image'] ?? e['album_image'] ?? '',
-        duration: e['duration'] ?? 180,
-      )).toList();
+      final List<Song> s = songsData
+          .map<Song>(
+            (e) => SongModel(
+              id: e['id']?.toString() ?? '',
+              title: e['name'] ?? 'Unknown',
+              albumId: e['album_id']?.toString() ?? '',
+              artistId: e['artist_id']?.toString() ?? '',
+              albumName: e['album_name'],
+              artistName: e['artist_name'],
+              source: e['audio'] ?? '',
+              image: e['image'] ?? e['album_image'] ?? '',
+              duration: e['duration'] ?? 180,
+            ),
+          )
+          .toList();
 
       final List<Artist> ar = artistsData
-          .where((e) => e['image'] != null && e['image'].toString().trim().isNotEmpty)
-          .map<Artist>((e) => ArtistModel(
-        id: e['id']?.toString() ?? '',
-        name: e['name'] ?? 'Unknown',
-        avatar: e['image'] ?? '',
-      )).toList();
+          .where(
+            (e) =>
+                e['image'] != null && e['image'].toString().trim().isNotEmpty,
+          )
+          .map<Artist>(
+            (e) => ArtistModel(
+              id: e['id']?.toString() ?? '',
+              name: e['name'] ?? 'Unknown',
+              avatar: e['image'] ?? '',
+            ),
+          )
+          .toList();
 
-      final List<Album> al = albumsData.map<Album>((e) => AlbumModel(
-        id: e['id']?.toString() ?? '',
-        albumTitle: e['name'] ?? 'Unknown',
-        artistId: e['artist_id']?.toString() ?? '',
-        artistName: e['artist_name'] ?? 'Unknown',
-        image: e['image'] ?? '',
-      )).toList();
+      final List<Album> al = albumsData
+          .map<Album>(
+            (e) => AlbumModel(
+              id: e['id']?.toString() ?? '',
+              albumTitle: e['name'] ?? 'Unknown',
+              artistId: e['artist_id']?.toString() ?? '',
+              artistName: e['artist_name'] ?? 'Unknown',
+              image: e['image'] ?? '',
+            ),
+          )
+          .toList();
 
       if (mounted) {
         setState(() {
@@ -85,12 +101,16 @@ class _SearchTabState extends State<SearchTab> {
           _isLoading = false;
         });
       }
-    } catch(e) {
-       print("Loi tai trang search: $e");
-       if (mounted) setState(() => _isLoading = false);
+    } catch (e) {
+      print("Loi tai trang search: $e");
+      if (mounted) setState(() => _isLoading = false);
     }
   }
-  void onListen({BuildContext? dialogContext, VoidCallback? onStatusChanged}) async {
+
+  void onListen({
+    BuildContext? dialogContext,
+    VoidCallback? onStatusChanged,
+  }) async {
     if (!_isListening) {
       bool available = await _speechToText.initialize(
         onStatus: (status) {
@@ -116,8 +136,10 @@ class _SearchTabState extends State<SearchTab> {
       if (available) {
         _speechToText.listen(
           localeId: "vi_VN",
-          pauseFor: const Duration(seconds: 5), // Tự động đóng sau 5 giây im lặng
-          listenFor: const Duration(seconds: 30), // Giới hạn 30 giây
+          pauseFor: const Duration(seconds: 5),
+          // Tự động đóng sau 5 giây im lặng
+          listenFor: const Duration(seconds: 30),
+          // Giới hạn 30 giây
           onResult: (val) {
             if (mounted) {
               setState(() {
@@ -197,12 +219,12 @@ class _SearchTabState extends State<SearchTab> {
                     ),
                     const SizedBox(height: 30),
                   ],
-                )
+                ),
               ),
             );
-          }
+          },
         );
-      }
+      },
     );
   }
 
@@ -230,7 +252,9 @@ class _SearchTabState extends State<SearchTab> {
             .where((artist) => artist.name.toLowerCase().contains(_searchQuery))
             .toList();
         _filteredAlbums = _allAlbums
-            .where((album) => album.albumTitle.toLowerCase().contains(_searchQuery))
+            .where(
+              (album) => album.albumTitle.toLowerCase().contains(_searchQuery),
+            )
             .toList();
       }
     });
@@ -275,30 +299,35 @@ class _SearchTabState extends State<SearchTab> {
                     const SizedBox(height: 24),
                     TextField(
                       controller: _searchController,
-                      style: const TextStyle( fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                       onSubmitted: _addToHistory,
                       decoration: InputDecoration(
                         hintText: 'Bạn muốn nghe gì?',
                         prefixIcon: const Icon(Icons.search),
                         filled: true,
                         suffixIcon: _searchQuery.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () => _searchController.clear(),
-                            )
-                          : IconButton(
-                            onPressed: () => showSpeechToTextDialog(),
-                            icon: const Icon(Icons.mic)),
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () => _searchController.clear(),
+                              )
+                            : IconButton(
+                                onPressed: () => showSpeechToTextDialog(),
+                                icon: const Icon(Icons.mic),
+                              ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 14,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      _searchQuery.isEmpty ? 'Lịch sử tìm kiếm' : 'Kết quả tìm kiếm',
+                      _searchQuery.isEmpty
+                          ? 'Lịch sử tìm kiếm'
+                          : 'Kết quả tìm kiếm',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -324,9 +353,13 @@ class _SearchTabState extends State<SearchTab> {
               )
             else if (_isLoading)
               const SliverToBoxAdapter(
-                child: Center(child: CircularProgressIndicator(color: Colors.white)),
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
               )
-            else if (_filteredSongs.isEmpty && _filteredArtists.isEmpty && _filteredAlbums.isEmpty)
+            else if (_filteredSongs.isEmpty &&
+                _filteredArtists.isEmpty &&
+                _filteredAlbums.isEmpty)
               const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),

@@ -1,4 +1,4 @@
-class Album{
+class Album {
   String id;
   String artistId;
   String image;
@@ -12,7 +12,7 @@ class Album{
     this.artistName,
     required this.albumTitle,
   });
-  String get artistDisplay => (artistName?.trim().isNotEmpty ?? false)
-      ? artistName!.trim()
-      : artistId;
+
+  String get artistDisplay =>
+      (artistName?.trim().isNotEmpty ?? false) ? artistName!.trim() : artistId;
 }

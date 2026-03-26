@@ -5,7 +5,6 @@ import '../../../data/datasources/user_activity_service.dart';
 import '../../../domain/entities/song_entity.dart';
 import '../../widget/download_song.dart';
 
-
 class Header extends StatelessWidget {
   final Album album;
   final List<Song> songs;
@@ -34,11 +33,11 @@ class Header extends StatelessWidget {
           children: [
             const SizedBox(height: 80),
             Container(
-              width: MediaQuery.of(context).size.width/ 2,
-              height: MediaQuery.of(context).size.width/ 2,
+              width: MediaQuery.of(context).size.width / 2,
+              height: MediaQuery.of(context).size.width / 2,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-               ),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: album.image.isNotEmpty
@@ -47,12 +46,20 @@ class Header extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: Colors.grey[900],
-                          child: const Icon(Icons.album, color: Colors.white54, size: 80),
+                          child: const Icon(
+                            Icons.album,
+                            color: Colors.white54,
+                            size: 80,
+                          ),
                         ),
                       )
                     : Container(
                         color: Colors.grey[900],
-                        child: const Icon(Icons.album, color: Colors.white54, size: 80),
+                        child: const Icon(
+                          Icons.album,
+                          color: Colors.white54,
+                          size: 80,
+                        ),
                       ),
               ),
             ),
@@ -134,11 +141,14 @@ class _HeaderActionState extends State<HeaderAction> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(
-                  builder: (context) => DownloadSong(songs: widget.songs,)
-              )
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DownloadSong(
+                    songs: widget.songs,
+                  ),
+                ),
               );
             },
             icon: const Icon(Icons.arrow_circle_down_outlined, size: 28),
@@ -154,17 +164,19 @@ class _HeaderActionState extends State<HeaderAction> {
                 ),
               ),
               onPressed: widget.onPlayShuffle,
-              child: Text('PHÁT NGẪU NHIÊN',
-                style: TextStyle(
-                  color: Colors.white
-                ),
+              child: Text(
+                'PHÁT NGẪU NHIÊN',
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),
           const SizedBox(width: 24),
           IconButton(
             onPressed: () => _toggleFavorite(widget.album),
-            icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_outline, size: 28),
+            icon: Icon(
+              _isFavorite ? Icons.favorite : Icons.favorite_outline,
+              size: 28,
+            ),
             color: _isFavorite ? Colors.red : Colors.white,
           ),
         ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import '../../data/datasources/user_activity_service.dart';
 import '../../domain/entities/song_entity.dart';
 import '../discovery/wiget/page_storage/playlist_page_storage.dart';
 
 class PlaylistBottomSheet extends StatefulWidget {
   final Song song;
+
   const PlaylistBottomSheet({super.key, required this.song});
 
   @override
@@ -14,7 +16,10 @@ class PlaylistBottomSheet extends StatefulWidget {
 class _PlaylistBottomSheetState extends State<PlaylistBottomSheet> {
   final UserActivityService _userActivityService = UserActivityService();
 
-  Future<void> _addSongToPlaylist(String playlistId, String playlistName) async {
+  Future<void> _addSongToPlaylist(
+    String playlistId,
+    String playlistName,
+  ) async {
     await _userActivityService.addSongToPlaylist(playlistId, widget.song);
     if (mounted) {
       Navigator.pop(context); // Close the playlist bottom sheet
@@ -52,7 +57,8 @@ class _PlaylistBottomSheetState extends State<PlaylistBottomSheet> {
           const Divider(color: Colors.grey),
           Expanded(
             child: PlaylistPageStorage(
-              onPlaylistTap: (playlist) => _addSongToPlaylist(playlist.id, playlist.playlistName),
+              onPlaylistTap: (playlist) =>
+                  _addSongToPlaylist(playlist.id, playlist.playlistName),
             ),
           ),
         ],

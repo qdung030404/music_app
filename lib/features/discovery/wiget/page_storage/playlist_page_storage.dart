@@ -1,13 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:music_app/data/model/playlist.dart';
 import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
-import '../../../playlist/presentation/playlist_detail.dart';
 
 import '../../../../data/datasources/user_activity_service.dart';
+import '../../../playlist/presentation/playlist_detail.dart';
 
 class PlaylistPageStorage extends StatelessWidget {
   final Function(Playlist)? onPlaylistTap;
+
   const PlaylistPageStorage({super.key, this.onPlaylistTap});
 
   @override
@@ -15,80 +15,92 @@ class PlaylistPageStorage extends StatelessWidget {
     final userActivityService = UserActivityService();
 
     return StreamBuilder<List<Playlist>>(
-        key: const PageStorageKey('Playlist'),
-        stream: userActivityService.getPlaylistStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Colors.deepPurple));
-          }
-
-          final playlists = snapshot.data ?? [];
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: playlists.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return ListTile(
-                  contentPadding: const EdgeInsets.only(bottom: 16),
-                  leading: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.add, size: 30),
-                  ),
-                  title: const Text(
-                    'Tạo playlist mới',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () => _showCreatePlaylistDialog(context, userActivityService),
-                );
-              }
-
-              final playlist = playlists[index - 1];
-              return GestureDetector(
-                onLongPress:(){
-                  showModalBottomSheet(context: context, builder: (context) => PlaylistMenuBottomSheet(playlist: playlist));
-                },
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                  leading: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.playlist_play, size: 30),
-                  ),
-                  title: Text(
-                    playlist.playlistName,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-
-                  onTap: () {
-                    if (onPlaylistTap != null) {
-                      onPlaylistTap!(playlist);
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PlaylistDetail(playlist: playlist),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              );
-            },
+      key: const PageStorageKey('Playlist'),
+      stream: userActivityService.getPlaylistStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.deepPurple),
           );
-        });
+        }
+
+        final playlists = snapshot.data ?? [];
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: playlists.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return ListTile(
+                contentPadding: const EdgeInsets.only(bottom: 16),
+                leading: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.add, size: 30),
+                ),
+                title: const Text(
+                  'Tạo playlist mới',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onTap: () =>
+                    _showCreatePlaylistDialog(context, userActivityService),
+              );
+            }
+
+            final playlist = playlists[index - 1];
+            return GestureDetector(
+              onLongPress: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) =>
+                      PlaylistMenuBottomSheet(playlist: playlist),
+                );
+              },
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                leading: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.playlist_play, size: 30),
+                ),
+                title: Text(
+                  playlist.playlistName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+
+                onTap: () {
+                  if (onPlaylistTap != null) {
+                    onPlaylistTap!(playlist);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PlaylistDetail(playlist: playlist),
+                      ),
+                    );
+                  }
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
-  void _showCreatePlaylistDialog(BuildContext context, UserActivityService service) {
+  void _showCreatePlaylistDialog(
+    BuildContext context,
+    UserActivityService service,
+  ) {
     final TextEditingController controller = TextEditingController();
 
     showDialog(
@@ -103,7 +115,9 @@ class PlaylistPageStorage extends StatelessWidget {
             decoration: const InputDecoration(
               hintText: 'Tên playlist',
               hintStyle: TextStyle(color: Colors.grey),
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurple),
+              ),
             ),
           ),
         ),
@@ -124,7 +138,10 @@ class PlaylistPageStorage extends StatelessWidget {
                 if (context.mounted) Navigator.pop(context);
               }
             },
-            child: const Text('TẠO', style: TextStyle(color: Colors.deepPurple)),
+            child: const Text(
+              'TẠO',
+              style: TextStyle(color: Colors.deepPurple),
+            ),
           ),
         ],
       ),

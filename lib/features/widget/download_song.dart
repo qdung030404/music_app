@@ -1,37 +1,38 @@
-import 'package:flutter/material.dart';
-import '../../domain/entities/song_entity.dart';
-import '../../core/services/download_service.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import '../../core/services/download_service.dart';
+import '../../domain/entities/song_entity.dart';
 
 class DownloadSong extends StatefulWidget {
   final List<Song> songs;
-  const DownloadSong({
-    super.key,
-    required this.songs
-  });
+
+  const DownloadSong({super.key, required this.songs});
 
   @override
   State<DownloadSong> createState() => _DownloadSongState();
 }
 
-class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderStateMixin{
+class _DownloadSongState extends State<DownloadSong>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   List<Song> _allSongs = [];
   final Set<String> _selectedSongIds = {};
   bool _isDownloading = false;
 
-
   @override
   void initState() {
     super.initState();
-    _allSongs = widget.songs; 
-    _controller = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
+    _allSongs = widget.songs;
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
   }
 
-
-
   @override
-  void dispose(){
+  void dispose() {
     _controller.dispose();
     super.dispose();
   }
@@ -44,7 +45,9 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
     });
 
     // Lấy những bài hát được chọn
-    final songsToDownload = _allSongs.where((song) => _selectedSongIds.contains(song.id.toString())).toList();
+    final songsToDownload = _allSongs
+        .where((song) => _selectedSongIds.contains(song.id.toString()))
+        .toList();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Đang tải ${songsToDownload.length} bài hát...')),
@@ -74,15 +77,19 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
     });
     _controller.forward().then((_) => _controller.reverse());
   }
+
   void _toggleSelectAll() {
     setState(() {
       if (_selectedSongIds.length == _allSongs.length) {
         _selectedSongIds.clear(); // Bỏ chọn tất cả
       } else {
-        _selectedSongIds.addAll(_allSongs.map((s) => s.id.toString())); // Chọn tất cả
+        _selectedSongIds.addAll(
+          _allSongs.map((s) => s.id.toString()),
+        ); // Chọn tất cả
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,15 +99,17 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Tải bài hát',
-          style: TextStyle(
-            fontSize: 16
-          ),
+        title: Text(
+          'Tải bài hát',
+          style: TextStyle(fontSize: 16),
         ),
         actions: [
           TextButton(
-            onPressed:  _toggleSelectAll,
-            child: Text( _selectedSongIds.length == _allSongs.length ? 'Bỏ Chọn' : 'Chọn tất cả',
+            onPressed: _toggleSelectAll,
+            child: Text(
+              _selectedSongIds.length == _allSongs.length
+                  ? 'Bỏ Chọn'
+                  : 'Chọn tất cả',
               style: TextStyle(
                 fontSize: 16,
               ),
@@ -127,13 +136,19 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
               onPressed: _isDownloading ? null : _startDownload,
               backgroundColor: const Color(0xFF00D9D9),
               icon: _isDownloading
-                  ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator( strokeWidth: 2))
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
                   : const Icon(Icons.download, color: Colors.black),
               label: Text(
-                _isDownloading ? 'Đang tải...' : 'Tải xuống (${_selectedSongIds.length})',
+                _isDownloading
+                    ? 'Đang tải...'
+                    : 'Tải xuống (${_selectedSongIds.length})',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black
+                  color: Colors.black,
                 ),
               ),
             )
@@ -141,6 +156,7 @@ class _DownloadSongState extends State<DownloadSong> with SingleTickerProviderSt
     );
   }
 }
+
 class DownloadSongCard extends StatelessWidget {
   final Song song;
   final bool isSelected;

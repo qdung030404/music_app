@@ -18,17 +18,18 @@ class FavoriteSongList extends StatelessWidget {
         if (favoriteSongs.isEmpty) {
           return Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.15), // Khoảng cách đẩy xuống giữa
-              const Icon(Icons.music_note,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.15,
+              ), // Khoảng cách đẩy xuống giữa
+              const Icon(
+                Icons.music_note,
                 color: Colors.grey,
                 size: 160,
               ),
-              const Text('bạn chưa thích bài hát nào',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16
-                ),
-              )
+              const Text(
+                'bạn chưa thích bài hát nào',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+              ),
             ],
           );
         }

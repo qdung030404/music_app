@@ -1,4 +1,5 @@
 import 'package:music_app/domain/entities/playlist_entity.dart';
+
 export 'package:music_app/domain/entities/playlist_entity.dart';
 
 class PlaylistModel extends Playlist {

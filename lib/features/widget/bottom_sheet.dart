@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../../data/datasources/user_activity_service.dart';
 import '../../domain/entities/album_entity.dart';
 import '../../domain/entities/song_entity.dart';
-import '../../data/datasources/user_activity_service.dart';
 import '../managers/favorite_manager.dart';
 import 'playlist_bottom_sheet.dart';
 
@@ -9,6 +10,7 @@ class SongBottomSheet extends StatefulWidget {
   final Song song;
   final List<Song> songs;
   final String? playlistId;
+
   const SongBottomSheet({
     super.key,
     required this.song,
@@ -24,12 +26,14 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
   late FavoriteManager _favoriteManager;
   bool _isFavorite = false;
   late Album album;
+
   @override
   void initState() {
     super.initState();
     _favoriteManager = FavoriteManager();
     _loadFavoriteState(widget.song.id);
   }
+
   Future<void> _handleToggleFavorite(Song song) async {
     await _favoriteManager.toggleFavorite(song, _isFavorite);
     setState(() {
@@ -69,7 +73,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height *0.4,
+      height: MediaQuery.of(context).size.height * 0.4,
       color: Theme.of(context).brightness == Brightness.dark
           ? Colors.black
           : Colors.white,
@@ -95,13 +99,13 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
                   },
                 ),
               ),
-              title: Text(widget.song.title,
-                style: TextStyle(
-                ),
+              title: Text(
+                widget.song.title,
+                style: TextStyle(),
               ),
-              subtitle: Text(widget.song.artistDisplay,
-                style: TextStyle(
-                ),
+              subtitle: Text(
+                widget.song.artistDisplay,
+                style: TextStyle(),
               ),
             ),
           ),
@@ -109,52 +113,66 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
             width: MediaQuery.of(context).size.width - 50,
             child: Divider(thickness: 4, color: Colors.grey),
           ),
-          SizedBox(height: 12,),
+          SizedBox(
+            height: 12,
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 24,),
+                  SizedBox(
+                    height: 24,
+                  ),
                   ActionButtonControl(
-                      onTap: (){ },
-                      icon: Icons.arrow_circle_down,
-                      title: 'Tải về',
+                    onTap: () {},
+                    icon: Icons.arrow_circle_down,
+                    title: 'Tải về',
                   ),
-                  SizedBox(height: 24,),
+                  SizedBox(
+                    height: 24,
+                  ),
                   ActionButtonControl(
-                      onTap: ()=> _handleToggleFavorite(widget.song),
-                      icon: _isFavorite ? Icons.favorite : Icons.favorite_outline,
-                      color: _isFavorite ? Colors.red :
-                        Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                      title: _isFavorite ? 'Đã Thêm vào danh sách yêu thích' : 'Thêm vào danh sách yêu thích'
+                    onTap: () => _handleToggleFavorite(widget.song),
+                    icon: _isFavorite ? Icons.favorite : Icons.favorite_outline,
+                    color: _isFavorite
+                        ? Colors.red
+                        : Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    title: _isFavorite
+                        ? 'Đã Thêm vào danh sách yêu thích'
+                        : 'Thêm vào danh sách yêu thích',
                   ),
-                  SizedBox(height: 24,),
-                  widget.playlistId != null 
-                  ? ActionButtonControl(
-                      onTap: _handleRemoveFromPlaylist,
-                      icon: Icons.playlist_remove,
-                      title: 'Xóa khỏi playlist',
-                  )
-                  : ActionButtonControl(
-                      onTap: () {
-                        Navigator.pop(context); // Close the song bottom sheet
-                        showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) => PlaylistBottomSheet(song: widget.song)
-                        );
-                      },
-                      icon: Icons.playlist_add,
-                      title: 'Thêm vào playlist',
+                  SizedBox(
+                    height: 24,
                   ),
+                  widget.playlistId != null
+                      ? ActionButtonControl(
+                          onTap: _handleRemoveFromPlaylist,
+                          icon: Icons.playlist_remove,
+                          title: 'Xóa khỏi playlist',
+                        )
+                      : ActionButtonControl(
+                          onTap: () {
+                            Navigator.pop(
+                              context,
+                            ); // Close the song bottom sheet
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) =>
+                                  PlaylistBottomSheet(song: widget.song),
+                            );
+                          },
+                          icon: Icons.playlist_add,
+                          title: 'Thêm vào playlist',
+                        ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -166,12 +184,13 @@ class ActionButtonControl extends StatefulWidget {
   final IconData icon;
   final String title;
   final Color? color;
+
   const ActionButtonControl({
     super.key,
     required this.onTap,
     required this.icon,
     this.color,
-    required this.title
+    required this.title,
   });
 
   @override
@@ -186,22 +205,26 @@ class _ActionButtonControlState extends State<ActionButtonControl> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: 20,),
+          SizedBox(
+            width: 20,
+          ),
           Icon(widget.icon, color: widget.color, size: 36),
-          SizedBox(width: 16,),
+          SizedBox(
+            width: 16,
+          ),
           Expanded(
-            child: Text(widget.title,
+            child: Text(
+              widget.title,
               style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal
+                fontSize: 20,
+                fontWeight: FontWeight.normal,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
-

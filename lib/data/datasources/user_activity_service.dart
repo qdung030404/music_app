@@ -9,10 +9,12 @@ import '../model/song.dart';
 class UserActivityService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   String? get _userId => _auth.currentUser?.uid;
-  Future<void> addFavoriteAlbum(Album album)async {
+
+  Future<void> addFavoriteAlbum(Album album) async {
     final uid = _userId;
-    if(uid == null) {
+    if (uid == null) {
       return;
     }
     try {
@@ -26,10 +28,12 @@ class UserActivityService {
         'timestamp': FieldValue.serverTimestamp(),
       };
       await _firestore.runTransaction((transaction) async {
-        transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+        transaction.set(userRef, {
+          'lastActivity': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
         transaction.set(albumRef.doc(album.id), albumData);
       });
-    }catch(e){
+    } catch (e) {
       print('UserActivityService Error: $e');
     }
   }
@@ -45,18 +49,18 @@ class UserActivityService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return AlbumModel.fromJson(doc.data());
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return AlbumModel.fromJson(doc.data());
+          }).toList();
+        });
   }
 
-  Future<void> addtoFollow(Artist artist) async{
+  Future<void> addtoFollow(Artist artist) async {
     final uid = _userId;
-    if(uid == null){
+    if (uid == null) {
       return;
     }
-    try{
+    try {
       final userRef = _firestore.collection('users').doc(uid);
       final followRef = userRef.collection('followed');
       final artistData = {
@@ -66,10 +70,12 @@ class UserActivityService {
         'timestamp': FieldValue.serverTimestamp(),
       };
       await _firestore.runTransaction((transaction) async {
-        transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+        transaction.set(userRef, {
+          'lastActivity': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
         transaction.set(followRef.doc(artist.id), artistData);
       });
-    }catch (e){
+    } catch (e) {
       print('UserActivityService Error: $e');
     }
   }
@@ -116,10 +122,11 @@ class UserActivityService {
       };
 
       await _firestore.runTransaction((transaction) async {
-        transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+        transaction.set(userRef, {
+          'lastActivity': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
         transaction.set(historyRef.doc(song.id), songData);
       });
-
     } catch (e) {
       print('UserActivityService Error: $e');
     }
@@ -128,7 +135,9 @@ class UserActivityService {
   Future<void> addToFavorite(Song song) async {
     final uid = _userId;
     if (uid == null) {
-      print('UserActivityService: Cannot add to favorites, user not logged in.');
+      print(
+        'UserActivityService: Cannot add to favorites, user not logged in.',
+      );
       return;
     }
 
@@ -150,10 +159,11 @@ class UserActivityService {
       };
 
       await _firestore.runTransaction((transaction) async {
-        transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+        transaction.set(userRef, {
+          'lastActivity': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
         transaction.set(favoriteRef.doc(song.id), songData);
       });
-
     } catch (e) {
       print('UserActivityService Error: $e');
     }
@@ -170,7 +180,9 @@ class UserActivityService {
           .collection(collection)
           .doc(id)
           .delete();
-      print('UserActivityService: Successfully removed item $id from $collection');
+      print(
+        'UserActivityService: Successfully removed item $id from $collection',
+      );
     } catch (e) {
       print('UserActivityService Error removing item: $e');
     }
@@ -188,10 +200,10 @@ class UserActivityService {
         .limit(10) // Fetch a bit more than 5 just in case
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return SongModel.fromJson(doc.data());
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return SongModel.fromJson(doc.data());
+          }).toList();
+        });
   }
 
   Stream<List<Song>> getFavoritesStream() {
@@ -205,13 +217,13 @@ class UserActivityService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return SongModel.fromJson(doc.data());
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return SongModel.fromJson(doc.data());
+          }).toList();
+        });
   }
 
-  Stream<List<Artist>> getFollowedArtist(){
+  Stream<List<Artist>> getFollowedArtist() {
     final uid = _userId;
     if (uid == null) return Stream.value([]);
 
@@ -222,10 +234,10 @@ class UserActivityService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return ArtistModel.fromJson(doc.data());
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return ArtistModel.fromJson(doc.data());
+          }).toList();
+        });
   }
 
   Future<bool> isFavorite(String Id, String collection) async {
@@ -245,32 +257,40 @@ class UserActivityService {
       return false;
     }
   }
-  Future<void> createPlaylist(Playlist playlist) async{
+
+  Future<void> createPlaylist(Playlist playlist) async {
     final uid = _userId;
     if (uid == null) {
-      print('UserActivityService: Cannot add to favorites, user not logged in.');
+      print(
+        'UserActivityService: Cannot add to favorites, user not logged in.',
+      );
       return;
     }
 
     try {
       final userRef = _firestore.collection('users').doc(uid);
-      final playlistRef = userRef.collection('playlists'); // Changed favoriteRef to playlistRef
+      final playlistRef = userRef.collection(
+        'playlists',
+      ); // Changed favoriteRef to playlistRef
 
-      final playlistData = { // Changed songData to playlistData
+      final playlistData = {
+        // Changed songData to playlistData
         'id': playlist.id,
         'name': playlist.playlistName,
         'timestamp': FieldValue.serverTimestamp(),
       };
 
       await _firestore.runTransaction((transaction) async {
-        transaction.set(userRef, {'lastActivity': FieldValue.serverTimestamp()}, SetOptions(merge: true));
+        transaction.set(userRef, {
+          'lastActivity': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
         transaction.set(playlistRef.doc(playlist.id), playlistData);
       });
-
     } catch (e) {
       print('UserActivityService Error: $e');
     }
   }
+
   Future<void> updatePlaylistName(String playlistId, String newName) async {
     final uid = _userId;
     if (uid == null) return;
@@ -281,13 +301,14 @@ class UserActivityService {
           .collection('playlists')
           .doc(playlistId)
           .update({
-        'name': newName,
-        // Không cập nhật timestamp nếu muốn giữ ngày tạo gốc
-      });
+            'name': newName,
+            // Không cập nhật timestamp nếu muốn giữ ngày tạo gốc
+          });
     } catch (e) {
       print('Error updating playlist: $e');
     }
   }
+
   Stream<List<Playlist>> getPlaylistStream() {
     final uid = _userId;
     if (uid == null) return Stream.value([]);
@@ -299,12 +320,12 @@ class UserActivityService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        final data = doc.data();
-        data['id'] = doc.id;
-        return PlaylistModel.fromJson(data);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            final data = doc.data();
+            data['id'] = doc.id;
+            return PlaylistModel.fromJson(data);
+          }).toList();
+        });
   }
 
   Future<void> addSongToPlaylist(String playlistId, Song song) async {
@@ -317,7 +338,7 @@ class UserActivityService {
           .doc(uid)
           .collection('playlists')
           .doc(playlistId);
-      
+
       final songsRef = playlistRef.collection('songs');
 
       final songData = {
@@ -334,7 +355,9 @@ class UserActivityService {
       };
 
       await songsRef.doc(song.id).set(songData);
-      print('UserActivityService: Successfully added song ${song.id} to playlist $playlistId');
+      print(
+        'UserActivityService: Successfully added song ${song.id} to playlist $playlistId',
+      );
     } catch (e) {
       print('UserActivityService Error adding song to playlist: $e');
     }
@@ -353,7 +376,9 @@ class UserActivityService {
           .collection('songs')
           .doc(songId)
           .delete();
-      print('UserActivityService: Successfully removed song $songId from playlist $playlistId');
+      print(
+        'UserActivityService: Successfully removed song $songId from playlist $playlistId',
+      );
     } catch (e) {
       print('UserActivityService Error removing song from playlist: $e');
     }
@@ -372,9 +397,9 @@ class UserActivityService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return SongModel.fromJson(doc.data());
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return SongModel.fromJson(doc.data());
+          }).toList();
+        });
   }
 }

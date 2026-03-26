@@ -1,19 +1,22 @@
 import 'dart:async';
+
 import 'package:audio_session/audio_session.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../../core/services/audio_device_service.dart';
+import '../../data/datasources/user_activity_service.dart';
 import '../../data/model/song.dart';
 import '../../domain/entities/song_entity.dart';
-import '../../data/datasources/user_activity_service.dart';
-import 'package:just_audio_background/just_audio_background.dart';
-import '../../core/services/audio_device_service.dart';
 
-class DurationState{
+class DurationState {
   const DurationState({
     required this.progress,
     required this.buffered,
     this.total,
   });
+
   final Duration progress;
   final Duration buffered;
   final Duration? total;
@@ -21,6 +24,7 @@ class DurationState{
 
 class AudioPlayerManager {
   bool _wasPlayingBeforeDisconnect = false;
+
   AudioPlayerManager._internal() {
     durationState = Rx.combineLatest2<Duration, PlaybackEvent, DurationState>(
       player.positionStream,
@@ -43,13 +47,17 @@ class AudioPlayerManager {
     });
 
     // Tự động pause khi rút tai nghe hoặc ngắt kết nối Bluetooth
-    _headsetSubscription = AudioDeviceService().onDeviceChanged.listen((outputType) {
-      if (outputType == AudioOutputType.speaker && AudioDeviceService().autoPauseEnabled) {
+    _headsetSubscription = AudioDeviceService().onDeviceChanged.listen((
+      outputType,
+    ) {
+      if (outputType == AudioOutputType.speaker &&
+          AudioDeviceService().autoPauseEnabled) {
         if (player.playing) {
           _wasPlayingBeforeDisconnect = true;
           player.pause();
         }
-      } else if ((outputType == AudioOutputType.wiredHeadset || outputType == AudioOutputType.bluetooth) &&
+      } else if ((outputType == AudioOutputType.wiredHeadset ||
+              outputType == AudioOutputType.bluetooth) &&
           AudioDeviceService().autoContinuePlayingEnabled) {
         if (!player.playing && _wasPlayingBeforeDisconnect) {
           _wasPlayingBeforeDisconnect = false;
@@ -59,7 +67,9 @@ class AudioPlayerManager {
     });
 
     // Xử lý gián đoạn âm thanh (Ví dụ: Facebook bật video, Game có tiếng...)
-    _interruptionSubscription = AudioDeviceService().onInterruption?.listen((event) {
+    _interruptionSubscription = AudioDeviceService().onInterruption?.listen((
+      event,
+    ) {
       // Chỉ xử lý nếu tính năng đang được bật
       if (!AudioDeviceService().pauseOnInterruptionEnabled) return;
 
@@ -72,7 +82,9 @@ class AudioPlayerManager {
       }
     });
   }
+
   static final AudioPlayerManager _instance = AudioPlayerManager._internal();
+
   factory AudioPlayerManager() => _instance;
 
   final AudioPlayer player = AudioPlayer(
@@ -83,31 +95,39 @@ class AudioPlayerManager {
   final _userActivityService = UserActivityService();
   StreamSubscription<AudioOutputType>? _headsetSubscription;
   StreamSubscription<AudioInterruptionEvent>? _interruptionSubscription;
-  
+
   // Playlist Management
   List<Song> _playlist = [];
   int _currentIndex = -1;
   final _currentSongController = BehaviorSubject<Song?>();
+
   Stream<Song?> get currentSongStream => _currentSongController.stream;
-  Song? get currentSong => _currentIndex >= 0 && _currentIndex < _playlist.length
+
+  Song? get currentSong =>
+      _currentIndex >= 0 && _currentIndex < _playlist.length
       ? _playlist[_currentIndex]
       : null;
+
   List<Song> get playlist => _playlist;
 
   // Shuffle Support
   bool _isShuffle = false;
+
   bool get isShuffle => _isShuffle;
 
   // History Management
   final List<Song> _history = [];
-  final BehaviorSubject<List<Song>> _historySubject = BehaviorSubject<List<Song>>.seeded([]);
+  final BehaviorSubject<List<Song>> _historySubject =
+      BehaviorSubject<List<Song>>.seeded([]);
+
   Stream<List<Song>> get historyStream => _historySubject.stream;
+
   List<Song> get history => _history;
 
   void _addToHistory(Song song) {
     // Tránh trùng lặp trong lịch sử
     if (_history.isNotEmpty && _history.first.id == song.id) return;
-    
+
     _history.removeWhere((item) => item.id == song.id);
     _history.insert(0, song);
 
@@ -120,19 +140,23 @@ class AudioPlayerManager {
 
   void setPlaylist(List<Song> songs, int initialIndex) async {
     _playlist = songs;
-    
+
     // Tạo nguồn âm thanh dạng danh sách
     final playlistSource = ConcatenatingAudioSource(
-      children: songs.map((song) => AudioSource.uri(
-        Uri.parse(song.source),
-        tag: MediaItem(
-          id: song.id,
-          album: song.albumName ?? "Unknown Album",
-          title: song.title,
-          artist: song.artistName ?? "Unknown Artist",
-          artUri: Uri.parse(song.image),
-        ),
-      )).toList(),
+      children: songs
+          .map(
+            (song) => AudioSource.uri(
+              Uri.parse(song.source),
+              tag: MediaItem(
+                id: song.id,
+                album: song.albumName ?? "Unknown Album",
+                title: song.title,
+                artist: song.artistName ?? "Unknown Artist",
+                artUri: Uri.parse(song.image),
+              ),
+            ),
+          )
+          .toList(),
     );
 
     await player.setAudioSource(playlistSource, initialIndex: initialIndex);
@@ -142,11 +166,13 @@ class AudioPlayerManager {
   int _lastTapTime = 0;
   int _tapCount = 0;
   Timer? _tapTimer;
+
   void handleMediaButton() {
     if (!AudioDeviceService().mediaButtonControlEnabled) return;
     int currentTime = DateTime.now().millisecondsSinceEpoch;
 
-    if (currentTime - _lastTapTime < 500) { // nhấn nhanh trong vòng 0.5 giây
+    if (currentTime - _lastTapTime < 500) {
+      // nhấn nhanh trong vòng 0.5 giây
       _tapCount++;
     } else {
       _tapCount = 1;
@@ -194,7 +220,7 @@ class AudioPlayerManager {
     player.setLoopMode(mode);
   }
 
-  void dispose(){
+  void dispose() {
     _headsetSubscription?.cancel();
     _interruptionSubscription?.cancel();
     player.dispose();

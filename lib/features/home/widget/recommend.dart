@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:music_app/domain/entities/song_entity.dart';
 import 'package:music_app/features/song_detail/presentation/song_detail.dart';
 
 class BuildRecommend extends StatelessWidget {
   final List<Song> songs;
+
   const BuildRecommend({super.key, required this.songs});
 
   @override
@@ -25,19 +25,20 @@ class BuildRecommend extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         SizedBox(
-            height: 200,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: recommended.length,
-                itemBuilder: (context, index) {
-                  final song = recommended[index];
-                  return _recommendedCard(context, song);
-                }
-            )
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: recommended.length,
+            itemBuilder: (context, index) {
+              final song = recommended[index];
+              return _recommendedCard(context, song);
+            },
+          ),
         ),
       ],
     );
   }
+
   Widget _recommendedCard(BuildContext context, Song song) {
     return GestureDetector(
       onTap: () {
@@ -72,8 +73,8 @@ class BuildRecommend extends StatelessWidget {
             Text(
               song.title,
               style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
             Text(

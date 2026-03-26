@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_app/data/model/artist.dart';
 import 'package:music_app/data/model/song.dart';
 import 'package:music_app/features/home/viewmodels/home_view_model.dart';
-import 'package:music_app/features/home/widget/recommend.dart';
 import 'package:music_app/features/home/widget/artist.dart';
 import 'package:music_app/features/home/widget/header.dart';
+import 'package:music_app/features/home/widget/recommend.dart';
 
 import '../../../domain/entities/album_entity.dart';
 import '../widget/album.dart';
@@ -47,20 +47,21 @@ class _HomeTabPageState extends State<HomeTabPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: getBody(),
     );
   }
+
   @override
   void dispose() {
     _homeViewModel.dispose();
     // Do not dispose AudioPlayerManager here as it is a singleton used globally
-    // AudioPlayerManager().dispose(); 
+    // AudioPlayerManager().dispose();
 
     super.dispose();
   }
+
   Widget getBody() {
     return RefreshIndicator(
       onRefresh: () async {
@@ -71,7 +72,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
         ]);
       },
       child: SingleChildScrollView(
-        padding: const EdgeInsets.only( top: 16, bottom: 80), // Removed horizontal padding here
+        padding: const EdgeInsets.only(top: 16, bottom: 80),
+        // Removed horizontal padding here
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -80,9 +82,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
               child: BuildHeader(),
             ),
             const SizedBox(height: 24),
-            BuildRecommend(songs: songs,),
+            BuildRecommend(
+              songs: songs,
+            ),
             const SizedBox(height: 24),
-            BuildArtist(artists: artists,),
+            BuildArtist(
+              artists: artists,
+            ),
             const SizedBox(height: 24),
             if (songs.isEmpty)
               Center(child: CircularProgressIndicator())
@@ -91,8 +97,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
                 songs: songs,
               ),
             const SizedBox(height: 24),
-            BuildMediaCardList(albums: albums,),
-
+            BuildMediaCardList(
+              albums: albums,
+            ),
           ],
         ),
       ),

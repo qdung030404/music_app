@@ -1,7 +1,8 @@
 import 'dart:async';
+
 import 'package:audio_session/audio_session.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AudioOutputType {
   speaker,
@@ -11,11 +12,14 @@ enum AudioOutputType {
 
 class AudioDeviceService {
   static final AudioDeviceService _instance = AudioDeviceService._internal();
+
   factory AudioDeviceService() => _instance;
+
   AudioDeviceService._internal();
 
   static const String _keyAutoPause = 'auto_pause_on_disconnect';
-  static const String _keyAutoContinuePlaying = 'auto_continue_playing_on_connect';
+  static const String _keyAutoContinuePlaying =
+      'auto_continue_playing_on_connect';
   static const String _keyPauseOnInterruption = 'pause_on_interruption';
   static const String _keyMediaButtonControl = 'media_button_control';
   AudioSession? _session;
@@ -24,12 +28,15 @@ class AudioDeviceService {
       BehaviorSubject<AudioOutputType>.seeded(AudioOutputType.speaker);
 
   /// Stream phát ra [AudioOutputType] mỗi khi thiết bị âm thanh thay đổi.
-  Stream<AudioOutputType> get onDeviceChanged => _deviceController.stream.distinct();
+  Stream<AudioOutputType> get onDeviceChanged =>
+      _deviceController.stream.distinct();
 
   /// Stream phát ra sự kiện gián đoạn (ví dụ: cuộc gọi đến).
-  Stream<AudioInterruptionEvent>? get onInterruption => _session?.interruptionEventStream;
+  Stream<AudioInterruptionEvent>? get onInterruption =>
+      _session?.interruptionEventStream;
 
   AudioOutputType _currentOutput = AudioOutputType.speaker;
+
   AudioOutputType get currentOutput => _currentOutput;
 
   bool _autoPauseEnabled = true;
@@ -38,35 +45,42 @@ class AudioDeviceService {
   bool _mediaButtonControlEnabled = true;
 
   bool get autoPauseEnabled => _autoPauseEnabled;
+
   bool get autoContinuePlayingEnabled => _autoContinuePlayingEnabled;
+
   bool get pauseOnInterruptionEnabled => _pauseOnInterruptionEnabled;
+
   bool get mediaButtonControlEnabled => _mediaButtonControlEnabled;
 
   bool get isHeadsetOrBluetoothConnected =>
       _currentOutput == AudioOutputType.wiredHeadset ||
       _currentOutput == AudioOutputType.bluetooth;
 
-
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     _autoPauseEnabled = prefs.getBool(_keyAutoPause) ?? true;
-    _autoContinuePlayingEnabled = prefs.getBool(_keyAutoContinuePlaying) ?? true;
-    _pauseOnInterruptionEnabled = prefs.getBool(_keyPauseOnInterruption) ?? true;
+    _autoContinuePlayingEnabled =
+        prefs.getBool(_keyAutoContinuePlaying) ?? true;
+    _pauseOnInterruptionEnabled =
+        prefs.getBool(_keyPauseOnInterruption) ?? true;
     _mediaButtonControlEnabled = prefs.getBool(_keyMediaButtonControl) ?? true;
     _session = await AudioSession.instance;
 
-    await _session!.configure(const AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playback,
-      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.none,
-      avAudioSessionMode: AVAudioSessionMode.defaultMode,
-      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: AndroidAudioAttributes(
-        usage: AndroidAudioUsage.media,
-        contentType: AndroidAudioContentType.music,
+    await _session!.configure(
+      const AudioSessionConfiguration(
+        avAudioSessionCategory: AVAudioSessionCategory.playback,
+        avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.none,
+        avAudioSessionMode: AVAudioSessionMode.defaultMode,
+        avAudioSessionRouteSharingPolicy:
+            AVAudioSessionRouteSharingPolicy.defaultPolicy,
+        avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+        androidAudioAttributes: AndroidAudioAttributes(
+          usage: AndroidAudioUsage.media,
+          contentType: AndroidAudioContentType.music,
+        ),
+        androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-    ));
+    );
 
     // 1. Lắng nghe sự kiện "becoming noisy" (ví dụ: rút tai nghe)
     _session!.becomingNoisyEventStream.listen((_) {
@@ -95,6 +109,7 @@ class AudioDeviceService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyAutoPause, value);
   }
+
   Future<void> setAutoContinuePlayingEnabled(bool value) async {
     _autoContinuePlayingEnabled = value;
     final prefs = await SharedPreferences.getInstance();
@@ -132,7 +147,7 @@ class AudioDeviceService {
       case AudioDeviceType.wiredHeadphones:
         return AudioOutputType.wiredHeadset;
       case AudioDeviceType.bluetoothA2dp: // tai nghe/loa BT chất lượng cao
-      case AudioDeviceType.bluetoothSco:  // tai nghe BT dùng cho điện thoại
+      case AudioDeviceType.bluetoothSco: // tai nghe BT dùng cho điện thoại
         return AudioOutputType.bluetooth;
       default:
         return null; // loa trong

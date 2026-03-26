@@ -1,7 +1,8 @@
 import 'package:music_app/domain/entities/album_entity.dart';
+
 export 'package:music_app/domain/entities/album_entity.dart';
 
-class AlbumModel extends Album{
+class AlbumModel extends Album {
   AlbumModel({
     required super.id,
     required super.artistId,
@@ -9,16 +10,20 @@ class AlbumModel extends Album{
     required super.albumTitle,
     super.artistName,
   });
-  factory AlbumModel.fromJson(Map<String, dynamic> json){
+
+  factory AlbumModel.fromJson(Map<String, dynamic> json) {
     return AlbumModel(
       id: json['id']?.toString() ?? '',
       artistId: json['artistId']?.toString() ?? '',
       image: json['image'] ?? '',
       albumTitle: json['title'] ?? '',
-      artistName: (json['artistName'] ?? json['artist_name']?? json['artistname'])?.toString(),
+      artistName:
+          (json['artistName'] ?? json['artist_name'] ?? json['artistname'])
+              ?.toString(),
     );
   }
-  Map<String, dynamic> toJson(){
+
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'artistId': artistId,

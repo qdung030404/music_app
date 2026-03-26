@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
 import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
+
 import '../../../domain/entities/song_entity.dart';
 import '../presentation/song_list_page.dart';
 
@@ -8,6 +9,7 @@ class PlaylistHeader extends StatefulWidget {
   final Playlist playlist;
   final VoidCallback? onPlayAll;
   final List<Song> songs;
+
   const PlaylistHeader({
     super.key,
     required this.playlist,
@@ -41,7 +43,6 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-
               ),
               child: const Icon(
                 Icons.playlist_play,
@@ -60,7 +61,10 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                   ? Center(
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16,
+                          ),
                           backgroundColor: const Color(0xFF06A0B5),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -70,18 +74,20 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SongListPage(playlistId: widget.playlist.id),
+                              builder: (context) =>
+                                  SongListPage(playlistId: widget.playlist.id),
                             ),
                           );
                         },
                         icon: const Icon(Icons.add, color: Colors.white),
-                        label: Text('THÊM BÀI HÁT',
+                        label: Text(
+                          'THÊM BÀI HÁT',
                           style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
-                        )
+                        ),
                       ),
                     )
                   : Row(
@@ -90,9 +96,9 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                         IconButton(
                           onPressed: () {
                             showModalBottomSheet(
-                              context: context, 
+                              context: context,
                               builder: (context) => PlaylistMenuBottomSheet(
-                                playlist: widget.playlist, 
+                                playlist: widget.playlist,
                                 songs: widget.songs,
                                 popAfterDelete: true,
                               ),
@@ -114,11 +120,12 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                               ),
                             ),
                             onPressed: widget.onPlayAll,
-                            child: Text('PHÁT TẤT CẢ',
+                            child: Text(
+                              'PHÁT TẤT CẢ',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -129,7 +136,9 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SongListPage(playlistId: widget.playlist.id),
+                                builder: (context) => SongListPage(
+                                  playlistId: widget.playlist.id,
+                                ),
                               ),
                             );
                           },

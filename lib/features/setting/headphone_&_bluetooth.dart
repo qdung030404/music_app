@@ -12,6 +12,7 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
   bool _autoPause = true;
   bool _autoContinuePlaying = true;
   bool _mediaButtonControl = true;
+
   @override
   void initState() {
     super.initState();
@@ -25,14 +26,17 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
     await AudioDeviceService().setAutoPauseEnabled(value);
     setState(() => _autoPause = value);
   }
+
   Future<void> _toggleAutoContinuePlaying(bool value) async {
     await AudioDeviceService().setAutoContinuePlayingEnabled(value);
     setState(() => _autoContinuePlaying = value);
   }
+
   Future<void> _toggleMediaControl(bool value) async {
     await AudioDeviceService().setMediaButtonControlEnabled(value);
     setState(() => _mediaButtonControl = value);
   }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -57,9 +61,9 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
                 'Tai nghe / Loa',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20
-                )
-              )
+                  fontSize: 20,
+                ),
+              ),
             ),
 
             _SettingTile(
@@ -68,8 +72,8 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
                 value: _autoPause,
                 onChanged: _toggleAutoPause,
                 activeThumbColor: Color(0xFF00D9D9),
-                activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
-              )
+                activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3),
+              ),
             ),
             _SettingTile(
               title: 'phát tiếp khi kết nối',
@@ -77,27 +81,27 @@ class _HeadphoneBluetoothState extends State<HeadphoneBluetooth> {
                 value: _autoContinuePlaying,
                 onChanged: _toggleAutoContinuePlaying,
                 activeThumbColor: Color(0xFF00D9D9),
-                activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
-              )
+                activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3),
+              ),
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-                child: Text(
-                    'Thiết bị bluetooth',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20
-                    )
-                )
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+              child: Text(
+                'Thiết bị bluetooth',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
             ),
             _SettingTile(
-                title: 'Cho phép điều khiển bằng phím tai nghe',
-                trailing: Switch(
-                  value: _mediaButtonControl,
-                  onChanged: _toggleMediaControl,
-                    activeThumbColor: Color(0xFF00D9D9),
-                    activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3)
-                )
+              title: 'Cho phép điều khiển bằng phím tai nghe',
+              trailing: Switch(
+                value: _mediaButtonControl,
+                onChanged: _toggleMediaControl,
+                activeThumbColor: Color(0xFF00D9D9),
+                activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3),
+              ),
             ),
           ],
         ),

@@ -48,18 +48,22 @@ class FirebaseAuthService {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await auth.signInWithCredential(credential);
+      final UserCredential userCredential = await auth.signInWithCredential(
+        credential,
+      );
 
       final String uid = userCredential.user!.uid;
-      final DocumentSnapshot userDoc =
-          await firestore.collection('users').doc(uid).get();
+      final DocumentSnapshot userDoc = await firestore
+          .collection('users')
+          .doc(uid)
+          .get();
 
       if (!userDoc.exists) {
         await firestore.collection('users').doc(uid).set({
           'uid': uid,
           'username':
-              userCredential.user!.displayName ?? googleUser.email.split('@')[0],
+              userCredential.user!.displayName ??
+              googleUser.email.split('@')[0],
           'email': googleUser.email,
           'avatar': userCredential.user!.photoURL ?? '',
           'createdAt': FieldValue.serverTimestamp(),
@@ -108,11 +112,11 @@ class FirebaseAuthService {
     if (error != null) return error;
 
     try {
-      final UserCredential userCredential =
-          await auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
+      final UserCredential userCredential = await auth
+          .createUserWithEmailAndPassword(
+            email: email.trim(),
+            password: password.trim(),
+          );
 
       final String uid = userCredential.user!.uid;
       final String username = email.trim().split('@')[0];
@@ -192,11 +196,11 @@ class FirebaseAuthService {
     await googleSignIn.signOut();
     await auth.signOut();
   }
-  Future<void> deleteAccount()async {
+
+  Future<void> deleteAccount() async {
     User? user = auth.currentUser;
-    if(user != null){
+    if (user != null) {
       await user.delete();
     }
   }
 }
-

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/services/download_service.dart';
 import '../../../domain/entities/song_entity.dart';
 import '../../widget/song_list.dart';
-
 
 class Downloaded extends StatefulWidget {
   const Downloaded({super.key});
@@ -32,7 +32,7 @@ class _DownloadedState extends State<Downloaded> {
           duration: const Duration(milliseconds: 200),
           child: const Text(
             'Đã tải xuống',
-            style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         leading: IconButton(
@@ -50,11 +50,16 @@ class _DownloadedState extends State<Downloaded> {
         future: _downloadedSongsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Colors.deepPurpleAccent));
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.deepPurpleAccent),
+            );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
-              child: Text('Chưa có bài hát nào được tải xuống.', style: TextStyle()),
+              child: Text(
+                'Chưa có bài hát nào được tải xuống.',
+                style: TextStyle(),
+              ),
             );
           }
 

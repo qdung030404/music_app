@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/core/theme/app_theme.dart';
-class Personalize extends StatelessWidget{
+
+class Personalize extends StatelessWidget {
   const Personalize({super.key});
 
   @override
@@ -9,28 +10,31 @@ class Personalize extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context)),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text('Thiết lập cá nhân'),
         elevation: 0,
       ),
-      body:SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text('Giao diện:',
-                style: TextStyle(
-                    fontSize: 20
-                ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Giao diện:',
+                style: TextStyle(fontSize: 20),
               ),
             ),
             GetBuilder<ThemeService>(
               builder: (themeService) {
                 ThemeMode currentMode = themeService.isSystemMode
                     ? ThemeMode.system
-                    : (themeService.isDarkMode ? ThemeMode.dark : ThemeMode.light);
+                    : (themeService.isDarkMode
+                          ? ThemeMode.dark
+                          : ThemeMode.light);
 
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -80,7 +84,7 @@ class Personalize extends StatelessWidget{
                     ),
                   ],
                 );
-              }
+              },
             ),
             GetBuilder<ThemeService>(
               builder: (themeService) => SwitchListTile(
@@ -99,19 +103,22 @@ class Personalize extends StatelessWidget{
     );
   }
 }
+
 class VerticalRadioTile<T> extends StatelessWidget {
   final Widget image;
   final String label;
   final T value;
   final T groupValue;
   final Function(T?) onChanged;
+
   const VerticalRadioTile({
     super.key,
     required this.image,
     required this.label,
     required this.value,
     required this.groupValue,
-    required this.onChanged});
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -126,18 +133,20 @@ class VerticalRadioTile<T> extends StatelessWidget {
           AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: isSelected ? Color(0xFF00D9D9) : Colors.transparent,
-                    width: 2
-                )
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isSelected ? Color(0xFF00D9D9) : Colors.transparent,
+                width: 2,
+              ),
             ),
             child: Padding(
               padding: EdgeInsets.all(4),
               child: image,
-            )
+            ),
           ),
-          SizedBox(height: 12,),
+          SizedBox(
+            height: 12,
+          ),
           Text(
             label,
             style: const TextStyle(fontWeight: FontWeight.w500),

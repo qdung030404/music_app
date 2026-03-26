@@ -1,13 +1,14 @@
 import 'package:music_app/domain/entities/user_entity.dart';
-export 'package:music_app/domain/entities/user_entity.dart';
 
+export 'package:music_app/domain/entities/user_entity.dart';
 
 class UserModel extends User {
   UserModel({
     required super.uid,
     required super.username,
     required super.email,
-    required super.imageUrl});
+    required super.imageUrl,
+  });
 
   factory UserModel.fromFirestore(Map<String, dynamic> data) {
     return UserModel(

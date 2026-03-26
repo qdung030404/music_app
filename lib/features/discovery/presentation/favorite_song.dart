@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
-import '../../../domain/entities/song_entity.dart';
 
+import '../../../domain/entities/song_entity.dart';
 import '../wiget/favorite_song_list.dart';
 
 class FavoriteSong extends StatefulWidget {
@@ -49,7 +49,7 @@ class _FavoriteSongState extends State<FavoriteSong> {
           duration: const Duration(milliseconds: 200),
           child: const Text(
             'Yêu thích',
-            style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
         leading: IconButton(
@@ -71,9 +71,12 @@ class _FavoriteSongState extends State<FavoriteSong> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 32,),
+                const SizedBox(
+                  height: 32,
+                ),
                 const Center(
-                  child: Text('Yêu thích',
+                  child: Text(
+                    'Yêu thích',
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -85,14 +88,15 @@ class _FavoriteSongState extends State<FavoriteSong> {
                   builder: (context, snapshot) {
                     final count = snapshot.data?.length ?? 0;
                     return Center(
-                      child: Text('$count bài hát • đã lưu vào thư viện',
+                      child: Text(
+                        '$count bài hát • đã lưu vào thư viện',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
                     );
-                  }
+                  },
                 ),
                 const SizedBox(height: 32),
                 const FavoriteSongList(),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/data/model/artist.dart';
+
 import '../../../data/datasources/user_activity_service.dart';
 import '../wiget/followed_list.dart';
+
 class FollowArtist extends StatefulWidget {
   const FollowArtist({super.key});
 
@@ -35,6 +37,7 @@ class _FollowArtistState extends State<FollowArtist> {
     _scrollController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,9 +71,12 @@ class _FollowArtistState extends State<FollowArtist> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 32,),
+                const SizedBox(
+                  height: 32,
+                ),
                 const Center(
-                  child: Text('Nghệ sĩ',
+                  child: Text(
+                    'Nghệ sĩ',
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -78,21 +84,22 @@ class _FollowArtistState extends State<FollowArtist> {
                   ),
                 ),
                 StreamBuilder<List<Artist>>(
-                    stream: UserActivityService().getFollowedArtist(),
-                    builder: (context, snapshot) {
-                      final count = snapshot.data?.length ?? 0;
-                      if(count > 0){
-                        return Center(
-                          child: Text('$count nghệ sĩ • đã quan tâm',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
-                            ),
+                  stream: UserActivityService().getFollowedArtist(),
+                  builder: (context, snapshot) {
+                    final count = snapshot.data?.length ?? 0;
+                    if (count > 0) {
+                      return Center(
+                        child: Text(
+                          '$count nghệ sĩ • đã quan tâm',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
                           ),
-                        );
-                      }
-                      return SizedBox(height: 8);
+                        ),
+                      );
                     }
+                    return SizedBox(height: 8);
+                  },
                 ),
                 const SizedBox(height: 32),
                 const FollowedList(),

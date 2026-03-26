@@ -51,6 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
       isLoading = false;
     });
   }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -64,8 +65,9 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back)),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -120,10 +122,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     hintText: 'Password',
                     hintStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                    prefixIcon: const Icon(
+                      Icons.lock_outline,
+                      color: Colors.grey,
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -149,10 +156,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: InputDecoration(
                     hintText: 'Confirm Password',
                     hintStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                    prefixIcon: const Icon(
+                      Icons.lock_outline,
+                      color: Colors.grey,
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                        _obscureConfirmPassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -209,7 +221,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 50,
                     unpressedImage: Image.asset('assets/google.png'),
                     pressedImage: Image.asset('assets/google.png'),
-
                   ),
                 ],
               ),

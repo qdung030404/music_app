@@ -6,7 +6,7 @@ class AppInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Thông tin ứng dụng'),
@@ -22,36 +22,19 @@ class AppInfo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
-              // App Logo
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF00D9D9).withOpacity(0.1),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF00D9D9).withOpacity(0.2),
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Image.asset(
-                    'assets/splash_logo.png', // Hoặc logo thực của bạn
-                    width: 80,
-                    height: 80,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.music_note_rounded,
-                      size: 60,
-                      color: Color(0xFF00D9D9),
-                    ),
+              const SizedBox(height: 20),
+              Center(
+                child: Image.asset(
+                  'assets/splash_logo.png', // Hoặc logo thực của bạn
+                  width: 200,
+                  height: 150,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.music_note_rounded,
+                    size: 60,
+                    color: Color(0xFF00D9D9),
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
               const Text(
                 'Musium',
                 style: TextStyle(
@@ -69,29 +52,31 @@ class AppInfo extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              
+
               // Description Card
               _buildInfoCard(
                 title: 'Giới thiệu',
-                content: 'Ứng dụng nghe nhạc trực tuyến hàng đầu, mang đến cho bạn trải nghiệm âm thanh chất lượng cao và kho nhạc khổng lồ từ Jamendo API.',
+                content:
+                    'Ứng dụng nghe nhạc trực tuyến hàng đầu, mang đến cho bạn trải nghiệm âm thanh chất lượng cao và kho nhạc khổng lồ từ Jamendo API.',
                 theme: theme,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Features Card
               _buildInfoCard(
                 title: 'Tính năng chính',
-                content: '• Nghe nhạc trực tuyến miễn phí\n'
-                        '• Tìm kiếm bài hát, nghệ sĩ và album\n'
-                        '• Theo dõi nghệ sĩ yêu thích\n'
-                        '• Chế độ offline (tải nhạc)\n'
-                        '• Giao diện tùy biến theo ngày/đêm',
+                content:
+                    '• Nghe nhạc trực tuyến miễn phí\n'
+                    '• Tìm kiếm bài hát, nghệ sĩ và album\n'
+                    '• Theo dõi nghệ sĩ yêu thích\n'
+                    '• Chế độ offline (tải nhạc)\n'
+                    '• Giao diện tùy biến theo ngày/đêm',
                 theme: theme,
               ),
-              
+
               const SizedBox(height: 40),
-              
+
               // Social Links or Developer info
               Column(
                 children: [
@@ -109,7 +94,7 @@ class AppInfo extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 60),
               // Copyright
               Text(
@@ -136,8 +121,8 @@ class AppInfo extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark 
-            ? Colors.grey[900] 
+        color: theme.brightness == Brightness.dark
+            ? Colors.grey[900]
             : Colors.grey[100],
         borderRadius: BorderRadius.circular(20),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:get/get.dart';
-import 'package:music_app/features/managers/audio_player_manager.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_app/domain/entities/song_entity.dart';
+import 'package:music_app/features/managers/audio_player_manager.dart';
 import 'package:music_app/features/song_detail/presentation/song_detail.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -42,8 +42,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
             height: 64,
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark 
-                  ? Colors.grey.shade900 
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey.shade900
                   : Colors.grey.shade200,
               borderRadius: BorderRadius.circular(12),
             ),
@@ -61,7 +61,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
                       height: 48,
                       fit: BoxFit.cover,
                       imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset('assets/itunes_256.png', width: 48, height: 48);
+                        return Image.asset(
+                          'assets/itunes_256.png',
+                          width: 48,
+                          height: 48,
+                        );
                       },
                     ),
                   ),
@@ -75,7 +79,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
                       TextScroll(
                         song.title,
                         mode: TextScrollMode.endless,
-                        velocity: const Velocity(pixelsPerSecond: Offset(30, 0)),
+                        velocity: const Velocity(
+                          pixelsPerSecond: Offset(30, 0),
+                        ),
                         delayBefore: const Duration(seconds: 1),
                         pauseBetween: const Duration(seconds: 2),
                         style: const TextStyle(
@@ -105,32 +111,34 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 StreamBuilder<PlayerState>(
                   stream: _audioPlayerManager.player.playerStateStream,
                   builder: (context, snapshot) {
-                     final playerState = snapshot.data;
-                     final processingState = playerState?.processingState;
-                     final playing = playerState?.playing;
-                     
-                     if (processingState == ProcessingState.loading || 
-                         processingState == ProcessingState.buffering) {
-                       return const SizedBox(
-                         width: 48, 
-                         height: 48, 
-                         child: Padding(
-                           padding: EdgeInsets.all(12),
-                           child: CircularProgressIndicator(strokeWidth: 2,),
-                         ),
-                       );
-                     } else if (playing != true) {
-                       return IconButton(
-                         icon: const Icon(Icons.play_arrow),
-                         onPressed: _audioPlayerManager.player.play,
-                       );
-                     } else {
-                       return IconButton(
-                         icon: const Icon(Icons.pause),
-                         onPressed: _audioPlayerManager.player.pause,
-                       );
-                     }
-                  }
+                    final playerState = snapshot.data;
+                    final processingState = playerState?.processingState;
+                    final playing = playerState?.playing;
+
+                    if (processingState == ProcessingState.loading ||
+                        processingState == ProcessingState.buffering) {
+                      return const SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: Padding(
+                          padding: EdgeInsets.all(12),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      );
+                    } else if (playing != true) {
+                      return IconButton(
+                        icon: const Icon(Icons.play_arrow),
+                        onPressed: _audioPlayerManager.player.play,
+                      );
+                    } else {
+                      return IconButton(
+                        icon: const Icon(Icons.pause),
+                        onPressed: _audioPlayerManager.player.pause,
+                      );
+                    }
+                  },
                 ),
                 // Next
                 IconButton(

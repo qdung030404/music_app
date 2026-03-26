@@ -1,4 +1,5 @@
 import 'package:music_app/domain/entities/artist_entity.dart';
+
 export 'package:music_app/domain/entities/artist_entity.dart';
 
 class ArtistModel extends Artist {
@@ -10,12 +11,13 @@ class ArtistModel extends Artist {
 
   factory ArtistModel.fromJson(Map<String, dynamic> json) {
     return ArtistModel(
-        id: json['id']?.toString() ?? '',
-        avatar: json['avatar'] ?? '',
-        name: json['name'] ?? '');
+      id: json['id']?.toString() ?? '',
+      avatar: json['avatar'] ?? '',
+      name: json['name'] ?? '',
+    );
   }
-  
-  Map<String, dynamic> toJson(){
+
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'avatar': avatar,

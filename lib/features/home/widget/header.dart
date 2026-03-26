@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../setting/setting.dart';
 
 class BuildHeader extends StatelessWidget {
-
   const BuildHeader({super.key});
 
   @override
@@ -31,12 +30,11 @@ class BuildHeader extends StatelessWidget {
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               Text(
-                  user?.displayName ??
-                      user?.email?.split('@')[0] ??
-                      'User',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,)
+                user?.displayName ?? user?.email?.split('@')[0] ?? 'User',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -46,10 +44,10 @@ class BuildHeader extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Setting())
+              MaterialPageRoute(builder: (context) => Setting()),
             );
           },
-        )
+        ),
       ],
     );
   }

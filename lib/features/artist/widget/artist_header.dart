@@ -1,11 +1,12 @@
-
 import 'package:flutter/material.dart';
+
 import '../../../data/datasources/user_activity_service.dart';
 import '../../../domain/entities/artist_entity.dart';
 
 class ArtistHeader extends StatefulWidget {
   final Artist artist;
   final VoidCallback? onPlayAll;
+
   const ArtistHeader({super.key, required this.artist, this.onPlayAll});
 
   @override
@@ -90,7 +91,7 @@ class _ArtistHeaderState extends State<ArtistHeader> {
             children: [
               Text(
                 widget.artist.name,
-                style:TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -110,10 +111,7 @@ class _ArtistHeaderState extends State<ArtistHeader> {
                   onPressed: _toggleFollow,
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    side: BorderSide(
-                      color: Colors.white,
-                      width: 1.5
-                    ),
+                    side: BorderSide(color: Colors.white, width: 1.5),
                     backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
@@ -122,7 +120,7 @@ class _ArtistHeaderState extends State<ArtistHeader> {
                   child: Text(
                     _isFollowing ? 'ĐANG QUAN TÂM' : 'QUAN TÂM',
                     style: TextStyle(
-                      color:  Colors.white ,
+                      color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.5,

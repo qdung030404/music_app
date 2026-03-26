@@ -14,7 +14,7 @@ class FeedbackService {
   }) async {
     try {
       final user = _auth.currentUser;
-      
+
       await _firestore.collection('feedbacks').add({
         'userId': user?.uid ?? 'anonymous',
         'issueType': issueType,

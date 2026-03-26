@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/features/widget/album_card.dart';
+
 import '../../../domain/entities/album_entity.dart';
 
 class BuildMediaCardList extends StatelessWidget {
   final List<Album> albums;
+
   const BuildMediaCardList({super.key, required this.albums});
 
   @override
@@ -29,11 +31,11 @@ class BuildMediaCardList extends StatelessWidget {
         SizedBox(
           height: 230,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: albumList.length,
-              itemBuilder: (context, index) {
-                return AlbumCard(album: albumList[index]);
-              }
+            scrollDirection: Axis.horizontal,
+            itemCount: albumList.length,
+            itemBuilder: (context, index) {
+              return AlbumCard(album: albumList[index]);
+            },
           ),
         ),
       ],

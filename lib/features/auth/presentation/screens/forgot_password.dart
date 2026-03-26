@@ -10,9 +10,13 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _emailController = TextEditingController();
+
   Future<void> signUp() async {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
+    await FirebaseAuth.instance.sendPasswordResetEmail(
+      email: _emailController.text.trim(),
+    );
   }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -25,7 +29,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back)),
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

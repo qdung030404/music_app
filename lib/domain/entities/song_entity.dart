@@ -21,18 +21,16 @@ class Song {
     required this.duration,
   });
 
-  String get albumDisplay => (albumName?.trim().isNotEmpty ?? false)
-      ? albumName!.trim()
-      : albumId;
-  
-  String get artistDisplay => (artistName?.trim().isNotEmpty ?? false)
-      ? artistName!.trim()
-      : artistId;
+  String get albumDisplay =>
+      (albumName?.trim().isNotEmpty ?? false) ? albumName!.trim() : albumId;
+
+  String get artistDisplay =>
+      (artistName?.trim().isNotEmpty ?? false) ? artistName!.trim() : artistId;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Song && runtimeType == other.runtimeType && id == other.id;
+      other is Song && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

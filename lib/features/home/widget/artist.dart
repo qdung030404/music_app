@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:music_app/domain/entities/artist_entity.dart';
 import 'package:music_app/features/artist/presentation/artist_detail.dart';
 
 class BuildArtist extends StatelessWidget {
   final List<Artist> artists;
+
   const BuildArtist({super.key, required this.artists});
 
   @override
@@ -18,7 +18,7 @@ class BuildArtist extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child:const Text(
+          child: const Text(
             'Nghệ sĩ tiêu biểu',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -27,16 +27,17 @@ class BuildArtist extends StatelessWidget {
         SizedBox(
           height: 230,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: artistList.length,
-              itemBuilder: (context, index) {
-                return _artistCard(context, artistList[index]);
-              }
+            scrollDirection: Axis.horizontal,
+            itemCount: artistList.length,
+            itemBuilder: (context, index) {
+              return _artistCard(context, artistList[index]);
+            },
           ),
         ),
       ],
     );
   }
+
   Widget _artistCard(BuildContext context, Artist artist) {
     return GestureDetector(
       onTap: () {

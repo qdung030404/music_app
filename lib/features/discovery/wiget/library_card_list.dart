@@ -5,24 +5,19 @@ import 'package:music_app/features/discovery/presentation/favorite_song.dart';
 import 'package:music_app/features/discovery/presentation/follow_artist.dart';
 
 List<Map<String, dynamic>> items = [
-
   {
     'icon': Icons.favorite_border,
     'color': Colors.blueAccent,
-    'text': 'Yêu thích'
+    'text': 'Yêu thích',
   },
   {
     'icon': Icons.arrow_circle_down_outlined,
     'color': Colors.deepPurple,
-    'text': 'Tải về'
+    'text': 'Tải về',
   },
-  {
-    'icon': Icons.music_note,
-    'color': Colors.orangeAccent,
-    'text': 'Nghệ sĩ'
-  }
-
+  {'icon': Icons.music_note, 'color': Colors.orangeAccent, 'text': 'Nghệ sĩ'},
 ];
+
 class LibraryCardList extends StatelessWidget {
   const LibraryCardList({super.key});
 
@@ -34,23 +29,24 @@ class LibraryCardList extends StatelessWidget {
       children: [
         const SizedBox(height: 12),
         SizedBox(
-          height: MediaQuery.of(context).size.height *0.13,
+          height: MediaQuery.of(context).size.height * 0.13,
           child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: items.length,
-              itemBuilder: (context, index){
-                return Padding(padding:
-                const EdgeInsets.only(right: 12),
-                  child: libraryCard(context,items[index]),
-                );
-              },
-          )
-        )
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: libraryCard(context, items[index]),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
-  Widget libraryCard(BuildContext context, Map<String, dynamic> item){
+
+  Widget libraryCard(BuildContext context, Map<String, dynamic> item) {
     double screenWidth = MediaQuery.of(context).size.width;
     double itemWidth = screenWidth / 3 - 16;
     return GestureDetector(
@@ -65,10 +61,10 @@ class LibraryCardList extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => const FollowArtist()),
           );
-        } else if (item['text'] == 'Tải về'){
+        } else if (item['text'] == 'Tải về') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Downloaded())
+            MaterialPageRoute(builder: (context) => const Downloaded()),
           );
         }
       },
@@ -93,7 +89,7 @@ class LibraryCardList extends StatelessWidget {
             Text(
               item['text'],
               style: TextStyle(
-                color:  item['color'],
+                color: item['color'],
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
