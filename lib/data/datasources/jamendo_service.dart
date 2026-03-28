@@ -107,4 +107,35 @@ class JamendoService {
     }
     return [];
   }
+  // Lấy danh sách Playlist phổ biến (Thịnh hành) từ Jamendo
+  Future<List<dynamic>> fetchPopularPlaylists() async {
+    final response = await http.get(
+      Uri.parse(
+        '$baseUrl/playlists/?client_id=$clientId&format=json&limit=20&order=popularity_total',
+      ),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['results'] as List;
+    } else {
+      print("Lỗi API Jamendo Playlists: ${response.body}");
+      return [];
+    }
+  }
+  // Lấy các bài hát trong 1 playlist cụ thể
+  Future<List<dynamic>> fetchTracksByPlaylistId(String playlistId) async {
+    final response = await http.get(
+      Uri.parse(
+        '$baseUrl/playlists/tracks/?client_id=$clientId&format=json&id=$playlistId',
+      ),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['results'].isNotEmpty) {
+        return data['results'][0]['tracks'] as List;
+      }
+      return [];
+    }
+    return [];
+  }
 }

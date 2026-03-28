@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_app/data/model/artist.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
-import '../wiget/followed_list.dart';
+import '../widget/followed_list.dart';
 
 class FollowArtist extends StatefulWidget {
   const FollowArtist({super.key});

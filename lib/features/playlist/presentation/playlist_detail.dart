@@ -6,6 +6,7 @@ import '../../managers/audio_player_manager.dart';
 import '../../widget/song_list.dart';
 import '../viewmodels/playlist_view_model.dart';
 import '../widget/playlist_header.dart';
+import '../widget/playlist_menu_bottom_sheet.dart';
 
 class PlaylistDetail extends StatelessWidget {
   final Playlist playlist;
@@ -75,6 +76,24 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => PlaylistMenuBottomSheet(
+                      playlist: widget.playlist,
+                      songs: playlistSongs,
+                      popAfterDelete: true,
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.more_vert,
+                  size: 32,
+                ),
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHeader(
                 playlist: widget.playlist,

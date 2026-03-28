@@ -4,6 +4,7 @@ import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.da
 
 import '../../../../data/datasources/user_activity_service.dart';
 import '../../../playlist/presentation/playlist_detail.dart';
+import 'create_playlist_page.dart';
 
 class PlaylistPageStorage extends StatelessWidget {
   final Function(Playlist)? onPlaylistTap;
@@ -46,8 +47,15 @@ class PlaylistPageStorage extends StatelessWidget {
                   'Tạo playlist mới',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                onTap: () =>
-                    _showCreatePlaylistDialog(context, userActivityService),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            CreatePlaylistPage(service: userActivityService,)
+                    ),
+                  );
+                }
               );
             }
 
@@ -94,57 +102,6 @@ class PlaylistPageStorage extends StatelessWidget {
           },
         );
       },
-    );
-  }
-
-  void _showCreatePlaylistDialog(
-    BuildContext context,
-    UserActivityService service,
-  ) {
-    final TextEditingController controller = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Tạo playlist mới'),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: TextField(
-            controller: controller,
-            autofocus: true,
-            decoration: const InputDecoration(
-              hintText: 'Tên playlist',
-              hintStyle: TextStyle(color: Colors.grey),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.deepPurple),
-              ),
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('HỦY', style: TextStyle(color: Colors.grey)),
-          ),
-          TextButton(
-            onPressed: () async {
-              final name = controller.text.trim();
-              if (name.isNotEmpty) {
-                final newPlaylist = Playlist(
-                  id: DateTime.now().millisecondsSinceEpoch.toString(),
-                  playlistName: name,
-                );
-                await service.createPlaylist(newPlaylist);
-                if (context.mounted) Navigator.pop(context);
-              }
-            },
-            child: const Text(
-              'TẠO',
-              style: TextStyle(color: Colors.deepPurple),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

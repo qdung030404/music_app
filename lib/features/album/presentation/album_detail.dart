@@ -102,6 +102,11 @@ class _DetailPageState extends State<AlbumDetailPage> {
                 ),
               ),
             ),
+            actions: [
+              IconButton(onPressed: (){},
+                icon: Icon(Icons.more_horiz_outlined),
+              )
+            ],
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context),

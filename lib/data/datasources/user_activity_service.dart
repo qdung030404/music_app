@@ -258,25 +258,25 @@ class UserActivityService {
     }
   }
 
-  Future<void> createPlaylist(Playlist playlist) async {
+  Future<void> createPlaylist(Playlist playlist, {bool isPrivate = true}) async {
     final uid = _userId;
     if (uid == null) {
       print(
         'UserActivityService: Cannot add to favorites, user not logged in.',
+
       );
       return;
     }
 
     try {
       final userRef = _firestore.collection('users').doc(uid);
-      final playlistRef = userRef.collection(
-        'playlists',
-      ); // Changed favoriteRef to playlistRef
 
       final playlistData = {
         // Changed songData to playlistData
         'id': playlist.id,
         'name': playlist.playlistName,
+        'isPrivate': isPrivate,
+        'by': uid,
         'timestamp': FieldValue.serverTimestamp(),
       };
 
@@ -284,8 +284,14 @@ class UserActivityService {
         transaction.set(userRef, {
           'lastActivity': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
-        transaction.set(playlistRef.doc(playlist.id), playlistData);
+        final uesrPlaylistRef = userRef.collection('playlists').doc(playlist.id);
+        transaction.set(uesrPlaylistRef, playlistData);
+        if(!isPrivate){
+          final publicPlaylistRef = _firestore.collection('playlist').doc(playlist.id);
+          transaction.set(publicPlaylistRef, playlistData);
+        }
       });
+
     } catch (e) {
       print('UserActivityService Error: $e');
     }

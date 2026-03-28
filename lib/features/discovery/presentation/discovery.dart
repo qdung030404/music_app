@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../wiget/History.dart';
-import '../wiget/library_card_list.dart';
-import '../wiget/page_storage/albumplaylist.dart';
+import '../widget/History.dart';
+import '../widget/library_card_list.dart';
+import '../widget/page_storage/albumplaylist.dart';
 
 class DiscoveryTab extends StatelessWidget {
   const DiscoveryTab({super.key});

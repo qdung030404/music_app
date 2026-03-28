@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
 
 import '../../../domain/entities/song_entity.dart';
-import '../wiget/favorite_song_list.dart';
+import '../widget/favorite_song_list.dart';
 
 class FavoriteSong extends StatefulWidget {
   const FavoriteSong({super.key});

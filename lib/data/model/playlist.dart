@@ -6,12 +6,16 @@ class PlaylistModel extends Playlist {
   PlaylistModel({
     required super.id,
     required super.playlistName,
+    super.image,
+    super.creatorName,
   });
 
   factory PlaylistModel.fromJson(Map<String, dynamic> json) {
     return PlaylistModel(
       id: json['id']?.toString() ?? '',
       playlistName: (json['name'] ?? json['playlistName'] ?? '').toString(),
+      image: json['image']?.toString(),
+      creatorName: (json['user_name'] ?? json['by'] ?? '').toString(),
     );
   }
 
@@ -19,6 +23,8 @@ class PlaylistModel extends Playlist {
     return {
       'id': id,
       'name': playlistName,
+      'image': image,
+      'by': creatorName,
     };
   }
 }

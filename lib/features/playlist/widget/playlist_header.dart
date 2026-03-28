@@ -3,6 +3,7 @@ import 'package:music_app/domain/entities/playlist_entity.dart';
 import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
 
 import '../../../domain/entities/song_entity.dart';
+import '../../widget/download_song.dart';
 import '../presentation/song_list_page.dart';
 
 class PlaylistHeader extends StatefulWidget {
@@ -95,19 +96,16 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                       children: [
                         IconButton(
                           onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => PlaylistMenuBottomSheet(
-                                playlist: widget.playlist,
-                                songs: widget.songs,
-                                popAfterDelete: true,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DownloadSong(
+                                  songs: widget.songs,
+                                ),
                               ),
                             );
                           },
-                          icon: const Icon(
-                            Icons.more_horiz,
-                            size: 32,
-                          ),
+                          icon: const Icon(Icons.arrow_circle_down_outlined, size: 28),
                         ),
                         const SizedBox(width: 32),
                         Expanded(

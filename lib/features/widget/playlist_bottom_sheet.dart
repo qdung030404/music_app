@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/datasources/user_activity_service.dart';
 import '../../domain/entities/song_entity.dart';
-import '../discovery/wiget/page_storage/playlist_page_storage.dart';
+import '../discovery/widget/page_storage/playlist_page_storage.dart';
 
 class PlaylistBottomSheet extends StatefulWidget {
   final Song song;
