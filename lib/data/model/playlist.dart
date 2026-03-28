@@ -8,6 +8,7 @@ class PlaylistModel extends Playlist {
     required super.playlistName,
     super.image,
     super.creatorName,
+    super.isPrivate = true,
   });
 
   factory PlaylistModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +17,7 @@ class PlaylistModel extends Playlist {
       playlistName: (json['name'] ?? json['playlistName'] ?? '').toString(),
       image: json['image']?.toString(),
       creatorName: (json['user_name'] ?? json['by'] ?? '').toString(),
+      isPrivate: json['isPrivate'] ?? true, // Lấy từ Firestore
     );
   }
 
@@ -25,6 +27,7 @@ class PlaylistModel extends Playlist {
       'name': playlistName,
       'image': image,
       'by': creatorName,
+      'isPrivate': isPrivate,
     };
   }
 }

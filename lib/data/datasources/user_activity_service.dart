@@ -297,21 +297,31 @@ class UserActivityService {
     }
   }
 
-  Future<void> updatePlaylistName(String playlistId, String newName) async {
+  Future<void> updatePlaylistName(String playlistId, String newName, {bool isPrivate = true}) async {
     final uid = _userId;
     if (uid == null) return;
     try {
-      await _firestore
+      final batch = _firestore.batch();
+      
+      // 1. Cập nhật trong bộ sưu tập 'playlists' của người dùng
+      final userPlaylistRef = _firestore
           .collection('users')
           .doc(uid)
           .collection('playlists')
-          .doc(playlistId)
-          .update({
-            'name': newName,
-            // Không cập nhật timestamp nếu muốn giữ ngày tạo gốc
-          });
+          .doc(playlistId);
+      
+      batch.update(userPlaylistRef, {'name': newName});
+      
+      // 2. Nếu playlist là công khai, cập nhật cả ở bộ sưu tập 'playlist' chung
+      if (!isPrivate) {
+        final publicPlaylistRef = _firestore.collection('playlist').doc(playlistId);
+        batch.update(publicPlaylistRef, {'name': newName});
+      }
+      
+      await batch.commit();
+      print('UserActivityService: Successfully updated playlist name to "$newName"');
     } catch (e) {
-      print('Error updating playlist: $e');
+      print('UserActivityService Error updating playlist name: $e');
     }
   }
 

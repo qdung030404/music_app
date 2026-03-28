@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
+import 'package:music_app/features/playlist/widget/update_playlist_page.dart';
 import 'package:music_app/features/widget/download_song.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
@@ -75,8 +76,16 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
                 }),
                 buildMenuItem(
                   Icons.edit,
-                  'Chỉnh sửa tên playlist',
-                  () => _showUpdatePlaylistDialog(context, userActivityService),
+                  'Chỉnh sửa playlist',
+                      () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpdatePlaylistPage(
+                        service: userActivityService,
+                        playlist: playlist,
+                      ),
+                    ),
+                  ),
                 ),
                 if (songs != null && songs!.isNotEmpty)
                   buildMenuItem(
@@ -97,12 +106,12 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
                     'playlists',
                   );
                   if (context.mounted) {
-                    Navigator.pop(context); // Luôn đóng BottomSheet
+                    Navigator.pop(context);
 
                     if (popAfterDelete) {
                       Navigator.pop(
                         context,
-                      ); // Chỉ đóng màn hình Detail nếu được yêu cầu
+                      );
                     }
 
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -116,58 +125,6 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
                 }),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showUpdatePlaylistDialog(
-    BuildContext context,
-    UserActivityService service,
-  ) {
-    final TextEditingController controller = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey.shade900
-            : Colors.grey.shade200,
-        title: const Text('Chỉnh sửa tên playlist', style: TextStyle()),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: TextField(
-            controller: controller,
-            autofocus: true,
-            style: const TextStyle(),
-            decoration: const InputDecoration(
-              hintText: 'Tên playlist',
-              hintStyle: TextStyle(color: Colors.grey),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.deepPurple),
-              ),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide()),
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('HỦY', style: TextStyle()),
-          ),
-          TextButton(
-            onPressed: () async {
-              final name = controller.text.trim();
-              if (name.isNotEmpty) {
-                await service.updatePlaylistName(playlist.id, name);
-                if (context.mounted) {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                }
-              }
-            },
-            child: const Text('THAY ĐỔI', style: TextStyle()),
           ),
         ],
       ),

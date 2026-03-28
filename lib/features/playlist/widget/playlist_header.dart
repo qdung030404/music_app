@@ -112,7 +112,7 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 8),
-                              backgroundColor: Colors.deepPurpleAccent,
+                              backgroundColor: Color(0xFF00D9D9),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),

@@ -115,7 +115,7 @@ class _PlaylistDetailPageState extends State<PlaylistDetailPage> {
                     child: Padding(
                       padding: EdgeInsets.all(32.0),
                       child: CircularProgressIndicator(
-                        color: Colors.deepPurple,
+                        color: Color(0xFF00D9D9),
                       ),
                     ),
                   );
