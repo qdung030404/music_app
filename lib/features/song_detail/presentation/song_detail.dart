@@ -377,7 +377,7 @@ class _SongDetailPageState extends State<SongDetailPage>
               height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.deepPurpleAccent,
+                color: Color(0xFF00D9D9),
               ),
               child: const Icon(Icons.pause, size: 40),
             ),
@@ -390,7 +390,7 @@ class _SongDetailPageState extends State<SongDetailPage>
               height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.deepPurpleAccent,
+                color: Color(0xFF00D9D9),
               ),
               child: const Icon(Icons.replay, size: 40),
             ),
@@ -449,7 +449,7 @@ class _SongDetailPageState extends State<SongDetailPage>
             icon: Icon(
               Icons.shuffle,
               color: _isShuffle
-                  ? Colors.deepPurpleAccent
+                  ? Color(0xFF00D9D9)
                   : Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
                   : Colors.black,

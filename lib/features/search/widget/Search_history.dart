@@ -36,7 +36,7 @@ class SearchHistory extends StatelessWidget {
           label: Text(query),
           onDeleted: () => onDelete(query),
           deleteIconColor: Colors.black,
-          backgroundColor: Colors.deepPurpleAccent,
+          backgroundColor: Color(0xFF00D9D9),
           labelStyle: const TextStyle(color: Colors.black),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),

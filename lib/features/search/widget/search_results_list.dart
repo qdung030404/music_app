@@ -112,7 +112,7 @@ class SearchResultsList extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 160,
+            height: MediaQuery.of(context).size.height*0.3,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),

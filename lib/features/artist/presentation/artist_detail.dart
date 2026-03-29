@@ -83,7 +83,13 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: _showTitle ? Theme.of(context).brightness ==
+            Brightness.dark
+            ? Colors.black
+            : Colors.white : Colors.transparent,
+        elevation: 0,
         title: AnimatedOpacity(
           opacity: _showTitle ? 1.0 : 0.0,
           duration: const Duration(milliseconds: 200),
@@ -96,41 +102,38 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ArtistHeader(
-                artist: widget.artist,
-                onPlayAll: () {
-                  final randomSongs = List<Song>.from(artistSongs)..shuffle();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SongDetail(
-                        songs: randomSongs,
-                        playingSong: randomSongs[0],
-                      ),
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ArtistHeader(
+              artist: widget.artist,
+              onPlayAll: () {
+                final randomSongs = List<Song>.from(artistSongs)..shuffle();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SongDetail(
+                      songs: randomSongs,
+                      playingSong: randomSongs[0],
                     ),
-                  );
-                },
+                  ),
+                );
+              },
+            ),
+            SongList(
+              songs: artistSongs,
+              title: 'Bài hát nổi bật',
+            ),
+            if (artistAlbums.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: BuildMediaCardList(albums: artistAlbums),
               ),
-              SongList(
-                songs: artistSongs,
-                title: 'Bài hát nổi bật',
-              ),
-              if (artistAlbums.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: BuildMediaCardList(albums: artistAlbums),
-                ),
-              const SizedBox(height: 80),
-            ],
-          ),
+            const SizedBox(height: 80),
+          ],
         ),
       ),
     );
