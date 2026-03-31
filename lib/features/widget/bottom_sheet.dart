@@ -163,7 +163,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> {
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               builder: (context) =>
-                                  PlaylistBottomSheet(song: widget.song),
+                                  PlaylistBottomSheet(songs: [widget.song]),
                             );
                           },
                           icon: Icons.playlist_add,

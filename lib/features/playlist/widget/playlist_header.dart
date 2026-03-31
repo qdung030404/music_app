@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/domain/entities/playlist_entity.dart';
-import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
 
 import '../../../domain/entities/song_entity.dart';
 import '../../widget/download_song.dart';
@@ -105,7 +104,10 @@ class _PlaylistHeaderState extends State<PlaylistHeader> {
                               ),
                             );
                           },
-                          icon: const Icon(Icons.arrow_circle_down_outlined, size: 28),
+                          icon: const Icon(
+                            Icons.arrow_circle_down_outlined,
+                            size: 28,
+                          ),
                         ),
                         const SizedBox(width: 32),
                         Expanded(

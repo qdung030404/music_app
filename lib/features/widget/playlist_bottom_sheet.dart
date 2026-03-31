@@ -5,9 +5,9 @@ import '../../domain/entities/song_entity.dart';
 import '../discovery/widget/page_storage/playlist_page_storage.dart';
 
 class PlaylistBottomSheet extends StatefulWidget {
-  final Song song;
+  final List<Song> songs;
 
-  const PlaylistBottomSheet({super.key, required this.song});
+  const PlaylistBottomSheet({super.key, required this.songs});
 
   @override
   State<PlaylistBottomSheet> createState() => _PlaylistBottomSheetState();
@@ -16,16 +16,18 @@ class PlaylistBottomSheet extends StatefulWidget {
 class _PlaylistBottomSheetState extends State<PlaylistBottomSheet> {
   final UserActivityService _userActivityService = UserActivityService();
 
-  Future<void> _addSongToPlaylist(
+  Future<void> _addSongsToPlaylist(
     String playlistId,
     String playlistName,
   ) async {
-    await _userActivityService.addSongToPlaylist(playlistId, widget.song);
+    await _userActivityService.addSongsToPlaylist(playlistId, widget.songs);
     if (mounted) {
-      Navigator.pop(context); // Close the playlist bottom sheet
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Đã thêm bài hát vào playlist $playlistName'),
+          content: Text(
+            'Đã thêm ${widget.songs.length} bài hát vào playlist $playlistName',
+          ),
           backgroundColor: Colors.deepPurple,
         ),
       );
@@ -58,7 +60,7 @@ class _PlaylistBottomSheetState extends State<PlaylistBottomSheet> {
           Expanded(
             child: PlaylistPageStorage(
               onPlaylistTap: (playlist) =>
-                  _addSongToPlaylist(playlist.id, playlist.playlistName),
+                  _addSongsToPlaylist(playlist.id, playlist.playlistName),
             ),
           ),
         ],

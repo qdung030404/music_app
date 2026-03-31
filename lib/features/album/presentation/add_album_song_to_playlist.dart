@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/jamendo_service.dart';
 import 'package:music_app/data/model/song.dart';
+import 'package:music_app/features/widget/playlist_bottom_sheet.dart';
 
-import '../../../../data/datasources/user_activity_service.dart';
+class AddAlbumSongToPlaylist extends StatefulWidget {
+  final String? albumId;
 
-class SongListPage extends StatefulWidget {
-  final String? playlistId;
-
-  const SongListPage({super.key, this.playlistId});
+  const AddAlbumSongToPlaylist({super.key, this.albumId});
 
   @override
-  State<SongListPage> createState() => _SongListPageState();
+  State<AddAlbumSongToPlaylist> createState() => _AddAlbumSongToPlaylistState();
 }
 
-class _SongListPageState extends State<SongListPage> {
+class _AddAlbumSongToPlaylistState extends State<AddAlbumSongToPlaylist> {
   List<Song> _allSongs = [];
   List<Song> _filteredSongs = [];
   bool _isLoading = true;
-  String _searchQuery = '';
   final Set<String> _selectedSongIds = {};
-  final UserActivityService _userActivityService = UserActivityService();
+  bool _isFavorite = false;
 
   @override
   void initState() {
@@ -52,30 +50,12 @@ class _SongListPageState extends State<SongListPage> {
           _allSongs = s;
           _filteredSongs = _allSongs;
           _isLoading = false;
+          _isFavorite = false;
         });
       }
     } catch (e) {
       if (mounted) setState(() => _isLoading = false);
     }
-  }
-
-  void _filterSongs(String query) {
-    setState(() {
-      _searchQuery = query;
-      if (query.isEmpty) {
-        _filteredSongs = _allSongs;
-      } else {
-        _filteredSongs = _allSongs
-            .where(
-              (song) =>
-                  song.title.toLowerCase().contains(query.toLowerCase()) ||
-                  song.artistDisplay.toLowerCase().contains(
-                    query.toLowerCase(),
-                  ),
-            )
-            .toList();
-      }
-    });
   }
 
   @override
@@ -111,23 +91,6 @@ class _SongListPageState extends State<SongListPage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              onChanged: _filterSongs,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: 'Tìm kiếm bài hát, nghệ sĩ...',
-                hintStyle: const TextStyle(color: Colors.grey),
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
           Expanded(
             child: _isLoading
                 ? const Center(
@@ -176,7 +139,18 @@ class _SongListPageState extends State<SongListPage> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: _handleSaveSelectedSongs,
+                  onPressed: () {
+                    final songsToAdd = _selectedSongIds
+                        .map((id) => _allSongs.firstWhere((s) => s.id == id))
+                        .toList();
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) =>
+                          PlaylistBottomSheet(songs: songsToAdd),
+                    );
+                  },
                   child: const Text(
                     'XONG',
                     style: TextStyle(
@@ -191,43 +165,6 @@ class _SongListPageState extends State<SongListPage> {
         ],
       ),
     );
-  }
-
-  Future<void> _handleSaveSelectedSongs() async {
-    if (widget.playlistId == null) return;
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final songsToAdd = _selectedSongIds
-          .map((id) => _allSongs.firstWhere((s) => s.id == id))
-          .toList();
-      await _userActivityService.addSongsToPlaylist(
-        widget.playlistId!,
-        songsToAdd,
-      );
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Đã thêm bài hát vào playlist'),
-            backgroundColor: Colors.deepPurple,
-          ),
-        );
-        Navigator.pop(context);
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Có lỗi xảy ra: $e')),
-        );
-      }
-    }
   }
 }
 

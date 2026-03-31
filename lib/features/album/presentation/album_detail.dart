@@ -5,6 +5,7 @@ import 'package:music_app/features/song_detail/presentation/song_detail.dart';
 
 import '../../widget/song_list.dart';
 import '../viewmodels/song_view_model.dart';
+import '../widget/album_menu_bottom_sheet.dart';
 import '../widget/header.dart';
 
 class AlbumDetail extends StatelessWidget {
@@ -103,9 +104,21 @@ class _DetailPageState extends State<AlbumDetailPage> {
               ),
             ),
             actions: [
-              IconButton(onPressed: (){},
-                icon: Icon(Icons.more_horiz_outlined),
-              )
+              IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => AlbumMenuBottomSheet(
+                      album: widget.album,
+                      songs: albumSongs,
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.more_vert,
+                  size: 32,
+                ),
+              ),
             ],
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),

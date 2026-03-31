@@ -258,12 +258,14 @@ class UserActivityService {
     }
   }
 
-  Future<void> createPlaylist(Playlist playlist, {bool isPrivate = true}) async {
+  Future<void> createPlaylist(
+    Playlist playlist, {
+    bool isPrivate = true,
+  }) async {
     final uid = _userId;
     if (uid == null) {
       print(
         'UserActivityService: Cannot add to favorites, user not logged in.',
-
       );
       return;
     }
@@ -284,42 +286,53 @@ class UserActivityService {
         transaction.set(userRef, {
           'lastActivity': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
-        final uesrPlaylistRef = userRef.collection('playlists').doc(playlist.id);
+        final uesrPlaylistRef = userRef
+            .collection('playlists')
+            .doc(playlist.id);
         transaction.set(uesrPlaylistRef, playlistData);
-        if(!isPrivate){
-          final publicPlaylistRef = _firestore.collection('playlist').doc(playlist.id);
+        if (!isPrivate) {
+          final publicPlaylistRef = _firestore
+              .collection('playlist')
+              .doc(playlist.id);
           transaction.set(publicPlaylistRef, playlistData);
         }
       });
-
     } catch (e) {
       print('UserActivityService Error: $e');
     }
   }
 
-  Future<void> updatePlaylistName(String playlistId, String newName, {bool isPrivate = true}) async {
+  Future<void> updatePlaylistName(
+    String playlistId,
+    String newName, {
+    bool isPrivate = true,
+  }) async {
     final uid = _userId;
     if (uid == null) return;
     try {
       final batch = _firestore.batch();
-      
+
       // 1. Cập nhật trong bộ sưu tập 'playlists' của người dùng
       final userPlaylistRef = _firestore
           .collection('users')
           .doc(uid)
           .collection('playlists')
           .doc(playlistId);
-      
+
       batch.update(userPlaylistRef, {'name': newName});
-      
+
       // 2. Nếu playlist là công khai, cập nhật cả ở bộ sưu tập 'playlist' chung
       if (!isPrivate) {
-        final publicPlaylistRef = _firestore.collection('playlist').doc(playlistId);
+        final publicPlaylistRef = _firestore
+            .collection('playlist')
+            .doc(playlistId);
         batch.update(publicPlaylistRef, {'name': newName});
       }
-      
+
       await batch.commit();
-      print('UserActivityService: Successfully updated playlist name to "$newName"');
+      print(
+        'UserActivityService: Successfully updated playlist name to "$newName"',
+      );
     } catch (e) {
       print('UserActivityService Error updating playlist name: $e');
     }
@@ -344,38 +357,43 @@ class UserActivityService {
         });
   }
 
-  Future<void> addSongToPlaylist(String playlistId, Song song) async {
+  Future<void> addSongsToPlaylist(String playlistId, List<Song> songs) async {
     final uid = _userId;
     if (uid == null) return;
+    if (songs.isEmpty) return;
 
     try {
-      final playlistRef = _firestore
+      final songsRef = _firestore
           .collection('users')
           .doc(uid)
           .collection('playlists')
-          .doc(playlistId);
+          .doc(playlistId)
+          .collection('songs');
 
-      final songsRef = playlistRef.collection('songs');
+      final batch = _firestore.batch();
 
-      final songData = {
-        'id': song.id,
-        'title': song.title,
-        'albumId': song.albumId,
-        'artistId': song.artistId,
-        'albumName': song.albumName,
-        'artistName': song.artistName,
-        'source': song.source,
-        'image': song.image,
-        'duration': song.duration,
-        'timestamp': FieldValue.serverTimestamp(),
-      };
+      for (final song in songs) {
+        final songData = {
+          'id': song.id,
+          'title': song.title,
+          'albumId': song.albumId,
+          'artistId': song.artistId,
+          'albumName': song.albumName,
+          'artistName': song.artistName,
+          'source': song.source,
+          'image': song.image,
+          'duration': song.duration,
+          'timestamp': FieldValue.serverTimestamp(),
+        };
+        batch.set(songsRef.doc(song.id), songData);
+      }
 
-      await songsRef.doc(song.id).set(songData);
+      await batch.commit();
       print(
-        'UserActivityService: Successfully added song ${song.id} to playlist $playlistId',
+        'UserActivityService: Successfully added ${songs.length} song(s) to playlist $playlistId',
       );
     } catch (e) {
-      print('UserActivityService Error adding song to playlist: $e');
+      print('UserActivityService Error adding songs to playlist: $e');
     }
   }
 
