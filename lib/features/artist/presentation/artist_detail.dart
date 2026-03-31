@@ -85,10 +85,11 @@ class _ArtistDetailStateState extends State<ArtistDetailState> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: _showTitle ? Theme.of(context).brightness ==
-            Brightness.dark
-            ? Colors.black
-            : Colors.white : Colors.transparent,
+        backgroundColor: _showTitle
+            ? Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Colors.white
+            : Colors.transparent,
         elevation: 0,
         title: AnimatedOpacity(
           opacity: _showTitle ? 1.0 : 0.0,

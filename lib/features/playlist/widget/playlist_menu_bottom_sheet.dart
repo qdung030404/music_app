@@ -77,7 +77,7 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
                 buildMenuItem(
                   Icons.edit,
                   'Chỉnh sửa playlist',
-                      () => Navigator.push(
+                  () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => UpdatePlaylistPage(
