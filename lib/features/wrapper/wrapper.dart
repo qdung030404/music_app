@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:music_app/features/auth/presentation/screens/sign_in.dart';
-import 'package:music_app/features/main/presentation/main_screen.dart';
+import 'package:music_app/features/auth/view/screens/sign_in.dart';
+import 'package:music_app/features/main/view/main_screen.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({super.key});

@@ -5,7 +5,7 @@ import 'package:music_app/features/setting/feedback.dart';
 import 'package:music_app/features/setting/headphone_&_bluetooth.dart';
 import 'package:music_app/features/setting/other_setting.dart';
 import 'package:music_app/features/setting/personalize.dart';
-import 'package:music_app/features/widget/buildMenuItem.dart';
+import 'package:music_app/features/shared/widgets/buildMenuItem.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});

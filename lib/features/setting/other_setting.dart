@@ -3,7 +3,7 @@ import 'package:music_app/core/services/audio_device_service.dart';
 import 'package:music_app/core/services/firebase_auth_service.dart';
 import 'package:music_app/features/wrapper/wrapper.dart';
 
-import '../widget/buildMenuItem.dart';
+import 'package:music_app/features/shared/widgets/buildMenuItem.dart';
 
 class OtherSetting extends StatefulWidget {
   const OtherSetting({super.key});
