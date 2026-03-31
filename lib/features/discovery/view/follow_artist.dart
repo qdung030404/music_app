@@ -1,0 +1,114 @@
+import 'package:flutter/material.dart';
+import 'package:music_app/data/model/artist.dart';
+
+import '../../../data/datasources/user_activity_service.dart';
+import '../widget/followed_list.dart';
+
+class FollowArtist extends StatefulWidget {
+  const FollowArtist({super.key});
+
+  @override
+  State<FollowArtist> createState() => _FollowArtistState();
+}
+
+class _FollowArtistState extends State<FollowArtist> {
+  late ScrollController _scrollController;
+  bool _showTitle = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 80 && !_showTitle) {
+        setState(() {
+          _showTitle = true;
+        });
+      } else if (_scrollController.offset <= 80 && _showTitle) {
+        setState(() {
+          _showTitle = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: AnimatedOpacity(
+          opacity: _showTitle ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 200),
+          child: const Text(
+            'Nghệ sĩ',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.more_horiz),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 32,
+                ),
+                const Center(
+                  child: Text(
+                    'Nghệ sĩ',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                StreamBuilder<List<Artist>>(
+                  stream: UserActivityService().getFollowedArtist(),
+                  builder: (context, snapshot) {
+                    final count = snapshot.data?.length ?? 0;
+                    if (count > 0) {
+                      return Center(
+                        child: Text(
+                          '$count nghệ sĩ • đã quan tâm',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      );
+                    }
+                    return SizedBox(height: 8);
+                  },
+                ),
+                const SizedBox(height: 32),
+                const FollowedList(),
+                const SizedBox(height: 100),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
