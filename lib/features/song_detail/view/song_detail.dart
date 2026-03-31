@@ -1,7 +1,7 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+﻿import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/models/song.dart';
 import 'package:music_app/features/shared/managers/audio_player_manager.dart';
 import 'package:music_app/features/shared/managers/favorite_manager.dart';
 import 'package:text_scroll/text_scroll.dart';

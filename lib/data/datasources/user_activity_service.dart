@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:music_app/data/model/album.dart';
-import 'package:music_app/data/model/artist.dart';
+import 'package:music_app/data/models/album.dart';
+import 'package:music_app/data/models/artist.dart';
 
-import '../model/playlist.dart';
-import '../model/song.dart';
+import '../models/playlist.dart';
+import '../models/song.dart';
 
 class UserActivityService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

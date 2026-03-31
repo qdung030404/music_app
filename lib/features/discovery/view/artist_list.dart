@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/jamendo_service.dart';
-import 'package:music_app/data/model/artist.dart';
+import 'package:music_app/data/models/artist.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
 

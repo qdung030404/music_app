@@ -1,7 +1,7 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:music_app/data/datasources/jamendo_service.dart';
-import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/models/song.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SongViewModel {

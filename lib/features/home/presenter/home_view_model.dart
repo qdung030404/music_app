@@ -1,9 +1,9 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:music_app/data/datasources/jamendo_service.dart';
-import 'package:music_app/data/model/album.dart';
-import 'package:music_app/data/model/artist.dart';
-import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/models/album.dart';
+import 'package:music_app/data/models/artist.dart';
+import 'package:music_app/data/models/song.dart';
 
 class HomeViewModel {
   final StreamController<List<Song>> songsController =

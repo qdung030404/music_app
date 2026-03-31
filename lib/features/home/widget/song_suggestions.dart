@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
-import '../../../data/model/song.dart';
+import '../../../data/models/song.dart';
 import '../../shared/managers/audio_player_manager.dart';
 import '../../shared/widgets/song_card.dart';
 

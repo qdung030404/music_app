@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/jamendo_service.dart';
-import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/models/song.dart';
 import 'package:music_app/features/shared/widgets/playlist_bottom_sheet.dart';
 
 class AddAlbumSongToPlaylist extends StatefulWidget {

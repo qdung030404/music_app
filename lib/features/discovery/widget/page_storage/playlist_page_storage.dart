@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:music_app/data/model/playlist.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:music_app/data/models/playlist.dart';
 import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
 
 import '../../../../data/datasources/user_activity_service.dart';

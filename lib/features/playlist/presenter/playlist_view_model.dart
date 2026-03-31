@@ -1,6 +1,6 @@
 ﻿import 'dart:async';
 
-import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/models/song.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../data/datasources/user_activity_service.dart';

@@ -1,6 +1,6 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:music_app/data/model/artist.dart';
-import 'package:music_app/data/model/song.dart';
+import 'package:music_app/data/models/artist.dart';
+import 'package:music_app/data/models/song.dart';
 import 'package:music_app/features/home/presenter/home_view_model.dart';
 import 'package:music_app/features/home/widget/artist.dart';
 import 'package:music_app/features/home/widget/header.dart';
