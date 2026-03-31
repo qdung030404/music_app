@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/playlist_entity.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:music_app/data/models/playlist.dart';
 
-import '../../../domain/entities/song_entity.dart';
-import '../../widget/download_song.dart';
-import '../presentation/song_list_page.dart';
+import '../../../data/models/song.dart';
+import '../../shared/widgets/download_song.dart';
+import '../view/song_list_page.dart';
 
 class PlaylistHeader extends StatefulWidget {
   final Playlist playlist;

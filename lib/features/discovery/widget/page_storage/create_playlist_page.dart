@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
 
-import '../../../../domain/entities/playlist_entity.dart';
+import '../../../../data/models/playlist.dart';
 
 class CreatePlaylistPage extends StatefulWidget {
   final UserActivityService service;
-  const CreatePlaylistPage({
-    super.key,
-    required this.service
-  });
+
+  const CreatePlaylistPage({super.key, required this.service});
 
   @override
   State<CreatePlaylistPage> createState() => _CreatePlaylistPageState();
@@ -30,11 +28,11 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.close)
+          icon: Icon(Icons.close),
         ),
       ),
       body: SingleChildScrollView(
-        child:Padding(
+        child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
@@ -55,7 +53,10 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF00D9D9), width: 2.0),
+                    borderSide: BorderSide(
+                      color: Color(0xFF00D9D9),
+                      width: 2.0,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
 
@@ -65,9 +66,12 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
               SwitchListTile(
-                title: Text('Riêng tư',
+                title: Text(
+                  'Riêng tư',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.normal,
@@ -78,15 +82,18 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
                 activeThumbColor: Color(0xFF00D9D9),
                 activeTrackColor: Color(0xFF00D9D9).withOpacity(0.3),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF00D9D9)
+                    backgroundColor: Color(0xFF00D9D9),
                   ),
                   onPressed: () => _handleCreatePlaylist(),
-                  child: Text('TẠO',
+                  child: Text(
+                    'TẠO',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -94,15 +101,16 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
                           ? Colors.white
                           : Colors.black,
                     ),
-                  )
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
   Future<void> _handleCreatePlaylist() async {
     final name = controller.text.trim();
     if (name.isEmpty) {

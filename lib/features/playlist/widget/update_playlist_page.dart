@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
-import '../../../domain/entities/playlist_entity.dart';
-import '../../../domain/entities/song_entity.dart';
+import '../../../data/models/playlist.dart';
+import '../../../data/models/song.dart';
 
 class UpdatePlaylistPage extends StatefulWidget {
   final UserActivityService service;
   final Playlist playlist;
+
   const UpdatePlaylistPage({
     super.key,
     required this.service,
@@ -41,8 +42,8 @@ class _UpdatePlaylistPageState extends State<UpdatePlaylistPage> {
       appBar: AppBar(
         title: const Text('Chỉnh sửa Playlist'),
         leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.close)
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.close),
         ),
       ),
       body: SingleChildScrollView(
@@ -62,11 +63,17 @@ class _UpdatePlaylistPageState extends State<UpdatePlaylistPage> {
                   hintText: 'Nhập tên playlist',
                   hintStyle: const TextStyle(color: Colors.grey),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFF00D9D9), width: 2.0),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF00D9D9),
+                      width: 2.0,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   errorBorder: OutlineInputBorder(
@@ -77,7 +84,8 @@ class _UpdatePlaylistPageState extends State<UpdatePlaylistPage> {
               ),
               const SizedBox(height: 20),
               SwitchListTile(
-                title: const Text('Riêng tư',
+                title: const Text(
+                  'Riêng tư',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.normal,
@@ -92,35 +100,45 @@ class _UpdatePlaylistPageState extends State<UpdatePlaylistPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00D9D9),
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00D9D9),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  onPressed: _handleUpdatePlaylist,
+                  child: Text(
+                    'CẬP NHẬT',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
-                    onPressed: _handleUpdatePlaylist,
-                    child: Text('CẬP NHẬT',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    )
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
               StreamBuilder<List<Song>>(
-                stream: widget.service.getPlaylistSongsStream(widget.playlist.id),
+                stream: widget.service.getPlaylistSongsStream(
+                  widget.playlist.id,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: Color(0xFF00D9D9)));
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF00D9D9),
+                      ),
+                    );
                   }
-                  
+
                   final songs = snapshot.data ?? [];
                   if (songs.isEmpty) {
                     return const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Text('Playlist chưa có bài hát nào', style: TextStyle(color: Colors.grey)),
+                      child: Text(
+                        'Playlist chưa có bài hát nào',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     );
                   }
 
@@ -131,7 +149,10 @@ class _UpdatePlaylistPageState extends State<UpdatePlaylistPage> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           'Bài hát (${songs.length})',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       ListView.builder(
@@ -185,12 +206,12 @@ class _UpdatePlaylistPageState extends State<UpdatePlaylistPage> {
       );
       return;
     }
-    
+
     try {
       // Gọi service cập nhật. Lưu ý: updatePlaylistName hiện đã hỗ trợ đồng bộ tên.
       await widget.service.updatePlaylistName(
-        widget.playlist.id, 
-        name, 
+        widget.playlist.id,
+        name,
         isPrivate: isPrivate,
       );
 
@@ -214,7 +235,7 @@ class _DeleteSongCard extends StatelessWidget {
   final Song song;
   final VoidCallback onTap;
 
-  const _DeleteSongCard ({
+  const _DeleteSongCard({
     required this.song,
     required this.onTap,
   });
@@ -227,25 +248,25 @@ class _DeleteSongCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: song.image.isEmpty
             ? Image.asset(
-          'assets/itunes_256.png',
-          width: 50,
-          height: 50,
-          fit: BoxFit.cover,
-        )
+                'assets/itunes_256.png',
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              )
             : FadeInImage.assetNetwork(
-          placeholder: 'assets/itunes_256.png',
-          image: song.image,
-          width: 50,
-          height: 50,
-          fit: BoxFit.cover,
-          imageErrorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              'assets/itunes_256.png',
-              width: 50,
-              height: 50,
-            );
-          },
-        ),
+                placeholder: 'assets/itunes_256.png',
+                image: song.image,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/itunes_256.png',
+                    width: 50,
+                    height: 50,
+                  );
+                },
+              ),
       ),
       title: Text(
         song.title,

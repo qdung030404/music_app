@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
-import '../../../domain/entities/artist_entity.dart';
+import '../../../data/models/artist.dart';
 
 class ArtistHeader extends StatefulWidget {
   final Artist artist;

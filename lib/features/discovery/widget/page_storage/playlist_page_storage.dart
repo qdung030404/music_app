@@ -3,7 +3,7 @@ import 'package:music_app/data/model/playlist.dart';
 import 'package:music_app/features/playlist/widget/playlist_menu_bottom_sheet.dart';
 
 import '../../../../data/datasources/user_activity_service.dart';
-import '../../../playlist/presentation/playlist_detail.dart';
+import '../../../playlist/view/playlist_detail.dart';
 import 'create_playlist_page.dart';
 
 class PlaylistPageStorage extends StatelessWidget {
@@ -51,11 +51,12 @@ class PlaylistPageStorage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            CreatePlaylistPage(service: userActivityService,)
+                      builder: (context) => CreatePlaylistPage(
+                        service: userActivityService,
+                      ),
                     ),
                   );
-                }
+                },
               );
             }
 

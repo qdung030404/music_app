@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/album_entity.dart';
-import 'package:music_app/domain/entities/artist_entity.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/features/widget/song_card.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:music_app/data/models/album.dart';
+import 'package:music_app/data/models/artist.dart';
+import 'package:music_app/data/models/song.dart';
+import 'package:music_app/features/shared/widgets/song_card.dart';
 
-import '../../album/presentation/album_detail.dart';
-import '../../artist/presentation/artist_detail.dart';
+import '../../album/view/album_detail.dart';
+import '../../artist/view/artist_detail.dart';
 
 class SearchResultsList extends StatelessWidget {
   final List<Song> filteredSongs;
@@ -112,7 +112,7 @@ class SearchResultsList extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height*0.3,
+            height: MediaQuery.of(context).size.height * 0.3,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),

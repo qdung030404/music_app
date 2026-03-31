@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:music_app/features/discovery/presentation/downloaded.dart';
-import 'package:music_app/features/discovery/presentation/favorite_song.dart';
-import 'package:music_app/features/discovery/presentation/follow_artist.dart';
+import 'package:music_app/features/discovery/view/downloaded.dart';
+import 'package:music_app/features/discovery/view/favorite_song.dart';
+import 'package:music_app/features/discovery/view/follow_artist.dart';
 
 List<Map<String, dynamic>> items = [
   {

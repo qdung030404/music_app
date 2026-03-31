@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/album_entity.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:music_app/data/models/album.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
-import '../../../domain/entities/song_entity.dart';
-import '../../widget/download_song.dart';
+import '../../../data/models/song.dart';
+import '../../shared/widgets/download_song.dart';
 
 class Header extends StatelessWidget {
   final Album album;

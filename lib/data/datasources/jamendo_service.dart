@@ -107,6 +107,7 @@ class JamendoService {
     }
     return [];
   }
+
   // Lấy danh sách Playlist phổ biến (Thịnh hành) từ Jamendo
   Future<List<dynamic>> fetchPopularPlaylists() async {
     final response = await http.get(
@@ -122,6 +123,7 @@ class JamendoService {
       return [];
     }
   }
+
   // Lấy các bài hát trong 1 playlist cụ thể
   Future<List<dynamic>> fetchTracksByPlaylistId(String playlistId) async {
     final response = await http.get(

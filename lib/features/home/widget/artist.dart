@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/artist_entity.dart';
-import 'package:music_app/features/artist/presentation/artist_detail.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:music_app/data/models/artist.dart';
+import 'package:music_app/features/artist/view/artist_detail.dart';
 
 class BuildArtist extends StatelessWidget {
   final List<Artist> artists;

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
+import 'package:music_app/data/models/song.dart';
 
-import '../../widget/song_card.dart';
+import '../../shared/widgets/song_card.dart';
 
 class History extends StatelessWidget {
   const History({super.key});

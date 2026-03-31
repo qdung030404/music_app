@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:music_app/domain/entities/playlist_entity.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:music_app/data/models/playlist.dart';
 import 'package:music_app/features/playlist/widget/update_playlist_page.dart';
-import 'package:music_app/features/widget/download_song.dart';
+import 'package:music_app/features/shared/widgets/download_song.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
-import '../../../domain/entities/song_entity.dart';
-import '../../widget/buildMenuItem.dart';
-import '../presentation/song_list_page.dart';
+import '../../../data/models/song.dart';
+import '../../shared/widgets/buildMenuItem.dart';
+import '../view/song_list_page.dart';
 
 class PlaylistMenuBottomSheet extends StatelessWidget {
   final Playlist playlist;
@@ -77,7 +77,7 @@ class PlaylistMenuBottomSheet extends StatelessWidget {
                 buildMenuItem(
                   Icons.edit,
                   'Chỉnh sửa playlist',
-                      () => Navigator.push(
+                  () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => UpdatePlaylistPage(
