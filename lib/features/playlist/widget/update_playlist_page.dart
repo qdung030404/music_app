@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
-import '../../../domain/entities/playlist_entity.dart';
-import '../../../domain/entities/song_entity.dart';
+import '../../../data/models/playlist.dart';
+import '../../../data/models/song.dart';
 
 class UpdatePlaylistPage extends StatefulWidget {
   final UserActivityService service;

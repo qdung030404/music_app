@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/model/song.dart';
-import '../../managers/audio_player_manager.dart';
-import '../../widget/song_card.dart';
+import '../../shared/managers/audio_player_manager.dart';
+import '../../shared/widgets/song_card.dart';
 
 class SongSuggestions extends StatefulWidget {
   final List<Song> songs;

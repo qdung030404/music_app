@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../data/datasources/user_activity_service.dart';
-import '../../../../domain/entities/album_entity.dart';
-import '../../../album/presentation/album_detail.dart';
+import '../../../../data/models/album.dart';
+import '../../../album/view/album_detail.dart';
 
 class AlbumPageStorage extends StatelessWidget {
   const AlbumPageStorage({super.key});

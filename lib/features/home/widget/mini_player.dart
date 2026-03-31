@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_app/domain/entities/song_entity.dart';
-import 'package:music_app/features/managers/audio_player_manager.dart';
-import 'package:music_app/features/song_detail/presentation/song_detail.dart';
+import 'package:music_app/data/models/song.dart';
+import 'package:music_app/features/shared/managers/audio_player_manager.dart';
+import 'package:music_app/features/song_detail/view/song_detail.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 class MiniPlayer extends StatefulWidget {

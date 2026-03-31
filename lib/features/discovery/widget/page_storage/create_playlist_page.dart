@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
 
-import '../../../../domain/entities/playlist_entity.dart';
+import '../../../../data/models/playlist.dart';
 
 class CreatePlaylistPage extends StatefulWidget {
   final UserActivityService service;

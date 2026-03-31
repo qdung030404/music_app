@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
 
-import '../../../domain/entities/song_entity.dart';
-import '../../widget/song_card.dart';
+import '../../../data/models/song.dart';
+import '../../shared/widgets/song_card.dart';
 
 class FavoriteSongList extends StatelessWidget {
   const FavoriteSongList({super.key});
