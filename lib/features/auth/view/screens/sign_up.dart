@@ -99,7 +99,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 child: TextField(
                   controller: _emailController,
-                  style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     hintText: 'Email',
                     hintStyle: TextStyle(color: Colors.grey),
@@ -118,7 +117,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: TextField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
-                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'Password',
                     hintStyle: const TextStyle(color: Colors.grey),

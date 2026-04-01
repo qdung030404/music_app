@@ -11,6 +11,24 @@ class UserActivityService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String? get _userId => _auth.currentUser?.uid;
+  Future<void> updatePersonalInformation(User refreshedUser, {
+    String? displayName,
+    String? photoURL,
+  }) async {
+    final uid = _userId;
+    if (uid == null) return;
+    try {
+      final userRef = _firestore.collection('users').doc(uid);
+      final userData = <String, dynamic>{
+        'lastActivity': FieldValue.serverTimestamp(),
+        if (displayName != null) 'username': displayName,
+        if (photoURL != null) 'avatar': photoURL,
+      };
+      await userRef.set(userData, SetOptions(merge: true));
+    } catch (e) {
+      print('UserActivityService Error: $e');
+    }
+  }
 
   Future<void> addFavoriteAlbum(Album album) async {
     final uid = _userId;

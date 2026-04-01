@@ -121,6 +121,8 @@ class FirebaseAuthService {
       final String uid = userCredential.user!.uid;
       final String username = email.trim().split('@')[0];
 
+      await userCredential.user!.updateDisplayName(username);
+
       await firestore.collection('users').doc(uid).set({
         'uid': uid,
         'username': username,

@@ -57,6 +57,8 @@ dependencies:
   disk_space_plus: ^0.2.6
   audio_session: ^0.1.21
   text_scroll: ^0.2.1
+  image_picker: ^1.1.2
+  firebase_storage: ^13.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
