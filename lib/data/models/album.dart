@@ -1,4 +1,4 @@
-// Model layer (MVP) — gộp entity + model vào một file
+
 class Album {
   String id;
   String artistId;
