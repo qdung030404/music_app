@@ -39,12 +39,6 @@ class _DownloadedState extends State<Downloaded> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
-        ],
       ),
       body: FutureBuilder<List<Song>>(
         future: _downloadedSongsFuture,

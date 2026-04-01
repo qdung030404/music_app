@@ -56,12 +56,6 @@ class _FavoriteSongState extends State<FavoriteSong> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

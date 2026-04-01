@@ -56,12 +56,6 @@ class _FollowArtistState extends State<FollowArtist> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
