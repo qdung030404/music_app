@@ -454,4 +454,24 @@ class UserActivityService {
           }).toList();
         });
   }
+
+  Future<List<Song>> getPlaylistSongs(String playlistId) async {
+    final uid = _userId;
+    if (uid == null) return [];
+
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('playlists')
+          .doc(playlistId)
+          .collection('songs')
+          .get();
+
+      return snapshot.docs.map((doc) => SongModel.fromJson(doc.data())).toList();
+    } catch (e) {
+      print('UserActivityService Error getting playlist songs: $e');
+      return [];
+    }
+  }
 }

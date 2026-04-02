@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:music_app/data/datasources/jamendo_service.dart';
 import 'package:music_app/data/models/song.dart';
 
@@ -30,6 +30,13 @@ class _SongListPageState extends State<SongListPage> {
   Future<void> _loadSongs() async {
     final jamendo = JamendoService();
     try {
+      Set<String> existingSongIds = {};
+      if (widget.playlistId != null) {
+        final existingSongs =
+            await _userActivityService.getPlaylistSongs(widget.playlistId!);
+        existingSongIds = existingSongs.map((s) => s.id).toSet();
+      }
+
       final songsData = await jamendo.fetchPopularTracks();
       final List<Song> s = songsData
           .map<Song>(
@@ -45,6 +52,7 @@ class _SongListPageState extends State<SongListPage> {
               duration: e['duration'] ?? 180,
             ),
           )
+          .where((song) => !existingSongIds.contains(song.id))
           .toList();
 
       if (mounted) {
