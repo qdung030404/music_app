@@ -33,28 +33,33 @@ Một ứng dụng nghe nhạc hiện đại được xây dựng bằng **Flutt
 - **Audio Core:** [just_audio](https://pub.dev/packages/just_audio), [just_audio_background](https://pub.dev/packages/just_audio_background), `audio_session`.
 - **Tiện ích và UI:** `speech_to_text`, `dio`, `shared_preferences`, `flutter_native_splash`, `audio_video_progress_bar`, `font_awesome_flutter`.
 
-## 📂 Kiến trúc dự án (Clean Architecture Style)
+## 📂 Kiến trúc dự án (Model-View-Presenter - MVP)
 
-Mã nguồn dự án được tổ chức theo hướng phân tách tính năng (Feature-first approach), đảm bảo nguyên tắc Clean Architecture:
+Mã nguồn dự án được tổ chức theo kiến trúc **MVP** (Model-View-Presenter) kết hợp với hướng tiếp cận phân chia theo chức năng (Feature-first), giúp tăng khả năng bảo trì và mở rộng linh hoạt:
 
 ```text
 lib/
-├── core/         # Các module cốt lõi: Theme (Sáng/Tối), Services (Audio Device), Configs...
-├── data/         # Khai báo cấu trúc Datasources (Tương tác Firebase), Repositories, APIs...
-├── domain/       # Các thực thể cốt lõi (Entities) và Logic nghiệp vụ chính (Business Logic).
-├── features/     # Giao diện UI phân chia theo chức năng:
-│   ├── auth/          # Đăng ký, Đăng nhập
-│   ├── home/          # Màn hình chính
-│   ├── discovery/     # Quản lý Thư viện, Lịch sử nghe, Yêu thích
-│   ├── search/        # Tìm kiếm, Lịch sử tìm kiếm & Điều khiển Giọng nói
-│   ├── song_detail/   # Màn hình trình phát nhạc chi tiết
-│   ├── playlist/      # Quản lý danh sách phát
-│   ├── album/         # Quản lý Album
-│   ├── artist/        # Quản lý Nghệ sĩ
-│   └── setting/       # Cấu hình Theme, Feedback, Thiết bị, Profiling
-└── app.dart      # Cấu hình Material App, Theme và Route ban đầu
-└── main.dart     # Entry point khởi tạo FlutterBindings, Firebase, GetX và Services
+├── core/         # Các module cốt lõi: Theme (Sáng/Tối), Services nền tảng, Cấu hình...
+├── data/         # Lớp Model: Chịu trách nhiệm quản lý dữ liệu:
+│   ├── datasources/   # Tương tác trực tiếp với API (Jamendo) và Firebase
+│   ├── models/        # Các thực thể dữ liệu (Song, Playlist, Album...)
+│   └── repositories/  # Lớp trung gian kết nối datasources và cung cấp dữ liệu cho presenters
+├── features/     # Lớp View & Presenter phân chia theo từng tính năng cụ thể:
+│   ├── <feature_name>/
+│   │   ├── view/      # Lớp View: Chỉ chứa giao diện người dùng (Widgets, Screens)
+│   │   ├── presenter/ # Lớp Presenter/ViewModel: Xử lý logic nghiệp vụ và quản lý trạng thái qua Streams/RxDart
+│   │   └── widget/    # Các widget UI đặc thù (nếu có) dành riêng cho tính năng đó
+│   ├── shared/        # Các thành phần giao diện và trình quản lý (Managers) dùng chung
+│   └── ...            # auth, home, playlist, song_detail, discovery...
+├── app.dart      # Cấu hình chính cho ứng dụng: Material App, Theme và Routing
+└── main.dart     # Điểm bắt đầu (Entry point): Khởi tạo Flutter, Firebase và các dịch vụ nền
 ```
+
+---
+**Tóm tắt luồng hoạt động:**
+-   **View**: Nhận tương tác của người dùng và gửi thông điệp tới Presenter.
+-   **Presenter**: Nhận yêu cầu từ View, gọi tới Repository để lấy dữ liệu, xử lý logic và cập nhật lại View thông qua Streams (RxDart).
+-   **Model (Data)**: Xử lý việc truy xuất dữ liệu từ các nguồn khác nhau (Firebase, API).
 
 ## ⚙️ Cài đặt & Khởi chạy
 
