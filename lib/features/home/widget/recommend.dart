@@ -25,7 +25,7 @@ class BuildRecommend extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 200,
+          height: MediaQuery.of(context).size.height * 0.3,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: recommended.length,
