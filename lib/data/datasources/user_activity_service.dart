@@ -5,6 +5,7 @@ import 'package:music_app/data/models/artist.dart';
 
 import '../models/playlist.dart';
 import '../models/song.dart';
+import '../../core/services/notification_service.dart';
 
 class UserActivityService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -348,6 +349,14 @@ class UserActivityService {
       }
 
       await batch.commit();
+      
+      // Hiển thông báo cập nhật thành công
+      await NotificationService().showNotification(
+        id: playlistId.hashCode,
+        title: 'Playlist đã cập nhật',
+        body: 'Đã đổi tên danh sách phát thành "$newName"',
+      );
+      
       print(
         'UserActivityService: Successfully updated playlist name to "$newName"',
       );
@@ -407,6 +416,14 @@ class UserActivityService {
       }
 
       await batch.commit();
+      
+      // Hiển thông báo thêm bài hát thành công
+      await NotificationService().showNotification(
+        id: playlistId.hashCode + 1,
+        title: 'Playlist đã được cập nhật',
+        body: 'Đã thêm ${songs.length} bài hát vào danh sách phát.',
+      );
+
       print(
         'UserActivityService: Successfully added ${songs.length} song(s) to playlist $playlistId',
       );
@@ -428,6 +445,14 @@ class UserActivityService {
           .collection('songs')
           .doc(songId)
           .delete();
+          
+      // Hiển thông báo xóa bài hát thành công
+      await NotificationService().showNotification(
+        id: playlistId.hashCode + 2,
+        title: 'Playlist đã cập nhật',
+        body: 'Đã xóa 1 bài hát khỏi danh sách phát.',
+      );
+
       print(
         'UserActivityService: Successfully removed song $songId from playlist $playlistId',
       );

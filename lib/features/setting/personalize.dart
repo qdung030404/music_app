@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_app/core/theme/app_theme.dart';
-import 'package:music_app/features/setting/update_personal_infomation.dart';
+import 'package:music_app/features/setting/update_personal_information.dart';
 
 import '../shared/widgets/buildMenuItem.dart';
 
@@ -103,7 +103,7 @@ class Personalize extends StatelessWidget {
             buildMenuItem(Icons.person, 'Cập nhật thông tin cá nhân', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UpdatePersonalInfomation()),
+                MaterialPageRoute(builder: (context) => UpdatePersonalInformation()),
               );
             }),
           ],

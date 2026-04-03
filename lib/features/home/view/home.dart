@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:music_app/data/models/artist.dart';
 import 'package:music_app/data/models/song.dart';
 import 'package:music_app/features/home/presenter/home_view_model.dart';
@@ -56,9 +56,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
   @override
   void dispose() {
     _homeViewModel.dispose();
-    // Do not dispose AudioPlayerManager here as it is a singleton used globally
-    // AudioPlayerManager().dispose();
-
     super.dispose();
   }
 
@@ -85,11 +82,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
             BuildRecommend(
               songs: songs,
             ),
-            const SizedBox(height: 24),
             BuildArtist(
               artists: artists,
             ),
-            const SizedBox(height: 24),
             if (songs.isEmpty)
               Center(child: CircularProgressIndicator())
             else
@@ -114,7 +109,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
     });
     _homeViewModel.songsController.stream.listen((songList) {
       setState(() {
-        songs.addAll(songList);
+        songs = songList;
       });
     });
     _homeViewModel.albumController.stream.listen((albumList) {

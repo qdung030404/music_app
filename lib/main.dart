@@ -9,6 +9,7 @@ import 'package:music_app/app.dart';
 
 import 'core/config/firebase_options.dart';
 import 'core/services/audio_device_service.dart';
+import 'core/services/notification_service.dart';
 import 'core/theme/app_theme.dart';
 
 void main() async {
@@ -24,129 +25,10 @@ void main() async {
 
   // Khởi động service theo dõi thiết bị âm thanh
   await AudioDeviceService().init();
+  await NotificationService().init();
 
   // Remove splash screen
   FlutterNativeSplash.remove();
 
-  // await addMultipleSongs();
   runApp(const MusicApp());
-}
-
-Future<void> addMultipleSongs() async {
-  FirebaseFirestore db = FirebaseFirestore.instance;
-  WriteBatch batch = db.batch();
-
-  List<Map<String, dynamic>> songs = [
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-    {
-      'title': '',
-      'artistId': '',
-      'albumId': 'xyz',
-      'duration': 180,
-      'image': '',
-      'source': '',
-      'is_favorite': '',
-    },
-  ];
-
-  for (var song in songs) {
-    DocumentReference docRef = db.collection('songs').doc();
-    batch.set(docRef, song);
-  }
-
-  await batch.commit();
-}
-
-class SeedDataScreen extends StatelessWidget {
-  const SeedDataScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            await addMultipleSongs();
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Đã thêm bài hát')),
-              );
-            }
-          },
-          child: const Text('Thêm nhiều bài hát'),
-        ),
-      ),
-    );
-  }
 }

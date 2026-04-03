@@ -7,9 +7,10 @@ subprojects {
             android.compileOptions.targetCompatibility = JavaVersion.VERSION_17
             
             // Nếu plugin có sử dụng Kotlin, cũng sẽ thiết lập jvmTarget về 17
-            if (project.plugins.hasPlugin("org.jetbrains.kotlin.android")) {
-                val kotlinOptions = project.extensions.getByName("kotlinOptions") as org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-                kotlinOptions.jvmTarget = "17"
+            project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
+                compilerOptions {
+                    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+                }
             }
         }
     }

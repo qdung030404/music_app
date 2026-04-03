@@ -39,7 +39,11 @@ class Setting extends StatelessWidget {
             buildMenuItem(
               Icons.notifications_none_outlined,
               'Thông báo',
-              () {},
+              () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Tính năng thông báo đang được phát triển')),
+                );
+              },
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),

@@ -4,7 +4,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:imagebutton/imagebutton.dart';
 import 'package:music_app/core/services/firebase_auth_service.dart';
-import 'package:music_app/core/services/shareferences_service.dart';
+import 'package:music_app/core/services/shared_preferences_service.dart';
 import 'package:music_app/features/auth/view/screens/forgot_password.dart';
 import 'package:music_app/features/auth/view/screens/sign_up.dart';
 

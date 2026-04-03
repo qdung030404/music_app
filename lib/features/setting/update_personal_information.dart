@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:music_app/data/datasources/user_activity_service.dart';
 
-class UpdatePersonalInfomation extends StatefulWidget {
-  const UpdatePersonalInfomation({super.key});
+class UpdatePersonalInformation extends StatefulWidget {
+  const UpdatePersonalInformation({super.key});
 
   @override
-  State<UpdatePersonalInfomation> createState() =>
-      _UpdatePersonalInfomationState();
+  State<UpdatePersonalInformation> createState() =>
+      _UpdatePersonalInformationState();
 }
 
-class _UpdatePersonalInfomationState extends State<UpdatePersonalInfomation> {
+class _UpdatePersonalInformationState extends State<UpdatePersonalInformation> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _userActivityService = UserActivityService();
   final _imagePicker = ImagePicker();
 
   bool _isLoading = false;
-  File? _pickedImage; // ảnh mới chọn từ gallery (chưa upload)
+  File? _pickedImage;
 
   User? get _currentUser => FirebaseAuth.instance.currentUser;
 
