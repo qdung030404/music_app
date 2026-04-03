@@ -25,7 +25,7 @@ class AudioDeviceService {
   AudioSession? _session;
 
   final BehaviorSubject<AudioOutputType> _deviceController =
-      BehaviorSubject<AudioOutputType>.seeded(AudioOutputType.speaker);
+  BehaviorSubject<AudioOutputType>.seeded(AudioOutputType.speaker);
 
   /// Stream phát ra [AudioOutputType] mỗi khi thiết bị âm thanh thay đổi.
   Stream<AudioOutputType> get onDeviceChanged =>
@@ -54,7 +54,7 @@ class AudioDeviceService {
 
   bool get isHeadsetOrBluetoothConnected =>
       _currentOutput == AudioOutputType.wiredHeadset ||
-      _currentOutput == AudioOutputType.bluetooth;
+          _currentOutput == AudioOutputType.bluetooth;
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
@@ -72,7 +72,7 @@ class AudioDeviceService {
         avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.none,
         avAudioSessionMode: AVAudioSessionMode.defaultMode,
         avAudioSessionRouteSharingPolicy:
-            AVAudioSessionRouteSharingPolicy.defaultPolicy,
+        AVAudioSessionRouteSharingPolicy.defaultPolicy,
         avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
         androidAudioAttributes: AndroidAudioAttributes(
           usage: AndroidAudioUsage.media,

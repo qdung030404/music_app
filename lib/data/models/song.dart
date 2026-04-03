@@ -1,4 +1,3 @@
-
 class Song {
   String id;
   String title;
@@ -23,15 +22,19 @@ class Song {
   });
 
   String get albumDisplay =>
-      (albumName?.trim().isNotEmpty ?? false) ? albumName!.trim() : albumId;
+      (albumName
+          ?.trim()
+          .isNotEmpty ?? false) ? albumName!.trim() : albumId;
 
   String get artistDisplay =>
-      (artistName?.trim().isNotEmpty ?? false) ? artistName!.trim() : artistId;
+      (artistName
+          ?.trim()
+          .isNotEmpty ?? false) ? artistName!.trim() : artistId;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Song && runtimeType == other.runtimeType && id == other.id;
+          other is Song && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -61,7 +64,7 @@ class SongModel extends Song {
       title: json['title'] ?? json['name'] ?? '',
       albumId: json['albumId']?.toString() ?? json['album']?.toString() ?? '',
       artistId:
-          json['artistId']?.toString() ?? json['artist']?.toString() ?? '',
+      json['artistId']?.toString() ?? json['artist']?.toString() ?? '',
       albumName: (json['albumName'] ?? json['album_title'])?.toString(),
       artistName: (json['artistName'] ?? json['artist_name'])?.toString(),
       source: json['source'] ?? '',

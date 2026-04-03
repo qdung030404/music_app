@@ -130,7 +130,7 @@ class _SongDetailPageState extends State<SongDetailPage>
     return StreamBuilder<Song?>(
       stream: _audioPlayerManager.currentSongStream,
       builder: (context, snapshot) {
-        final _song = snapshot.data ?? widget.playingSong;
+        final song = snapshot.data ?? widget.playingSong;
         return Scaffold(
           appBar: AppBar(
             elevation: 4,
@@ -149,14 +149,14 @@ class _SongDetailPageState extends State<SongDetailPage>
                   ),
                 ),
                 TextScroll(
-                  _song.title,
+                  song.title,
                   mode: TextScrollMode.endless,
                   velocity: const Velocity(pixelsPerSecond: Offset(30, 0)),
                   delayBefore: const Duration(seconds: 1),
                   pauseBetween: const Duration(seconds: 2),
                   style: const TextStyle(
                     fontSize: 14,
-                    color: const Color(0xFF00D9D9),
+                    color: Color(0xFF00D9D9),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -179,7 +179,7 @@ class _SongDetailPageState extends State<SongDetailPage>
                   const SizedBox(height: 20),
                   Center(
                     child: Text(
-                      _song.albumDisplay,
+                      song.albumDisplay,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
@@ -208,7 +208,7 @@ class _SongDetailPageState extends State<SongDetailPage>
                         borderRadius: BorderRadius.circular(12),
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/itunes_256.png',
-                          image: _song.image,
+                          image: song.image,
                           fit: BoxFit.cover,
                           imageErrorBuilder: (context, error, stackTrace) {
                             return Image.asset(
@@ -232,7 +232,7 @@ class _SongDetailPageState extends State<SongDetailPage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextScroll(
-                              _song.title,
+                              song.title,
                               mode: TextScrollMode.endless,
                               velocity: const Velocity(
                                 pixelsPerSecond: Offset(30, 0),
@@ -247,7 +247,7 @@ class _SongDetailPageState extends State<SongDetailPage>
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _song.artistDisplay,
+                              song.artistDisplay,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -259,7 +259,7 @@ class _SongDetailPageState extends State<SongDetailPage>
                       Row(
                         children: [
                           IconButton(
-                            onPressed: () => _handleDownload(_song),
+                            onPressed: () => _handleDownload(song),
                             icon: const Icon(Icons.download_outlined, size: 28),
                           ),
                           IconButton(
@@ -267,7 +267,7 @@ class _SongDetailPageState extends State<SongDetailPage>
                             icon: const Icon(Icons.share_outlined),
                           ),
                           IconButton(
-                            onPressed: () => _handleToggleFavorite(_song),
+                            onPressed: () => _handleToggleFavorite(song),
                             icon: Icon(
                               _isFavorite
                                   ? Icons.favorite
@@ -364,7 +364,7 @@ class _SongDetailPageState extends State<SongDetailPage>
               height: 60,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF00D9D9),
+                color: Color(0xFF00D9D9),
               ),
               child: const Icon(Icons.play_arrow, size: 40),
             ),

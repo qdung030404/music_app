@@ -3,16 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:music_app/data/models/album.dart';
 import 'package:music_app/data/models/artist.dart';
 
+import '../../core/services/notification_service.dart';
 import '../models/playlist.dart';
 import '../models/song.dart';
-import '../../core/services/notification_service.dart';
 
 class UserActivityService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String? get _userId => _auth.currentUser?.uid;
-  Future<void> updatePersonalInformation(User refreshedUser, {
+
+  Future<void> updatePersonalInformation(
+    User refreshedUser, {
     String? displayName,
     String? photoURL,
   }) async {
@@ -259,7 +261,7 @@ class UserActivityService {
         });
   }
 
-  Future<bool> isFavorite(String Id, String collection) async {
+  Future<bool> isFavorite(String id, String collection) async {
     final uid = _userId;
     if (uid == null) return false;
 
@@ -268,7 +270,7 @@ class UserActivityService {
           .collection('users')
           .doc(uid)
           .collection(collection)
-          .doc(Id)
+          .doc(id)
           .get();
       return doc.exists;
     } catch (e) {
@@ -349,14 +351,14 @@ class UserActivityService {
       }
 
       await batch.commit();
-      
+
       // Hiển thông báo cập nhật thành công
       await NotificationService().showNotification(
         id: playlistId.hashCode,
         title: 'Playlist đã cập nhật',
         body: 'Đã đổi tên danh sách phát thành "$newName"',
       );
-      
+
       print(
         'UserActivityService: Successfully updated playlist name to "$newName"',
       );
@@ -416,7 +418,7 @@ class UserActivityService {
       }
 
       await batch.commit();
-      
+
       // Hiển thông báo thêm bài hát thành công
       await NotificationService().showNotification(
         id: playlistId.hashCode + 1,
@@ -445,7 +447,7 @@ class UserActivityService {
           .collection('songs')
           .doc(songId)
           .delete();
-          
+
       // Hiển thông báo xóa bài hát thành công
       await NotificationService().showNotification(
         id: playlistId.hashCode + 2,
@@ -493,7 +495,9 @@ class UserActivityService {
           .collection('songs')
           .get();
 
-      return snapshot.docs.map((doc) => SongModel.fromJson(doc.data())).toList();
+      return snapshot.docs
+          .map((doc) => SongModel.fromJson(doc.data()))
+          .toList();
     } catch (e) {
       print('UserActivityService Error getting playlist songs: $e');
       return [];

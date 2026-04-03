@@ -4,8 +4,8 @@ import 'package:music_app/data/models/artist.dart';
 import 'package:music_app/data/models/song.dart';
 
 import '../../home/widget/album.dart';
-import '../../song_detail/view/song_detail.dart';
 import '../../shared/widgets/song_list.dart';
+import '../../song_detail/view/song_detail.dart';
 import '../presenter/artist_detail_view_model.dart';
 import '../widget/artist_header.dart';
 

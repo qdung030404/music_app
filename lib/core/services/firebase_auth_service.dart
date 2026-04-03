@@ -15,16 +15,22 @@ class FirebaseAuthService {
   }
 
   String? validate(String email, [String? password, String? confirmPassword]) {
-    if (email.trim().isEmpty) {
+    if (email
+        .trim()
+        .isEmpty) {
       return 'Vui lòng nhập email';
     }
     if (!_isValidEmail(email.trim())) {
       return 'Email không hợp lệ';
     }
-    if (password != null && password.trim().isEmpty) {
+    if (password != null && password
+        .trim()
+        .isEmpty) {
       return 'Vui lòng nhập mật khẩu';
     }
-    if (password != null && password.trim().length < 6) {
+    if (password != null && password
+        .trim()
+        .length < 6) {
       return 'Mật khẩu phải có ít nhất 6 ký tự';
     }
     if (password != null &&
@@ -41,7 +47,7 @@ class FirebaseAuthService {
       if (googleUser == null) return false;
 
       final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -62,7 +68,7 @@ class FirebaseAuthService {
         await firestore.collection('users').doc(uid).set({
           'uid': uid,
           'username':
-              userCredential.user!.displayName ??
+          userCredential.user!.displayName ??
               googleUser.email.split('@')[0],
           'email': googleUser.email,
           'avatar': userCredential.user!.photoURL ?? '',
@@ -103,20 +109,18 @@ class FirebaseAuthService {
     }
   }
 
-  Future<String?> signUp(
-    String email,
-    String password,
-    String confirmPassword,
-  ) async {
+  Future<String?> signUp(String email,
+      String password,
+      String confirmPassword,) async {
     final error = validate(email, password, confirmPassword);
     if (error != null) return error;
 
     try {
       final UserCredential userCredential = await auth
           .createUserWithEmailAndPassword(
-            email: email.trim(),
-            password: password.trim(),
-          );
+        email: email.trim(),
+        password: password.trim(),
+      );
 
       final String uid = userCredential.user!.uid;
       final String username = email.trim().split('@')[0];

@@ -1,4 +1,3 @@
-
 class Playlist {
   final String id;
   final String playlistName;

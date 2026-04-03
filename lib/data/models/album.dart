@@ -1,4 +1,3 @@
-
 class Album {
   String id;
   String artistId;
@@ -15,7 +14,9 @@ class Album {
   });
 
   String get artistDisplay =>
-      (artistName?.trim().isNotEmpty ?? false) ? artistName!.trim() : artistId;
+      (artistName
+          ?.trim()
+          .isNotEmpty ?? false) ? artistName!.trim() : artistId;
 }
 
 class AlbumModel extends Album {
@@ -34,8 +35,8 @@ class AlbumModel extends Album {
       image: json['image'] ?? '',
       albumTitle: json['title'] ?? '',
       artistName:
-          (json['artistName'] ?? json['artist_name'] ?? json['artistname'])
-              ?.toString(),
+      (json['artistName'] ?? json['artist_name'] ?? json['artistname'])
+          ?.toString(),
     );
   }
 

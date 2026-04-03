@@ -103,7 +103,9 @@ class Personalize extends StatelessWidget {
             buildMenuItem(Icons.person, 'Cập nhật thông tin cá nhân', () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UpdatePersonalInformation()),
+                MaterialPageRoute(
+                  builder: (context) => UpdatePersonalInformation(),
+                ),
               );
             }),
           ],

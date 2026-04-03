@@ -28,7 +28,9 @@ class ThemeService extends GetxController {
       return brightness == Brightness.dark;
     }
     if (isAutoChange) {
-      final hour = DateTime.now().hour;
+      final hour = DateTime
+          .now()
+          .hour;
       return hour >= 18 || hour < 6;
     }
     return _prefs.getBool(_key) ?? true;
@@ -91,7 +93,9 @@ class ThemeService extends GetxController {
   }
 
   void _applyTimeChange() {
-    final hour = DateTime.now().hour;
+    final hour = DateTime
+        .now()
+        .hour;
     bool shouldBeDark = hour > 18 || hour < 6;
     Get.changeThemeMode(shouldBeDark ? ThemeMode.dark : ThemeMode.light);
     _saveThemeToBox(shouldBeDark);

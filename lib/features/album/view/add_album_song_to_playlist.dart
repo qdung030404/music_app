@@ -95,7 +95,7 @@ class _AddAlbumSongToPlaylistState extends State<AddAlbumSongToPlaylist> {
             child: _isLoading
                 ? const Center(
                     child: CircularProgressIndicator(
-                      color: const Color(0xFF00D9D9),
+                      color: Color(0xFF00D9D9),
                     ),
                   )
                 : _filteredSongs.isEmpty

@@ -41,7 +41,9 @@ class Setting extends StatelessWidget {
               'Thông báo',
               () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Tính năng thông báo đang được phát triển')),
+                  const SnackBar(
+                    content: Text('Tính năng thông báo đang được phát triển'),
+                  ),
                 );
               },
             ),

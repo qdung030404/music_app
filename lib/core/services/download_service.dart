@@ -43,12 +43,11 @@ class DownloadService {
       // Cho iOS
       directory = await getApplicationDocumentsDirectory();
     }
-    return directory?.path;
+    return directory.path;
   }
 
   // Tải 1 bài hát. Trả về: 1 (Tải thành công), 2 (Đã tồn tại), 0 (Lỗi)
-  Future<int> downloadSong(
-    Song song, {
+  Future<int> downloadSong(Song song, {
     Function(int, int)? onReceiveProgress,
   }) async {
     try {
@@ -89,8 +88,7 @@ class DownloadService {
   }
 
   // Tải nhiều bài hát
-  Future<void> downloadMultipleSongs(
-    List<Song> songs, {
+  Future<void> downloadMultipleSongs(List<Song> songs, {
     Function(int current, int total)? onProgress,
     Function()? onCompleted,
   }) async {

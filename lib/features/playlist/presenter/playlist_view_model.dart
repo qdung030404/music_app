@@ -4,7 +4,6 @@ import 'package:music_app/data/models/song.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../data/datasources/user_activity_service.dart';
-import '../../../data/models/song.dart';
 
 class PlaylistViewModel {
   final String playlistId;

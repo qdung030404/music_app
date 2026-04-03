@@ -139,8 +139,7 @@ class _UpdatePersonalInformationState extends State<UpdatePersonalInformation> {
           width: 96,
           height: 96,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, _e) =>
-              const Icon(Icons.person, size: 48),
+          errorBuilder: (_, _, e) => const Icon(Icons.person, size: 48),
         ),
       );
     } else {
@@ -170,8 +169,9 @@ class _UpdatePersonalInformationState extends State<UpdatePersonalInformation> {
                   children: [
                     CircleAvatar(
                       radius: 48,
-                      backgroundColor:
-                          isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+                      backgroundColor: isDark
+                          ? Colors.grey.shade800
+                          : Colors.grey.shade200,
                       child: avatarChild,
                     ),
                     Positioned(
@@ -207,8 +207,7 @@ class _UpdatePersonalInformationState extends State<UpdatePersonalInformation> {
                 child: Text(
                   _currentUser?.email ?? '',
                   style: TextStyle(
-                    color:
-                        isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                    color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                     fontSize: 13,
                   ),
                 ),
@@ -246,10 +245,9 @@ class _UpdatePersonalInformationState extends State<UpdatePersonalInformation> {
                   ),
                   prefixIcon: const Icon(Icons.person_outline),
                 ),
-                validator: (value) =>
-                    (value == null || value.trim().isEmpty)
-                        ? 'Tên hiển thị không được để trống'
-                        : null,
+                validator: (value) => (value == null || value.trim().isEmpty)
+                    ? 'Tên hiển thị không được để trống'
+                    : null,
               ),
 
               // ── Nút Lưu ──────────────────────────────────────────────────

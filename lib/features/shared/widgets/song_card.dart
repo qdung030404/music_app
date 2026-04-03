@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:music_app/features/shared/widgets/bottom_sheet.dart';
-
 import 'package:music_app/data/models/song.dart';
+import 'package:music_app/features/shared/widgets/bottom_sheet.dart';
 import 'package:music_app/features/song_detail/view/song_detail.dart';
 
 class SongCard extends StatelessWidget {
@@ -11,7 +10,7 @@ class SongCard extends StatelessWidget {
   final double? width;
   final String? playlistId;
 
-  const SongCard({
+  const SongCard({super.key,
     required this.song,
     required this.songs,
     this.width,

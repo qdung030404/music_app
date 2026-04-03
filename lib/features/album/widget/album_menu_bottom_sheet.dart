@@ -3,7 +3,6 @@ import 'package:music_app/data/models/album.dart';
 import 'package:music_app/features/album/view/add_album_song_to_playlist.dart';
 import 'package:music_app/features/shared/widgets/download_song.dart';
 
-import '../../../data/datasources/user_activity_service.dart';
 import '../../../data/models/song.dart';
 import '../../shared/widgets/buildMenuItem.dart';
 

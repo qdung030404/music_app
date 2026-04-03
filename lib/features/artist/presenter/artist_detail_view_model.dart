@@ -44,7 +44,9 @@ class ArtistDetailViewModel {
           .toList();
 
       songsController.add(artistSongs);
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> loadArtistAlbums() async {

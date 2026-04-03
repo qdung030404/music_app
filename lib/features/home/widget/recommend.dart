@@ -13,7 +13,8 @@ class BuildRecommend extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final recommended = songs.take(5).toList();
-    final double carouselHeight = (MediaQuery.sizeOf(context).height * 0.28).clamp(220.0, 320.0);
+    final double carouselHeight = (MediaQuery.sizeOf(context).height * 0.28)
+        .clamp(220.0, 320.0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,10 @@ class BuildRecommend extends StatelessWidget {
 
   Widget _recommendedCard(BuildContext context, Song song) {
     // Dynamic width based on screen size
-    final double cardWidth = (MediaQuery.sizeOf(context).width * 0.75).clamp(280.0, 400.0);
+    final double cardWidth = (MediaQuery.sizeOf(context).width * 0.75).clamp(
+      280.0,
+      400.0,
+    );
 
     return GestureDetector(
       onTap: () {

@@ -13,7 +13,8 @@ class BuildArtist extends StatelessWidget {
       return const SizedBox.shrink();
     }
     final artistList = artists.take(5).toList();
-    final double carouselHeight = (MediaQuery.sizeOf(context).height * 0.28).clamp(220.0, 320.0);
+    final double carouselHeight = (MediaQuery.sizeOf(context).height * 0.28)
+        .clamp(220.0, 320.0);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
 import 'package:music_app/core/services/download_service.dart';
 import 'package:music_app/data/models/song.dart';
 

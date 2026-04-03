@@ -1,6 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -10,15 +9,15 @@ class NotificationService {
   NotificationService._internal();
 
   final FlutterLocalNotificationsPlugin _notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
     tz.initializeTimeZones();
     const AndroidInitializationSettings androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const DarwinInitializationSettings iosSettings =
-        DarwinInitializationSettings(
+    DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
@@ -38,7 +37,7 @@ class NotificationService {
     required String body,
   }) async {
     const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
+    AndroidNotificationDetails(
       'music_app_channel',
       'Music App Notifications',
       importance: Importance.max,
@@ -46,7 +45,7 @@ class NotificationService {
     );
 
     const NotificationDetails details =
-        NotificationDetails(android: androidDetails);
+    NotificationDetails(android: androidDetails);
 
     await _notificationsPlugin.show(
       id: id,

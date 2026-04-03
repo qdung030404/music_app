@@ -32,8 +32,9 @@ class _SongListPageState extends State<SongListPage> {
     try {
       Set<String> existingSongIds = {};
       if (widget.playlistId != null) {
-        final existingSongs =
-            await _userActivityService.getPlaylistSongs(widget.playlistId!);
+        final existingSongs = await _userActivityService.getPlaylistSongs(
+          widget.playlistId!,
+        );
         existingSongIds = existingSongs.map((s) => s.id).toSet();
       }
 

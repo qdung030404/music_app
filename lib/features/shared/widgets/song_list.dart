@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/features/shared/widgets/song_card.dart';
-
 import 'package:music_app/data/models/song.dart';
+import 'package:music_app/features/shared/widgets/song_card.dart';
 
 class SongList extends StatelessWidget {
   final List<Song> songs;

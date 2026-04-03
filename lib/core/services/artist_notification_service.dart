@@ -4,7 +4,7 @@ import 'notification_service.dart';
 
 class ArtistNotificationService {
   static final ArtistNotificationService _instance =
-      ArtistNotificationService._internal();
+  ArtistNotificationService._internal();
 
   factory ArtistNotificationService() => _instance;
 
@@ -24,7 +24,9 @@ class ArtistNotificationService {
         .collection('followed')
         .snapshots()
         .listen((followedSnapshot) {
-      final followedArtistIds = followedSnapshot.docs.map((doc) => doc.id).toList();
+      final followedArtistIds = followedSnapshot.docs
+          .map((doc) => doc.id)
+          .toList();
 
       if (followedArtistIds.isEmpty) return;
 
@@ -41,22 +43,25 @@ class ArtistNotificationService {
             final songData = change.doc.data();
             if (songData != null) {
               final songTitle = songData['title'] ?? 'Bài hát mới';
-              final artistName = songData['artistName'] ?? 'Nghệ sĩ bạn quan tâm';
+              final artistName = songData['artistName'] ??
+                  'Nghệ sĩ bạn quan tâm';
 
               // Tránh hiển thị thông báo cũ khi mới bắt đầu quan sát
               // Chúng ta có thể kiểm tra xem timestamp của bài hát có mới không
               final dynamic timestamp = songData['timestamp'];
               if (timestamp is Timestamp) {
-                 final now = DateTime.now();
-                 final songDate = timestamp.toDate();
-                 // Nếu bài hát được thêm vào trong vòng 1 phút qua
-                 if (now.difference(songDate).inSeconds < 60) {
-                    NotificationService().showNotification(
-                      id: change.doc.id.hashCode,
-                      title: 'Có nhạc mới từ $artistName',
-                      body: 'Hãy thưởng thức bài hát: $songTitle',
-                    );
-                 }
+                final now = DateTime.now();
+                final songDate = timestamp.toDate();
+                // Nếu bài hát được thêm vào trong vòng 1 phút qua
+                if (now
+                    .difference(songDate)
+                    .inSeconds < 60) {
+                  NotificationService().showNotification(
+                    id: change.doc.id.hashCode,
+                    title: 'Có nhạc mới từ $artistName',
+                    body: 'Hãy thưởng thức bài hát: $songTitle',
+                  );
+                }
               }
             }
           }
